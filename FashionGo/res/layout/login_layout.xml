@@ -29,7 +29,7 @@
         android:hint="请输入手机号码"
         android:paddingLeft="10dp"
         android:layout_margin="10dp"
-       android:background="@drawable/bg_input"
+       android:background="@drawable/bg_input9"
         />
     <EditText 
         android:id="@+id/et_password"
@@ -39,7 +39,7 @@
         android:hint="请输入密码"
         android:inputType="textPassword"
         android:layout_margin="10dp"
-       android:background="@drawable/bg_input"
+       android:background="@drawable/bg_input9"
         />
     
      <Button

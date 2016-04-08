@@ -41,7 +41,7 @@
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/bg_input"
+        android:background="@drawable/bg_input9"
         android:hint="请输入手机号码" />
 
 <!--验证码-->
@@ -74,7 +74,7 @@
 		android:textSize="16sp"
 		android:singleLine="true"
 		android:inputType="textPassword"
-        android:background="@drawable/bg_input"
+        android:background="@drawable/bg_input9"
         android:hint="请输入验证码" />
     
     <EditText
@@ -88,7 +88,7 @@
       	android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
 		android:layout_marginTop="10dp"
-        android:background="@drawable/bg_input"
+        android:background="@drawable/bg_input9"
         android:hint="请输入邀请码" />
     
     <EditText
@@ -101,7 +101,7 @@
         android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
 		android:layout_marginTop="10dp"
-        android:background="@drawable/bg_input"
+        android:background="@drawable/bg_input9"
         android:hint="请输入密码" />
     
     <EditText
@@ -114,7 +114,7 @@
       	android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
 		android:layout_marginTop="10dp"
-        android:background="@drawable/bg_input"
+        android:background="@drawable/bg_input9"
         android:hint="确认密码" />
 
 </LinearLayout>
