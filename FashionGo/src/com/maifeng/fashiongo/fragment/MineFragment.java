@@ -1,13 +1,12 @@
 package com.maifeng.fashiongo.fragment;
 
 import com.maifeng.fashiongo.Basic_Info_Activity;
+import com.maifeng.fashiongo.Goods_Address_Activity;
 import com.maifeng.fashiongo.R;
-import com.maifeng.fashiongo.R.id;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MineFragment extends Fragment {
 	String Tag = "MineFragment";
@@ -45,7 +43,10 @@ public class MineFragment extends Fragment {
 		tv_name_function.setVisibility(View.INVISIBLE);
 		//µ×²¿¿Ø¼þid
 		relayout_message = (RelativeLayout)view.findViewById(R.id.relayout_message);
-		
+		relayout_address = (RelativeLayout)view.findViewById(R.id.relayout_address);
+		relayout_myorder = (RelativeLayout)view.findViewById(R.id.relayout_myorder);
+		relayout_collect = (RelativeLayout)view.findViewById(R.id.relayout_collect);
+		relayout_share = (RelativeLayout)view.findViewById(R.id.relayout_share);
         click();
 		
 		return view;
@@ -58,6 +59,42 @@ public class MineFragment extends Fragment {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(),Basic_Info_Activity.class);
 				startActivity(intent);
+			}
+		});
+		relayout_address.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(),Goods_Address_Activity.class);
+				startActivity(intent);
+			}
+		});
+		relayout_myorder.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+//				Intent intent = new Intent(getActivity(),GoodsAddress_Activity.class);
+//				startActivity(intent);
+			}
+		});
+		relayout_collect.setOnClickListener(new OnClickListener() {
+	
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+//				Intent intent = new Intent(getActivity(),GoodsAddress_Activity.class);
+//				startActivity(intent);
+			}
+		});
+		relayout_share.setOnClickListener(new OnClickListener() {
+		
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+//				Intent intent = new Intent(getActivity(),GoodsAddress_Activity.class);
+//				startActivity(intent);
 			}
 		});
 	}
