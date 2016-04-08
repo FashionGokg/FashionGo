@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 public class ShoppingcarFragment extends Fragment {
 	private View topbar;
-//	private LinearLayout ll_returnbtn;
+	private LinearLayout ll_returnbtn;
 	private LinearLayout ll_functionbtn;
 	private TextView tv_title,tv_name_function;
 	private ListView listView;
@@ -35,6 +35,7 @@ public class ShoppingcarFragment extends Fragment {
 		
 		//顶部导航栏
         topbar = view.findViewById(R.id.topbar);
+		topbar.findViewById(R.id.ll_returnbtn).setVisibility(View.INVISIBLE);
  //       ll_returnbtn = (LinearLayout) topbar.findViewById(R.id.ll_returnbtn);
         topbar.findViewById(R.id.ll_returnbtn).setVisibility(View.INVISIBLE);
         ll_functionbtn= (LinearLayout) topbar.findViewById(R.id.ll_functionbtn);
@@ -42,6 +43,7 @@ public class ShoppingcarFragment extends Fragment {
         tv_name_function = (TextView) topbar.findViewById(R.id.tv_name_function);
         tv_title.setText("购物车");
         tv_name_function.setText("编辑");
+
 //        ll_returnbtn.setVisibility(View.INVISIBLE);
         ll_functionbtn.setOnClickListener(new OnClickListener() {
 			
