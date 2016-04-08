@@ -37,7 +37,9 @@
             android:name="com.maifeng.fashiongo.New_Goods_Address_Activity"
             android:label="@string/app_name" >
         </activity>
-        <activity android:name="con.maifeng.fashiongo.FirstClassifyActivity" />
+        <activity
+            android:name="com.maifeng.fashiongo.FirstClassifyAcitvity"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>
