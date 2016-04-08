@@ -45,7 +45,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/bg_input">
+        android:background="@drawable/bg_input9">
 
         <RelativeLayout
             android:id="@+id/relayout_message"
@@ -176,7 +176,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/bg_input">
+        android:background="@drawable/bg_input9">
 
         <RelativeLayout
             android:id="@+id/relayout_collect"

@@ -35,13 +35,12 @@ public class ShoppingcarFragment extends Fragment {
 		
 		//顶部导航栏
         topbar = view.findViewById(R.id.topbar);
-        ll_returnbtn = (LinearLayout) topbar.findViewById(R.id.ll_returnbtn);
+		topbar.findViewById(R.id.ll_returnbtn).setVisibility(View.INVISIBLE);
         ll_functionbtn= (LinearLayout) topbar.findViewById(R.id.ll_functionbtn);
         tv_title = (TextView) topbar.findViewById(R.id.tv_title);
         tv_name_function = (TextView) topbar.findViewById(R.id.tv_name_function);
         tv_title.setText("购物车");
         tv_name_function.setText("编辑");
-        ll_returnbtn.setVisibility(View.INVISIBLE);
         ll_functionbtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
