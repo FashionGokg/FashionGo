@@ -25,7 +25,7 @@ public class Basic_Info_Activity extends Activity {
 		ll_returnbtn = (LinearLayout)topbar.findViewById(R.id.ll_returnbtn);
 		tv_title = (TextView)topbar.findViewById(R.id.tv_title);
 		//顶部导航栏控件相关设置
-		tv_title.setText("基本信息");
+		tv_title.setText("基本信息 ");
 		topbar.findViewById(R.id.tv_name_function).setVisibility(View.INVISIBLE);
 		
 		Click();

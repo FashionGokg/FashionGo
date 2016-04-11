@@ -1,5 +1,6 @@
 package com.maifeng.fashiongo.adapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.maifeng.fashiongo.R;
@@ -13,8 +14,8 @@ import android.widget.TextView;
 public class GoodsAddress_Adapter extends BaseAdapter {
 
 	private Context context;
-	private List<String> list;
-	public GoodsAddress_Adapter(Context context,List<String> list){
+	private List<HashMap<String, Object>> list;
+	public GoodsAddress_Adapter(Context context,List<HashMap<String, Object>> list){
 		this.context=context;
 		this.list=list;
 	}
@@ -43,10 +44,9 @@ public class GoodsAddress_Adapter extends BaseAdapter {
 		TextView tv_name = (TextView)view.findViewById(R.id.tv_name);
 		TextView tv_phone = (TextView)view.findViewById(R.id.tv_phone);
 		TextView tv_address = (TextView)view.findViewById(R.id.tv_address);
-		//ImageView tv_img_go = (ImageView)view.findViewById(R.id.tv_img_go);
-		tv_name.setText(list.get(position));
-		tv_phone.setText(list.get(position));
-		tv_address.setText(list.get(position));
+		tv_name.setText((String)list.get(position).get("tv_name"));
+		tv_phone.setText((String)list.get(position).get("tv_phone"));
+		tv_address.setText((String)list.get(position).get("tv_address"));
 		return view;
 	}
 
