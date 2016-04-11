@@ -1,5 +1,7 @@
 package com.maifeng.fashiongo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.maifeng.fashiongo.adapter.GoodsAddress_Adapter;
@@ -25,7 +27,7 @@ public class Goods_Address_Activity extends Activity {
 	
 	private ListView lv_goodsaddress;
 	private GoodsAddress_Adapter adapter;
-	private List<String> list;
+	private List<HashMap<String,Object>> list;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +44,22 @@ public class Goods_Address_Activity extends Activity {
 		//顶部导航栏控件相关设置
 		tv_title.setText("收货地址");
 		tv_name_function.setText("新增");
+		list = new ArrayList<HashMap<String,Object>>();
+		for (int i = 0; i < 5; i++) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("tv_name","张三");
+			map.put("tv_phone","1372621419"+i);
+			map.put("tv_address","广科院顶峰互动科技有限公司");
+			list.add(map);
+		}
 		
-//		lv_goodsaddress = (ListView)findViewById(R.id.lv_goodsaddress);
-//		adapter = new GoodsAddress_Adapter(getApplicationContext(),list);
-//		lv_goodsaddress.setAdapter(adapter);
-		Click();
+		lv_goodsaddress = (ListView)findViewById(R.id.lv_goodsaddress);
+		adapter = new GoodsAddress_Adapter(Goods_Address_Activity.this,list);
+		lv_goodsaddress.setAdapter(adapter);
+		basiClick();
 	}
 
-	private void Click(){
+	private void basiClick(){
 		ll_returnbtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
