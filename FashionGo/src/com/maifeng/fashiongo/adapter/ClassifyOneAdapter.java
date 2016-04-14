@@ -3,6 +3,7 @@ package com.maifeng.fashiongo.adapter;
 import java.util.List;
 
 import com.maifeng.fashiongo.R;
+import com.maifeng.fashiongo.base.ClassifyOneData;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,15 +13,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class ClassifyOneAdapter extends BaseAdapter {
-	private List<String> list;
+	private List<ClassifyOneData> list;
 	private Context context;
 
-	public ClassifyOneAdapter(Context context) {
-		// TODO Auto-generated constructor stub
-		this.context = context;
-	}
 
-	public ClassifyOneAdapter(Context context, List<String> list) {
+	public ClassifyOneAdapter(Context context, List<ClassifyOneData> list) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		this.list = list;
@@ -54,11 +51,11 @@ public class ClassifyOneAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			holder.tv_calssify_name = (TextView) convertView
 					.findViewById(R.id.tv_classify_name);
-			holder.tv_calssify_name.setText(list.get(position));
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+		holder.tv_calssify_name.setText(list.get(position).getClassifyName());
 		return convertView;
 	}
 

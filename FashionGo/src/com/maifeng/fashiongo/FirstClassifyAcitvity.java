@@ -1,25 +1,29 @@
 package com.maifeng.fashiongo;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request.Method;
+
+
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.Response.Listener;
+
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+
+import com.google.gson.Gson;
 import com.maifeng.fashiongo.R;
 import com.maifeng.fashiongo.adapter.ClassifyOneAdapter;
 import com.maifeng.fashiongo.adapter.ClassifyTwoAdapter;
+import com.maifeng.fashiongo.base.ClassifyTwoData;
+import com.maifeng.fashiongo.base.ClassifyTwoType;
+import com.maifeng.fashiongo.base.ClassifyOneData;
+import com.maifeng.fashiongo.base.ClassifyOneType;
+import com.maifeng.fashiongo.constant.UrlAddress;
+import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
+import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
+import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -30,12 +34,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ListView;
 
+
 public class FirstClassifyAcitvity extends Activity {
 
-	private List<String> list;
-	private List<String> list2;
+	private List<ClassifyOneData> onelist;
+	private List<ClassifyTwoData> twolist;
 	private ListView mListView;
 	private GridView mGridView;
+	private RequestQueue queue;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,112 +55,119 @@ public class FirstClassifyAcitvity extends Activity {
 		mGridView = (GridView) findViewById(R.id.gv_seconed_choice);
 		mListView = (ListView) findViewById(R.id.lv_first_choice);
 
-		RequestQueue requestQueue = Volley
-				.newRequestQueue(FirstClassifyAcitvity.this);
-		StringRequest request = new StringRequest(Method.POST,
-				"http://112.124.118.133:9065/ssgApp/getClassifyone",
-				new Listener<String>() {
 
-					@Override
-					public void onResponse(String response) {
-						// TODO Auto-generated method stub
-						System.out.println("一级数据--------->" + response);
-						try {
-							JSONObject jsonObject = new JSONObject(response);
-							JSONArray array = jsonObject.getJSONArray("data");
-							list = new ArrayList<String>();// 存放名称
-							list2 = new ArrayList<String>();// 存放id
-							for (int i = 0; i < array.length(); i++) {
-								String classifyName = array.getJSONObject(i)
-										.getString("classifyName");
-								list.add(classifyName);
-								String classifyId = array.getJSONObject(i)
-										.getString("classifyId");
-								list2.add(classifyId);
-								System.out.println(classifyId);
-							}
-							System.out.println(list.size());
-							ClassifyOneAdapter oneAdapter = new ClassifyOneAdapter(
-									getApplicationContext(), list);
-							mListView.setAdapter(oneAdapter);
-							NetWork(list2.get(0));
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-					}
-
-				}, new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-		requestQueue.add(request);
-
+		
+		
+		
+	}
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		volleyGet();
+		
+		//监听列表变化
 		mListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				NetWork(list2.get(position));
-
-			}
-		});
+			
+						@Override
+						public void onItemClick(AdapterView<?> parent, View view,
+								int position, long id) {
+							volleyPost(onelist.get(position).getClassifyId());
+						}
+					});
+		
+	}
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+				//实例化请求队列  （采用单例模式）
+				queue =Volleyhandle.getInstance(this.getApplication()).getRequestQueue();
+				
+				//活动销毁时 取消请求 减少内存消耗
+				queue.cancelAll("GET_CLASSIFY_ONE");
+				queue.cancelAll("GET_CLASSIFY_TWO");
+				
 	}
 
-	public void NetWork(final String t) {
-		RequestQueue requestQueue = Volley
-				.newRequestQueue(FirstClassifyAcitvity.this);
-		StringRequest request = new StringRequest(Method.POST,
-				"http://112.124.118.133:9065/ssgApp/getClassifyTwo",
-				new Listener<String>() {
-
-					@Override
-					public void onResponse(String response) {
-						System.out.println("二级数据------->" + response);
-						try {
-							JSONObject jsonObject = new JSONObject(response);
-							JSONArray array = jsonObject.getJSONArray("data");
-							list = new ArrayList<String>();
-							for (int i = 0; i < array.length(); i++) {
-								String classifyName = array.getJSONObject(i)
-										.getString("classifyName");
-								list.add(classifyName);
-								String ClassifyTwoId = array.getJSONObject(i)
-										.getString("ClassifyTwoId");
-								System.out.println(ClassifyTwoId);
-							}
-							System.out.println(list.size());
-							ClassifyTwoAdapter twoAdapter = new ClassifyTwoAdapter(
-									getApplicationContext(), list);
-							mGridView.setAdapter(twoAdapter);
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-					}
-
-				}, new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						// TODO Auto-generated method stub
-
-					}
-				}) {
-			@Override
-			protected Map<String, String> getParams() throws AuthFailureError {
-				// TODO Auto-generated method stub
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put("classifyId", t); // classifyId是一级分类的值
-				return map;
+	/**
+	 * 获取一级列表数据
+	 */
+	private void volleyGet() {
+	//发起Get请求
+	VolleyRequest.RequestGet(this, UrlAddress.GET_CLASSIFY_ONE,
+			"GET_CLASSIFY_ONE", new VolleyAbstract(this,VolleyAbstract.listener,VolleyAbstract.errorListener) {
+		
+		@Override
+		public void onMySuccess(String result) {
+			
+			try {
+				//Gson解析
+				Gson gson=new Gson();
+				ClassifyOneType cType = gson.fromJson(result, ClassifyOneType.class);
+				onelist=cType.getData();
+				
+				//绑定适配器
+				ClassifyOneAdapter oneAdapter = new ClassifyOneAdapter(
+						getApplicationContext(), onelist);
+				mListView.setAdapter(oneAdapter);
+				
+				//设置默认
+				volleyPost(onelist.get(0).getClassifyId());
+				
+				
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		};
-		requestQueue.add(request);
+		}
+		
+		@Override
+		public void onMyError(VolleyError error) {
+			// TODO Auto-generated method stub
+			
+		}
+	});
+		
+	}
+
+	/**
+	 * 请求二级列表数据
+	 * @param classifyId 请求数据
+	 */
+	private void volleyPost(String classifyId) {
+		//组装请求数据classifyId;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("classifyId", classifyId);
+		//发起Post请求
+		VolleyRequest.RequestPost(this, UrlAddress.GET_CLASSIFY_TWO, "GET_CLASSIFY_TWO", map,
+				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+			
+			@Override
+			public void onMySuccess(String result) {
+				try {
+					//Gson解析
+					Gson gson=new Gson();
+					ClassifyTwoType cType = gson.fromJson(result, ClassifyTwoType.class);
+					twolist=cType.getData();
+					
+					//绑定适配器
+					ClassifyTwoAdapter twoAdapter = new ClassifyTwoAdapter(getApplicationContext(), twolist);
+					mGridView.setAdapter(twoAdapter);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+			
+			@Override
+			public void onMyError(VolleyError error) {
+
+				
+			}
+		});
+		
 	}
 }
