@@ -2,7 +2,6 @@ package com.maifeng.fashiongo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.style.ClickableSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -32,9 +31,9 @@ public class New_Goods_Address_Activity extends Activity {
 		tv_title.setText("新增地址");
 		tv_name_function.setText("确定");
 		
-		Click();
+		basiClick();
 	}
-	private void Click() {
+	private void basiClick() {
 		// TODO Auto-generated method stub
 		ll_returnbtn.setOnClickListener(new OnClickListener() {
 			

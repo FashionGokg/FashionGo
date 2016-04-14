@@ -47,15 +47,16 @@ public class MineFragment extends Fragment {
 		relayout_myorder = (RelativeLayout)view.findViewById(R.id.relayout_myorder);
 		relayout_collect = (RelativeLayout)view.findViewById(R.id.relayout_collect);
 		relayout_share = (RelativeLayout)view.findViewById(R.id.relayout_share);
-        click();
+		
+		basiClick();
 		
 		return view;
 	}
-	private void click(){
+	private void basiClick(){
 		relayout_message.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(),Basic_Info_Activity.class);
 				startActivity(intent);
@@ -64,7 +65,7 @@ public class MineFragment extends Fragment {
 		relayout_address.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(),Goods_Address_Activity.class);
 				startActivity(intent);
@@ -73,7 +74,7 @@ public class MineFragment extends Fragment {
 		relayout_myorder.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
 //				Intent intent = new Intent(getActivity(),GoodsAddress_Activity.class);
 //				startActivity(intent);
@@ -82,7 +83,7 @@ public class MineFragment extends Fragment {
 		relayout_collect.setOnClickListener(new OnClickListener() {
 	
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
 //				Intent intent = new Intent(getActivity(),GoodsAddress_Activity.class);
 //				startActivity(intent);
@@ -91,7 +92,7 @@ public class MineFragment extends Fragment {
 		relayout_share.setOnClickListener(new OnClickListener() {
 		
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
 //				Intent intent = new Intent(getActivity(),GoodsAddress_Activity.class);
 //				startActivity(intent);
