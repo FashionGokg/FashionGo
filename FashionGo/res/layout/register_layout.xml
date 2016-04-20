@@ -73,7 +73,7 @@
 		android:layout_marginRight="10dp"
 		android:textSize="16sp"
 		android:singleLine="true"
-		android:inputType="textPassword"
+		
         android:background="@drawable/bg_input9"
         android:hint="请输入验证码" />
     
@@ -101,6 +101,7 @@
         android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
 		android:layout_marginTop="10dp"
+		android:inputType="textPassword"
         android:background="@drawable/bg_input9"
         android:hint="请输入密码" />
     
@@ -114,6 +115,7 @@
       	android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
 		android:layout_marginTop="10dp"
+		android:inputType="textPassword"
         android:background="@drawable/bg_input9"
         android:hint="确认密码" />
 
@@ -125,6 +127,7 @@
         > 
 
        <CheckBox
+           android:id="@+id/checkbox"
            android:layout_width="wrap_content"
            android:layout_marginLeft="10dp"
            android:button="@drawable/selector_register_checkbox"
@@ -150,8 +153,9 @@
 	        android:id="@+id/btn_ok"
 	        android:layout_width="match_parent"
 	        android:layout_height="30dp"
-	        android:background="@drawable/selector_login_btn"
+	        android:background="#606060"
 	        android:text="确定"
+	        android:enabled="false"
 	        android:textColor="#ffffff"
 	        android:textSize="16sp"
 	        android:layout_margin="8dp"
