@@ -94,8 +94,17 @@ public class LoginActivity extends Activity implements OnClickListener{
 						startActivity(intent);
 						finish();
 					}
+					else if(LType.getErrorcode().equals("403")){
+						Toast.makeText(LoginActivity.this,LType.getMessage() , Toast.LENGTH_SHORT).show();
+					}
+					else if(LType.getErrorcode().equals("402")){
+						Toast.makeText(LoginActivity.this, LType.getMessage(), Toast.LENGTH_SHORT).show();
+					}
+					else if(LType.getErrorcode().equals("404")){
+						Toast.makeText(LoginActivity.this,LType.getMessage(), Toast.LENGTH_SHORT).show();
+					}
 					else if(LType.getErrorcode().equals("1")){
-						Toast.makeText(LoginActivity.this, "µÇÂ½Ê§°Ü", Toast.LENGTH_SHORT).show();
+						Toast.makeText(LoginActivity.this,LType.getMessage(), Toast.LENGTH_SHORT).show();
 					}
 				}
 				catch(Exception e){

@@ -114,7 +114,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
 						Gson gson=new Gson();
 						RegisterVerifyType RType = gson.fromJson(result, RegisterVerifyType.class);
 						if(RType.getErrorcode().equals("1001")){
-							Toast.makeText(RegisterActivity.this, "用户已注册", Toast.LENGTH_SHORT).show();
+							Toast.makeText(RegisterActivity.this, RType.getMessage(), Toast.LENGTH_SHORT).show();
 						}
 					}
 					
@@ -158,16 +158,16 @@ public class RegisterActivity extends Activity implements OnClickListener{
 					
 					
 					if(RType.getErrorcode().equals("1111")){
-						Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
+						Toast.makeText(RegisterActivity.this, RType.getMessage(), Toast.LENGTH_SHORT).show();
 					}
 					 if(RType.getErrorcode().equals("2001")){
-						Toast.makeText(RegisterActivity.this, "验证码失效", Toast.LENGTH_SHORT).show();
+						Toast.makeText(RegisterActivity.this, RType.getMessage(), Toast.LENGTH_SHORT).show();
 					}
 					 if(RType.getErrorcode().equals("1112")){
-						Toast.makeText(RegisterActivity.this, "系统错误", Toast.LENGTH_SHORT).show();
+						Toast.makeText(RegisterActivity.this, RType.getMessage(), Toast.LENGTH_SHORT).show();
 					}
 					 if(RType.getErrorcode().equals("0")){
-						Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+						Toast.makeText(RegisterActivity.this, RType.getMessage(), Toast.LENGTH_SHORT).show();
 					}
 					
 					
