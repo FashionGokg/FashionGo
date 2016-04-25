@@ -13,7 +13,9 @@ import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
@@ -39,11 +41,13 @@ public class RegisterActivity extends Activity implements OnClickListener{
 	register_input_ConfirmPwd;
 	private Button ok;
 	private Button btn_getVerify;
-	private TextView tv_name_function,tv_title;
+	private TextView tv_name_function,tv_title,tv_user_access_protocol;
 	private String phone,Verify,Invitation,pwd,ConfirmPwd;
 	private CheckBox checkBox;
 	private LinearLayout returnbtn; 
-	final TimeCount time = new TimeCount(10000, 1000);
+	
+	
+	  final TimeCount time = new TimeCount(10000, 1000);
 	
 	
 	@Override
@@ -56,6 +60,8 @@ public class RegisterActivity extends Activity implements OnClickListener{
 
 		btn_getVerify.setOnClickListener(this); 
 		ok.setOnClickListener(this);
+		returnbtn.setOnClickListener(this);
+		tv_user_access_protocol.setOnClickListener(this);
 		
 	}
 
@@ -69,8 +75,10 @@ public class RegisterActivity extends Activity implements OnClickListener{
 		register_input_ConfirmPwd = (EditText) findViewById(R.id.register_input_ConfirmPwd);//»∑»œ√‹¬Î
 		tv_name_function = (TextView) findViewById(R.id.tv_name_function);
 		tv_name_function.setVisibility(View.GONE);
+		
 		tv_title =(TextView) findViewById(R.id.tv_title);
 		tv_title.setText("◊¢≤·");
+		tv_user_access_protocol=(TextView) findViewById(R.id.tv_user_access_protocol);
 		ok = (Button) findViewById(R.id.btn_ok);
 		btn_getVerify = (Button) findViewById(R.id.register_getVerify);
 		checkBox=(CheckBox) findViewById(R.id.checkbox);
@@ -89,8 +97,10 @@ public class RegisterActivity extends Activity implements OnClickListener{
 				}
 			}
 		});
+		
+		
 		returnbtn = (LinearLayout) findViewById(R.id.ll_returnbtn);
-		returnbtn.setOnClickListener(this);
+		
 		
 		
 		
@@ -106,6 +116,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
 				
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("userPhone", phone);
+				map.put("type", "0");
 				VolleyRequest.RequestPost(this, UrlAddress.GetVerify, "GetVerify",map, new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
 					
 					@Override
@@ -113,6 +124,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
 						// TODO Auto-generated method stub
 						Gson gson=new Gson();
 						RegisterVerifyType RType = gson.fromJson(result, RegisterVerifyType.class);
+						System.out.println(result);
 						if(RType.getErrorcode().equals("1001")){
 							Toast.makeText(RegisterActivity.this, RType.getMessage(), Toast.LENGTH_SHORT).show();
 						}
@@ -251,14 +263,16 @@ public class RegisterActivity extends Activity implements OnClickListener{
 		case R.id.ll_returnbtn:
 			finish();
 			break;
+			
+		case R.id.tv_user_access_protocol:
+			Intent intent = new Intent(RegisterActivity.this,protocolActivity.class);
+			startActivity(intent);
+		
 		default:
 			break;
 		}
 
-
-
 	}
-
 	class TimeCount extends CountDownTimer {
 		public TimeCount(long millisInFuture, long countDownInterval) {
 			super(millisInFuture, countDownInterval);
@@ -278,4 +292,5 @@ public class RegisterActivity extends Activity implements OnClickListener{
 			btn_getVerify.setClickable(true);
 		}
 	}
-}
+	}
+	

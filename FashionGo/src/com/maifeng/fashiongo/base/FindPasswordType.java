@@ -4,16 +4,16 @@ package com.maifeng.fashiongo.base;
 
 
 
-public class RegisterType {
+public class FindPasswordType {
 	
-	public RegisterData data ;
+	public String data ;
 	public String message;
 	public String errorcode;
 	
-	public RegisterData getData() {
+	public String getData() {
 		return data;
 	}
-	public void setData(RegisterData data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 	public String getMessage() {

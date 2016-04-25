@@ -1,6 +1,7 @@
 package com.maifeng.fashiongo.fragment;
 
-import com.maifeng.fashiongo.FeedBackAcitvtty;
+import com.maifeng.fashiongo.AboutUsActivity;
+import com.maifeng.fashiongo.FeedBackAcitvtty1;
 import com.maifeng.fashiongo.R;
 
 import android.content.Intent;
@@ -52,14 +53,15 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.tab_about:
-			Toast.makeText(getActivity(), "关于我们", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(getActivity(),AboutUsActivity.class);
+			startActivity(intent);
 			break;
 		case R.id.tab_clear:
 			Toast.makeText(getActivity(), "清除缓存", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.tab_opinion:
-			Intent intent = new Intent(getActivity(),FeedBackAcitvtty.class);
-			startActivity(intent);
+			Intent intent1 = new Intent(getActivity(),FeedBackAcitvtty1.class);
+			startActivity(intent1);
 			break;
 		case R.id.tab_update:
 			Toast.makeText(getActivity(), "检查更新", Toast.LENGTH_SHORT).show();

@@ -26,7 +26,7 @@ import android.widget.Toast;
 public class LoginActivity extends Activity implements OnClickListener{
 
 	private Button button;
-	private TextView tv_register;
+	private TextView tv_register,tv_forgetpwd;
 	private TextView tv_name_function,tv_title;
 
 	private EditText et_phonenumber,et_password;
@@ -50,6 +50,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 	private void initView() {
 		button = (Button) findViewById(R.id.btn_login);
 		tv_register = (TextView) findViewById(R.id.tv_register);
+		tv_forgetpwd = (TextView) findViewById(R.id.tv_forgetpwd);
 		et_phonenumber =(EditText) findViewById(R.id.et_phonenumber);
 		et_password = (EditText) findViewById(R.id.et_password);
 		tv_name_function = (TextView) findViewById(R.id.tv_name_function);
@@ -60,7 +61,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 
 		button.setOnClickListener(this);
 		tv_register.setOnClickListener(this);
-		
+		tv_forgetpwd.setOnClickListener(this);
 	}
 
 
@@ -130,6 +131,10 @@ public class LoginActivity extends Activity implements OnClickListener{
 			Intent intent1 = new Intent(getApplicationContext(),RegisterActivity.class);
 			startActivity(intent1);
 			break;
+			
+		case R.id.tv_forgetpwd:
+			Intent intent2 = new Intent(getApplicationContext(),FindPasswordActivity.class);
+			startActivity(intent2);
 		default:
 			break;
 		}
