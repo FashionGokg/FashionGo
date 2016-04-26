@@ -12,7 +12,6 @@ import com.android.volley.RequestQueue;
 
 import com.android.volley.VolleyError;
 
-import com.google.gson.Gson;
 import com.maifeng.fashiongo.R;
 import com.maifeng.fashiongo.adapter.ClassifyOneAdapter;
 import com.maifeng.fashiongo.adapter.ClassifyTwoAdapter;
@@ -20,7 +19,7 @@ import com.maifeng.fashiongo.base.ClassifyTwoData;
 import com.maifeng.fashiongo.base.ClassifyTwoType;
 import com.maifeng.fashiongo.base.ClassifyOneData;
 import com.maifeng.fashiongo.base.ClassifyOneType;
-import com.maifeng.fashiongo.constant.UrlAddress;
+import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
@@ -41,7 +40,9 @@ public class FirstClassifyAcitvity extends Activity {
 	private List<ClassifyTwoData> twolist;
 	private ListView mListView;
 	private GridView mGridView;
-	private RequestQueue queue;
+	private String urlOne = "http://172.16.40.80/shop/index.php/home/Classify/getClassifyOne";
+	private String urlTwo = "http://172.16.40.80/shop/index.php/home/Classify/getClassifyTwo";
+	private RequestQueue queue =Volleyhandle.getInstance(this.getApplication()).getRequestQueue();
 
 
 	@Override
@@ -55,10 +56,6 @@ public class FirstClassifyAcitvity extends Activity {
 		mGridView = (GridView) findViewById(R.id.gv_seconed_choice);
 		mListView = (ListView) findViewById(R.id.lv_first_choice);
 
-
-		
-		
-		
 	}
 	
 	@Override
@@ -84,7 +81,7 @@ public class FirstClassifyAcitvity extends Activity {
 		// TODO Auto-generated method stub
 		super.onStop();
 				//实例化请求队列  （采用单例模式）
-				queue =Volleyhandle.getInstance(this.getApplication()).getRequestQueue();
+				
 				
 				//活动销毁时 取消请求 减少内存消耗
 				queue.cancelAll("GET_CLASSIFY_ONE");
@@ -97,38 +94,41 @@ public class FirstClassifyAcitvity extends Activity {
 	 */
 	private void volleyGet() {
 	//发起Get请求
-	VolleyRequest.RequestGet(this, UrlAddress.GET_CLASSIFY_ONE,
+	VolleyRequest.RequestGet(this,urlOne,
 			"GET_CLASSIFY_ONE", new VolleyAbstract(this,VolleyAbstract.listener,VolleyAbstract.errorListener) {
 		
 		@Override
 		public void onMySuccess(String result) {
-			
-			try {
-				//Gson解析
-				Gson gson=new Gson();
-				ClassifyOneType cType = gson.fromJson(result, ClassifyOneType.class);
-				onelist=cType.getData();
-				
+				onelist = JsonUtil.parseJsonToBean(result, ClassifyOneType.class).getData();
 				//绑定适配器
 				ClassifyOneAdapter oneAdapter = new ClassifyOneAdapter(
 						getApplicationContext(), onelist);
 				mListView.setAdapter(oneAdapter);
-				
 				//设置默认
 				volleyPost(onelist.get(0).getClassifyId());
 				
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 		
 		@Override
 		public void onMyError(VolleyError error) {
-			// TODO Auto-generated method stub
-			
-		}
-	});
+				if (queue.getCache().get(urlOne) != null) {
+					String json = new String(queue.getCache().get(urlOne).data);
+					onelist = JsonUtil.parseJsonToBean(json, ClassifyOneType.class).getData();
+				}
+
+						//绑定适配器
+						ClassifyOneAdapter oneAdapter = new ClassifyOneAdapter(
+								getApplicationContext(), onelist);
+						mListView.setAdapter(oneAdapter);
+						
+						//设置默认
+						volleyPost(onelist.get(0).getClassifyId());
+						
+						
+
+                 
+			 }
+		});
 		
 	}
 
@@ -141,30 +141,30 @@ public class FirstClassifyAcitvity extends Activity {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("classifyId", classifyId);
 		//发起Post请求
-		VolleyRequest.RequestPost(this, UrlAddress.GET_CLASSIFY_TWO, "GET_CLASSIFY_TWO", map,
+		VolleyRequest.RequestPost(this,urlTwo, "GET_CLASSIFY_TWO", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
 			
 			@Override
 			public void onMySuccess(String result) {
-				try {
-					//Gson解析
-					Gson gson=new Gson();
-					ClassifyTwoType cType = gson.fromJson(result, ClassifyTwoType.class);
-					twolist=cType.getData();
+				
+					twolist=JsonUtil.parseJsonToBean(result, ClassifyTwoType.class).getData();
 					
 					//绑定适配器
 					ClassifyTwoAdapter twoAdapter = new ClassifyTwoAdapter(getApplicationContext(), twolist);
 					mGridView.setAdapter(twoAdapter);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+	
 				
 			}
 			
 			@Override
 			public void onMyError(VolleyError error) {
-
+				if (queue.getCache().get(urlTwo) != null) {
+					String json = new String(queue.getCache().get(urlTwo).data);
+					twolist=JsonUtil.parseJsonToBean(json, ClassifyTwoType.class).getData();
+				}
+				//绑定适配器
+				ClassifyTwoAdapter twoAdapter = new ClassifyTwoAdapter(getApplicationContext(), twolist);
+				mGridView.setAdapter(twoAdapter);
 				
 			}
 		});

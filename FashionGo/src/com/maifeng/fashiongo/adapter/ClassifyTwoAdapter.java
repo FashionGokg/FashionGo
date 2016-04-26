@@ -2,12 +2,11 @@ package com.maifeng.fashiongo.adapter;
 
 import java.util.List;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.maifeng.fashiongo.R;
 import com.maifeng.fashiongo.base.ClassifyTwoData;
-import com.maifeng.fashiongo.volleyhandle.BitmapCache;
+import com.maifeng.fashiongo.volleyhandle.MyImageCache;
 import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 import android.content.Context;
@@ -29,7 +28,7 @@ public class ClassifyTwoAdapter extends BaseAdapter {
 		this.context = context;
 		this.list = list;
 		
-		mImageLoader = new ImageLoader(Volleyhandle.getInstance(context).getRequestQueue(), new BitmapCache());
+		mImageLoader = new ImageLoader(Volleyhandle.getInstance(context).getRequestQueue(), MyImageCache.getImageCache(context));
 		
 	}
 
@@ -67,9 +66,13 @@ public class ClassifyTwoAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		holder.tv_calssify_two.setText(list.get(position).getClassifyName());
+		//加载中显示的图片
 		holder.img_classify_two.setDefaultImageResId(R.drawable.bg_loading_image);
+		//加载失败时显示的图片
 		holder.img_classify_two.setErrorImageResId(R.drawable.bg_error_image);
+		//第一个参数用于指定图片的URL地址，第二个参数是创建好的ImageLoader对象
 		holder.img_classify_two.setImageUrl(list.get(position).getClassifyImage(), mImageLoader);
+		
 		
 		return convertView;
 	}
