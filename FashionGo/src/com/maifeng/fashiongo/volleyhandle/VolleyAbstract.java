@@ -3,9 +3,9 @@ package com.maifeng.fashiongo.volleyhandle;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.maifeng.fashiongo.util.LogUtil;
 
 import android.content.Context;
-import android.widget.Toast;
 
 public abstract class VolleyAbstract {
 
@@ -17,8 +17,8 @@ public abstract class VolleyAbstract {
 			ErrorListener errorListener){
 		
 		this.context = context;
-		this.listener=listener;
-		this.errorListener=errorListener;
+//		this.listener=listener;
+//		this.errorListener=errorListener;
 	}
 	public abstract void onMySuccess(String result);
 	public abstract void onMyError(VolleyError error);
@@ -30,7 +30,8 @@ public abstract class VolleyAbstract {
 			public void onResponse(String response) {
 				
 				onMySuccess(response);
-			Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+				LogUtil.i("请求成功", response);
 			}
 		};
 		return listener;
@@ -42,7 +43,8 @@ public abstract class VolleyAbstract {
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				onMyError(error);
-				Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+				LogUtil.i("请求失败", error.toString());
 			}
 		};
 		return errorListener;

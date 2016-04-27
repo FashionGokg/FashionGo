@@ -2,11 +2,14 @@ package com.maifeng.fashiongo.fragment;
 
 import com.maifeng.fashiongo.Basic_Info_Activity;
 import com.maifeng.fashiongo.Goods_Address_Activity;
+import com.maifeng.fashiongo.LoginActivity;
 import com.maifeng.fashiongo.R;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,7 +34,17 @@ public class MineFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
+
 		View view = inflater.inflate(R.layout.mine_fragment, container,false);
+		
+//		SharedPreferences pref = getSharedPreferences("myPref",getActivity().MODE_PRIVATE); 
+//		if (pref.getString("accessToken", null).equals(null)) {
+//		
+//			Intent intent = Intent(getActivity(),LoginActivity.class);
+//			startActivity(intent);
+//			
+//		}
 		topbar = view.findViewById(R.id.topbar);
 		// ¶¥²¿µ¼º½À¸¿Ø¼þid
 		ll_returnbtn = (LinearLayout)topbar.findViewById(R.id.ll_returnbtn);
@@ -51,6 +64,15 @@ public class MineFragment extends Fragment {
 		basiClick();
 		
 		return view;
+	}
+	private Intent Intent(FragmentActivity activity, Class<LoginActivity> class1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	private SharedPreferences getSharedPreferences(String string,
+			int mode_PRIVATE) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	private void basiClick(){
 		relayout_message.setOnClickListener(new OnClickListener() {

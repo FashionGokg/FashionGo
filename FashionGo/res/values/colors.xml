@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="tab_txt_unin">#575757</color>
+    <color name="tab_txt_in">#F02A37</color>
+    <color name="white">#ffffffff</color>
+    <color name="grayness">#BFBFBF</color>
+
+</resources>

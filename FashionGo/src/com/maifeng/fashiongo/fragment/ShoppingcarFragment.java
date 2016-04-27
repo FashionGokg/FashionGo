@@ -3,12 +3,17 @@ package com.maifeng.fashiongo.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.maifeng.fashiongo.LoginActivity;
 import com.maifeng.fashiongo.R;
 import com.maifeng.fashiongo.adapter.ShoppingcarAdapter;
 import com.maifeng.fashiongo.base.ShoppingcarType;
 
+
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +36,14 @@ public class ShoppingcarFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+//		SharedPreferences pref = getSharedPreferences("myPref",getActivity().MODE_PRIVATE); 
+//		if (pref.getString("accessToken", null).isEmpty()) {
+//		
+//			Intent intent = Intent(getActivity(),LoginActivity.class);
+//			startActivity(intent);
+//			
+//		}
+		
 		View view = inflater.inflate(R.layout.shoppingcar_fragment, container,false);
 		
 		//¶¥²¿µ¼º½À¸
@@ -74,5 +87,16 @@ public class ShoppingcarFragment extends Fragment {
 		
 		
 		return view;
+	}
+
+	private Intent Intent(FragmentActivity activity, Class<LoginActivity> class1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private SharedPreferences getSharedPreferences(String string,
+			int mode_PRIVATE) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
