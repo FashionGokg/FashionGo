@@ -24,10 +24,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class FirstClassifyAcitvity extends Activity {
@@ -36,6 +38,7 @@ public class FirstClassifyAcitvity extends Activity {
 	private List<ClassifyTwoData> twolist;
 	private ListView mListView;
 	private GridView mGridView;
+	private LinearLayout layout_left;
 	private String urlOne = "http://172.16.40.80/shop/index.php/home/Classify/getClassifyOne";
 	private String urlTwo = "http://172.16.40.80/shop/index.php/home/Classify/getClassifyTwo";
 	private RequestQueue queue = Volleyhandle
@@ -51,6 +54,14 @@ public class FirstClassifyAcitvity extends Activity {
 
 		mGridView = (GridView) findViewById(R.id.gv_seconed_choice);
 		mListView = (ListView) findViewById(R.id.lv_first_choice);
+		layout_left = (LinearLayout) findViewById(R.id.layot_left);
+		layout_left.setOnClickListener(new OnClickListener() {
+			//返回上一个界面
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 
 	}
 
