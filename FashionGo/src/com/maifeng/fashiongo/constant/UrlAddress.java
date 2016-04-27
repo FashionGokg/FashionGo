@@ -119,17 +119,17 @@ public class UrlAddress {
 	/**
 	 * 添加收货地址
 	 */
-	public static String ADD_RECEIVE_ADDRESS=Root+"addReceiveAddress";
+	public static String ADD_RECEIVE_ADDRESS="http://172.16.40.80/shop/index.php/home/Address/addReceiveAddress";
 	
 	/**
 	 * 删除收货地址
 	 */
-	public static String DELETE_ADDRESS=Root+"deleteAddress";
+	public static String DELETE_ADDRESS="http://172.16.40.80/shop/index.php/home/Address/deleteAddress";
 	
 	/**
 	 * 获取收货地址列表
 	 */
-	public static String GET_RECEIVE_ADDRESS=Root+"getReceiveAddress";
+	public static String GET_RECEIVE_ADDRESS="http://172.16.40.80/shop/index.php/home/Address/POSTReceiveAddress";
 	
 	/**
 	 * 获取地址详情
@@ -139,7 +139,7 @@ public class UrlAddress {
 	/**
 	 * 编辑收货地址
 	 */
-	public static String EDIT_ADDRESS=Root+"editAddress";
+	public static String EDIT_ADDRESS="http://172.16.40.80/shop/index.php/home/Address/EditAddress";
 	
 	/**
 	 * 获取个人详情
@@ -194,17 +194,16 @@ public class UrlAddress {
 	/**
 	 * 获取所有省份
 	 */
-	public static String GET_PROVINCE_LIST=Root+"getProvinceList";
-	
+	public static String GET_PROVINCE_LIST="http://172.16.40.80/shop/index.php/home/Other/GetProvinceList";
 	/**
 	 * 获取所有（或指定省份下）城市列表
 	 */
-	public static String GET_CITY_LIST=Root+"getCityList";
+	public static String GET_CITY_LIST="http://172.16.40.80/shop/index.php/home/Other/GetCityList";
 	
 	/**
 	 * 获取地区列表
 	 */
-	public static String GET_AREA_LIST=Root+"getAreaList";
+	public static String GET_AREA_LIST="http://172.16.40.80/shop/index.php/home/Other/GetAreaList";
 	
 	/**
 	 * 检查更新

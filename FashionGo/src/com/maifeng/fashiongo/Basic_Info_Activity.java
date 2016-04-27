@@ -20,6 +20,7 @@ public class Basic_Info_Activity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.personal_center_basic_info);
+		
 		topbar =findViewById(R.id.topbar);
 		// ¶¥²¿µ¼º½À¸¿Ø¼þid
 		ll_returnbtn = (LinearLayout)topbar.findViewById(R.id.ll_returnbtn);
