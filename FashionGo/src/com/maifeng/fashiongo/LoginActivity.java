@@ -69,8 +69,10 @@ public class LoginActivity extends Activity implements OnClickListener{
 	private void volleyPost(String userName,String password){
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("userName", userName);
-		map.put("password", password);
+//		map.put("userName", userName);
+//		map.put("password", password);
+		map.put("userName", "13626214191");
+		map.put("password", "1234");		
 		map.put("system", "android");
 		VolleyRequest.RequestPost(this, UrlAddress.LOGIN, "GetVerify",map,
 				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {

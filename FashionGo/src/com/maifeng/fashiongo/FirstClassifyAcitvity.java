@@ -92,6 +92,8 @@ public class FirstClassifyAcitvity extends Activity {
 						ThreeClassifyActivity.class);
 				intent.putExtra("ClassifyTwoId", twolist.get(position)
 						.getClassifyTwoId());
+				System.out.println("¶þ¼¶ID+++++++++++"+twolist.get(position)
+						.getClassifyTwoId());
 				startActivity(intent);
 			}
 		});

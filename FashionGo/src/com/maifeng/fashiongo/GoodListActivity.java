@@ -8,24 +8,36 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.maifeng.fashiongo.adapter.GoodListAdapter;
+import com.maifeng.fashiongo.base.ClassifyThreeType;
 import com.maifeng.fashiongo.base.GoodListData;
 import com.maifeng.fashiongo.base.GoodListType;
+import com.maifeng.fashiongo.util.JsonUtil;
+import com.maifeng.fashiongo.util.LogUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-public class GoodListActivity1 extends Activity implements OnClickListener {
+/**
+ * 商品列表界面
+ * 
+ * @author liekkas
+ * 
+ */
+public class GoodListActivity extends Activity implements OnClickListener {
 	private LinearLayout layout_left;
 	private RadioButton tab_relevance, tab_sales, tab_price, tab_new;
 	private ListView lv_goodlist;
@@ -35,7 +47,7 @@ public class GoodListActivity1 extends Activity implements OnClickListener {
 	private String url = "http://172.16.40.80/shop/index.php/home/Goods/getGoodsList";
 	private String url1 = "http://172.16.40.80/shop/index.php/home/goods/getGoodsList";
 	private String ClassifyThreeId;
-	private String type;
+	private String type = "0";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +57,22 @@ public class GoodListActivity1 extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_goodlist);
 		initView();
 		setLight(0);
+
 		Intent intent = getIntent();
 		ClassifyThreeId = intent.getStringExtra("ClassifyThreeId");
-
 		volleyPost(ClassifyThreeId, type);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
 	}
 
 	private void volleyPost(String ClassifyThreeId, String type) {
@@ -65,14 +89,31 @@ public class GoodListActivity1 extends Activity implements OnClickListener {
 					@Override
 					public void onMySuccess(String result) {
 						try {
-							Gson gson = new Gson();
-							GoodListType goodListType = gson.fromJson(result,
-									GoodListType.class);
-							goodList = goodListType.getData();
+							// 解析
+							goodList = JsonUtil.parseJsonToBean(result,
+									GoodListType.class).getData();
 
+							// 绑定适配器
 							goodlistadapter = new GoodListAdapter(
 									getApplicationContext(), goodList);
 							lv_goodlist.setAdapter(goodlistadapter);
+
+							lv_goodlist
+									.setOnItemClickListener(new OnItemClickListener() {
+										@Override
+										public void onItemClick(
+												AdapterView<?> parent,
+												View view, int position, long id) {
+											// 向GoodDetailData传递数据
+											Intent intent = new Intent(
+													GoodListActivity.this,
+													GoodDetailActivity.class);
+											intent.putExtra("goodsCode",
+													goodList.get(position)
+															.getGoodsCode());
+											startActivity(intent);
+										}
+									});
 						} catch (JsonSyntaxException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -145,24 +186,24 @@ public class GoodListActivity1 extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.tab_relevance:
-			Toast.makeText(getApplicationContext(), "相关", Toast.LENGTH_LONG)
-					.show();
+			type = "0";
+			volleyPost(ClassifyThreeId, type);
 			setLight(0);
 			break;
 		case R.id.tab_sales:
+			type = "1";
+			volleyPost(ClassifyThreeId, type);
 			setLight(1);
-			Toast.makeText(getApplicationContext(), "销量", Toast.LENGTH_LONG)
-					.show();
 			break;
 		case R.id.tab_price:
+			type = "2";
+			volleyPost(ClassifyThreeId, type);
 			setLight(2);
-			Toast.makeText(getApplicationContext(), "价格", Toast.LENGTH_LONG)
-					.show();
 			break;
 		case R.id.tab_new:
+			type = "3";
+			volleyPost(ClassifyThreeId, type);
 			setLight(3);
-			Toast.makeText(getApplicationContext(), "新品", Toast.LENGTH_LONG)
-					.show();
 			break;
 
 		default:

@@ -2,16 +2,23 @@ package com.maifeng.fashiongo.base;
 
 import org.json.JSONArray;
 
+/**
+ * 商品详情实体类
+ * 
+ * @author liekkas
+ * 
+ */
 public class GoodDetailData {
 
-	private String goodsName; //商品名称
-	private String goodsCode; //商品编号
-	private String originalPrice; //市场价
-	private String price; //优惠价
-	private String isCollect; //是否已收藏
-	private String totalNum; //总库存
-	private String isPackage; //是否包邮
-	private JSONArray goodsImageList = new JSONArray(); //产品图片(可能9张)
+	private String goodsName; // 商品名称
+	private String goodsInfo; // 商品简介
+	private String goodsCode; // 商品编号
+	private String originalPrice; // 市场价
+	private String price; // 优惠价
+	private int isCollect; // 是否已收藏
+	private int totalNum; // 总库存
+	private int isPackage; // 是否包邮
+	private JSONArray goodsImageList = new JSONArray(); // 产品图片(可能9张)
 
 	public String getGoodsName() {
 		return goodsName;
@@ -19,6 +26,14 @@ public class GoodDetailData {
 
 	public void setGoodsName(String goodsName) {
 		this.goodsName = goodsName;
+	}
+
+	public String getGoodsInfo() {
+		return goodsInfo;
+	}
+
+	public void setGoodsInfo(String goodsInfo) {
+		this.goodsInfo = goodsInfo;
 	}
 
 	public String getGoodsCode() {
@@ -45,27 +60,27 @@ public class GoodDetailData {
 		this.price = price;
 	}
 
-	public String getIsCollect() {
+	public int getIsCollect() {
 		return isCollect;
 	}
 
-	public void setIsCollect(String isCollect) {
+	public void setIsCollect(int isCollect) {
 		this.isCollect = isCollect;
 	}
 
-	public String getTotalNum() {
+	public int getTotalNum() {
 		return totalNum;
 	}
 
-	public void setTotalNum(String totalNum) {
+	public void setTotalNum(int totalNum) {
 		this.totalNum = totalNum;
 	}
 
-	public String getIsPackage() {
+	public int getIsPackage() {
 		return isPackage;
 	}
 
-	public void setIsPackage(String isPackage) {
+	public void setIsPackage(int isPackage) {
 		this.isPackage = isPackage;
 	}
 

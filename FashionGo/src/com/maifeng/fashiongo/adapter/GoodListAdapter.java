@@ -20,14 +20,14 @@ public class GoodListAdapter extends BaseAdapter {
 
 	private Context context;
 	private List<GoodListData> list;
-	private ImageLoader mImageLoader; //图片加载器
+	private ImageLoader mImageLoader; // 图片加载器
 
 	public GoodListAdapter(Context context, List<GoodListData> list) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		this.list = list;
 		mImageLoader = new ImageLoader(Volleyhandle.getInstance(context)
-				.getRequestQueue(),  MyImageCache.getImageCache(context) );
+				.getRequestQueue(), MyImageCache.getImageCache(context));
 	}
 
 	@Override
@@ -70,17 +70,21 @@ public class GoodListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		holder.tv_goodname.setText(list.get(position).getGoodsName());
 		holder.tv_price.setText(list.get(position).getPrice());
 		holder.tv_originalPrice.setText(list.get(position).getOriginalPrice());
+		// 加载中显示的图片
 		holder.img_good.setDefaultImageResId(R.drawable.bg_loading_image);
+		// 加载失败时显示的图片
 		holder.img_good.setErrorImageResId(R.drawable.bg_error_image);
-		holder.img_good.setImageUrl(list.get(position).getGoodsImage(), mImageLoader);
+		// 第一个参数用于指定图片的URL地址，第二个参数是创建好的ImageLoader对象
+		holder.img_good.setImageUrl(list.get(position).getGoodsImage(),
+				mImageLoader);
 		return convertView;
 	}
 
-	private  class ViewHolder {
+	private class ViewHolder {
 		NetworkImageView img_good;
 		TextView tv_goodname;
 		TextView tv_originalPrice;

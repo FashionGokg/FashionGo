@@ -1,16 +1,22 @@
 package com.maifeng.fashiongo.base;
 
+/**
+ * 三级分类实体类
+ * 
+ * @author liekkas
+ * 
+ */
 public class ClassifyThreeData {
 
-	public String ClassifyThreeId;
+	public String classifyThreeId;
 	public String classifyThreeName;
 
 	public String getClassifyThreeId() {
-		return ClassifyThreeId;
+		return classifyThreeId;
 	}
 
 	public void setClassifyThreeId(String classifyThreeId) {
-		ClassifyThreeId = classifyThreeId;
+		this.classifyThreeId = classifyThreeId;
 	}
 
 	public String getClassifyThreeName() {
@@ -20,6 +26,5 @@ public class ClassifyThreeData {
 	public void setClassifyThreeName(String classifyThreeName) {
 		this.classifyThreeName = classifyThreeName;
 	}
-
 
 }

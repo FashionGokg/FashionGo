@@ -3,10 +3,9 @@ package com.maifeng.fashiongo.base;
 /**
  * 商品尺寸实体类
  * 
- * @author Administrator
+ * @author liekkas
  * 
  */
-
 public class GoodSizeData {
 
 	private String specificationsId; // 参数id

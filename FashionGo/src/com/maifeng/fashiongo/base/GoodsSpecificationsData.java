@@ -6,10 +6,9 @@ import java.util.List;
 /**
  * 商品规格实体类
  * 
- * @author Administrator
+ * @author liekkas
  * 
  */
-
 public class GoodsSpecificationsData {
 
 	private String model;
