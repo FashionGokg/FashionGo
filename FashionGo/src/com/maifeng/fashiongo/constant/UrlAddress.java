@@ -19,7 +19,7 @@ public class UrlAddress {
 	/**
 	 * 登录
 	 */
-	public static String LOGIN="http://172.16.40.80/shop/index.php/home/index/login";
+	public static String LOGIN="http://172.16.40.47/shop/index.php/home/index/login";
 	
 	/**
 	 * 首页.获取banner
@@ -89,12 +89,12 @@ public class UrlAddress {
 	/**
 	 * 获取我的分享
 	 */
-	public static String GET_MY_SHARE=Root+"getMyShare";
+	public static String GET_MY_SHARE="http://172.16.40.47/shop/index.php/home/Share/getMyShare";
 	
 	/**
 	 * 删除我的分享
 	 */
-	public static String DELETE_MY_SHARE=Root+"deleteMyShare";
+	public static String DELETE_MY_SHARE="http://172.16.40.47/shop/index.php/home/Share/deleteMyShare";
 	
 	/**
 	 * 分享
@@ -109,12 +109,12 @@ public class UrlAddress {
 	/**
 	 * 获取我的收藏列表
 	 */
-	public static String GET_MY_COLLECTION=Root+"getMyCollection";
+	public static String GET_MY_COLLECTION="http://172.16.40.47/shop/index.php/home/Collection/getMyCollection";
 	
 	/**
 	 * 删除收藏
 	 */
-	public static String DELETE_COLLECTION=Root+"deleteCollection";
+	public static String DELETE_COLLECTION="http://172.16.40.47/shop/index.php/home/Collection/deleteCollection";
 	
 	/**
 	 * 添加收货地址
@@ -144,12 +144,12 @@ public class UrlAddress {
 	/**
 	 * 获取个人详情
 	 */
-	public static String PERSONAL_DETAILS=Root+"personalDetails";
+	public static String PERSONAL_DETAILS="http://172.16.40.47/shop/index.php/home/PersonalDetails/PersonalDetails";
 	
 	/**
 	 * 修改个人详情
 	 */
-	public static String CHANGE_PEMAL_INFO=Root+"changePernalInfo";
+	public static String CHANGE_PEMAL_INFO="http://172.16.40.80/shop/index.php/home/PersonalDetails/changePernalInfo";
 	
 	/**
 	 * 获取我的支付宝
@@ -164,7 +164,7 @@ public class UrlAddress {
 	/**
 	 * 获取我的订单
 	 */
-	public static String GET_MY_ORDER=Root+"getMyOrder";
+	public static String GET_MY_ORDER="http://172.16.40.80/shop/index.php/home/Order/getMyOrder";
 	
 	/**
 	 * 确认收货
