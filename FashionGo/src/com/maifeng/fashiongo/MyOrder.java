@@ -3,14 +3,6 @@ package com.maifeng.fashiongo;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.android.volley.VolleyError;
-import com.maifeng.fashiongo.base.GetMyOrderType;
-import com.maifeng.fashiongo.constant.UrlAddress;
-import com.maifeng.fashiongo.constant.Urls;
-import com.maifeng.fashiongo.util.JsonUtil;
-import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
-import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,6 +14,13 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+import com.maifeng.fashiongo.base.GetMyOrderType;
+import com.maifeng.fashiongo.constant.Urls;
+import com.maifeng.fashiongo.util.JsonUtil;
+import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
+import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 
 public class MyOrder extends Activity implements OnClickListener{
 	//初始化顶部导航栏控件
