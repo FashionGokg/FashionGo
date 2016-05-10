@@ -1,5 +1,7 @@
 package com.maifeng.fashiongo;
 
+import com.maifeng.fashiongo.constant.Urls;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -12,7 +14,7 @@ import android.webkit.WebViewClient;
 public class FeedBackAcitvtty1 extends Activity{
 	 private ProgressDialog dialog;
 	 private WebView webView;
-	 private String url = "http://172.16.40.80/shop/index.php/home/System/t";
+//	 private String url = "http://172.16.40.80/shop/index.php/home/System/t";
 @Override
 protected void onCreate(Bundle savedInstanceState) {
 	// TODO Auto-generated method stub
@@ -27,7 +29,7 @@ private void init() {
 	// WebView加载本地资源
 	// webView.loadUrl("file:///android_asset/example.html");
 	// WebView加载web资源
-	webView.loadUrl(url);
+	webView.loadUrl(Urls.TIPS);
 	// 覆盖WebView默认通过第三方或者是系统浏览器打开网页的行为，使得网页可以在WebVIew中打开
 	webView.setWebViewClient(new WebViewClient(){
 		

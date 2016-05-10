@@ -5,7 +5,7 @@ import java.util.List;
 public class GoodDetailType {
 	private String errorcode;
 	private String message;
-	private List<GoodDetailData> data;
+	private GoodDetailData data;
 
 	public String getErrorcode() {
 		return errorcode;
@@ -23,12 +23,14 @@ public class GoodDetailType {
 		this.message = message;
 	}
 
-	public List<GoodDetailData> getData() {
+	public GoodDetailData getData() {
 		return data;
 	}
 
-	public void setData(List<GoodDetailData> data) {
+	public void setData(GoodDetailData data) {
 		this.data = data;
 	}
+
+
 
 }

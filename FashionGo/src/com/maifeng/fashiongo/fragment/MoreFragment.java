@@ -1,9 +1,5 @@
 package com.maifeng.fashiongo.fragment;
 
-import com.maifeng.fashiongo.AboutUsActivity;
-import com.maifeng.fashiongo.FeedBackAcitvtty1;
-import com.maifeng.fashiongo.R;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.maifeng.fashiongo.AboutUsActivity;
+import com.maifeng.fashiongo.FeedBackAcitvtty1;
+import com.maifeng.fashiongo.R;
 
 
 public class MoreFragment extends Fragment implements OnClickListener{

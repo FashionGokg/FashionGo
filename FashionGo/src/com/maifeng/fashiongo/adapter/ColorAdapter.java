@@ -19,16 +19,21 @@ public class ColorAdapter extends BaseAdapter {
 	private Context context;
 	private List<GoodsSpecificationsData> list;
 
-	public ColorAdapter(Context context, List<GoodsSpecificationsData> list) {
+	public ColorAdapter(Context context) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
-		this.list = list;
 	}
+	public void setData(List<GoodsSpecificationsData> list){
+		this.list=list;
+		notifyDataSetChanged();
+	}
+	
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return list.size();
+//		return list.size();
+		return list == null?0:list.size();
 	}
 
 	@Override
@@ -57,6 +62,7 @@ public class ColorAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+		holder.tv_color.setText(list.get(position).getModel());
 		return convertView;
 	}
 

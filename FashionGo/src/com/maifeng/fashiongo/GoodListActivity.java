@@ -4,21 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.maifeng.fashiongo.adapter.GoodListAdapter;
-import com.maifeng.fashiongo.base.ClassifyThreeType;
-import com.maifeng.fashiongo.base.GoodListData;
-import com.maifeng.fashiongo.base.GoodListType;
-import com.maifeng.fashiongo.util.JsonUtil;
-import com.maifeng.fashiongo.util.LogUtil;
-import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
-import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +16,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+import com.google.gson.JsonSyntaxException;
+import com.maifeng.fashiongo.adapter.GoodListAdapter;
+import com.maifeng.fashiongo.base.GoodListData;
+import com.maifeng.fashiongo.base.GoodListType;
+import com.maifeng.fashiongo.constant.Urls;
+import com.maifeng.fashiongo.util.JsonUtil;
+import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
+import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 
 /**
  * 商品列表界面
@@ -44,8 +40,8 @@ public class GoodListActivity extends Activity implements OnClickListener {
 	private GoodListAdapter goodlistadapter;
 	private List<GoodListData> goodList;
 
-	private String url = "http://172.16.40.80/shop/index.php/home/Goods/getGoodsList";
-	private String url1 = "http://172.16.40.80/shop/index.php/home/goods/getGoodsList";
+//	private String url = "http://172.16.40.47/shop/index.php/home/Goods/getGoodsList";
+//	private String url1 = "http://172.16.40.47/shop/index.php/home/goods/getGoodsList";
 	private String ClassifyThreeId;
 	private String type = "0";
 
@@ -82,7 +78,7 @@ public class GoodListActivity extends Activity implements OnClickListener {
 		map.put("difference", "0");
 		map.put("type", type);
 		map.put("page", "1");
-		VolleyRequest.RequestPost(getApplicationContext(), url1,
+		VolleyRequest.RequestPost(getApplicationContext(), Urls.GET_GOODS_LIST,
 				"getGoodsList", map, new VolleyAbstract(this,
 						VolleyAbstract.listener, VolleyAbstract.errorListener) {
 
@@ -98,19 +94,12 @@ public class GoodListActivity extends Activity implements OnClickListener {
 									getApplicationContext(), goodList);
 							lv_goodlist.setAdapter(goodlistadapter);
 
-							lv_goodlist
-									.setOnItemClickListener(new OnItemClickListener() {
+							lv_goodlist.setOnItemClickListener(new OnItemClickListener() {
 										@Override
-										public void onItemClick(
-												AdapterView<?> parent,
-												View view, int position, long id) {
+										public void onItemClick(AdapterView<?> parent,View view, int position, long id) {
 											// 向GoodDetailData传递数据
-											Intent intent = new Intent(
-													GoodListActivity.this,
-													GoodDetailActivity.class);
-											intent.putExtra("goodsCode",
-													goodList.get(position)
-															.getGoodsCode());
+											Intent intent = new Intent(GoodListActivity.this,GoodDetailActivity.class);
+											intent.putExtra("goodsCode",goodList.get(position).getGoodsCode());
 											startActivity(intent);
 										}
 									});

@@ -1,7 +1,5 @@
 package com.maifeng.fashiongo.base;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 商品规格实体类
@@ -12,7 +10,7 @@ import java.util.List;
 public class GoodsSpecificationsData {
 
 	private String model;
-	private List<GoodSizeData> size = new ArrayList<GoodSizeData>();
+	private GoodsSpecificationsSize sizeList;
 
 	public String getModel() {
 		return model;
@@ -22,12 +20,18 @@ public class GoodsSpecificationsData {
 		this.model = model;
 	}
 
-	public List<GoodSizeData> getSize() {
-		return size;
+	public GoodsSpecificationsSize getSizeList() {
+		return sizeList;
 	}
 
-	public void setSize(List<GoodSizeData> size) {
-		this.size = size;
+	public void setSizeList(GoodsSpecificationsSize sizeList) {
+		this.sizeList = sizeList;
 	}
+
+	
+
+	
+
+	
 
 }

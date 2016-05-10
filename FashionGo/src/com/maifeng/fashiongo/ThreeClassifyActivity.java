@@ -23,6 +23,7 @@ import com.maifeng.fashiongo.adapter.ClassifyThreeAdapter;
 import com.maifeng.fashiongo.base.ClassifyThreeData;
 import com.maifeng.fashiongo.base.ClassifyThreeType;
 import com.maifeng.fashiongo.base.ClassifyTwoData;
+import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
@@ -41,7 +42,7 @@ public class ThreeClassifyActivity extends Activity {
 	private View topbar;
 	private LinearLayout ll_returnbtn;
 	private TextView tv_title;
-	private String urlThree = "http://172.16.40.80/shop/index.php/home/Classify/getClassifyThree";
+//	private String urlThree = "http://172.16.40.47/shop/index.php/home/Classify/getClassifyThree";
 	private RequestQueue queue = Volleyhandle
 			.getInstance(this.getApplication()).getRequestQueue();
 
@@ -63,17 +64,14 @@ public class ThreeClassifyActivity extends Activity {
 
 		// 接收FirstClassifyActivity传递过来的数据
 		Intent intent = getIntent();
-		
 		ThreeData(intent.getStringExtra("ClassifyTwoId"));
 		
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(
-					AdapterView<?> parent,
+			public void onItemClick(AdapterView<?> parent,
 					View view, int position, long id) {
-				// TODO Auto-generated
-				// method stub
+				// 向GoodListActivity传递数据
 				Intent intent = new Intent(ThreeClassifyActivity.this,GoodListActivity.class);
 				intent.putExtra("ClassifyThreeId",threelist.get(position).getClassifyThreeId());
 				System.out.println("--------------******"+threelist.get(position).getClassifyThreeId());
@@ -99,8 +97,8 @@ public class ThreeClassifyActivity extends Activity {
 		// 组装请求数据ClassifyTwoId
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("ClassifyTwoId", ClassifyTwoId);
-		// 发起Get请求
-		VolleyRequest.RequestPost(this, urlThree, "GET_CLASSIFY_THREE", map,
+		
+		VolleyRequest.RequestPost(this, Urls.GET_CLASSIFY_THREE, "GET_CLASSIFY_THREE", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,
 						VolleyAbstract.errorListener) {
 
@@ -119,56 +117,44 @@ public class ThreeClassifyActivity extends Activity {
 					@Override
 					public void onMyError(VolleyError error) {
 						// TODO Auto-generated method stub
-						if (queue.getCache().get(urlThree) != null) {
-							String json = new String(queue.getCache().get(
-									urlThree).data);
-							threelist = JsonUtil.parseJsonToBean(json,
-									ClassifyThreeType.class).getData();
+						if (queue.getCache().get(Urls.GET_CLASSIFY_THREE) != null) {
+							String json = new String(queue.getCache().get(Urls.GET_CLASSIFY_THREE).data);
+							threelist = JsonUtil.parseJsonToBean(json,ClassifyThreeType.class).getData();
 						}
 
 						// 绑定适配器
 						ClassifyThreeAdapter threeAdapter = new ClassifyThreeAdapter(
 								getApplicationContext(), threelist);
 						mListView.setAdapter(threeAdapter);
-						mListView
-								.setOnItemClickListener(new OnItemClickListener() {
-
+						mListView.setOnItemClickListener(new OnItemClickListener() {
 									@Override
 									public void onItemClick(
 											AdapterView<?> parent, View view,
 											int position, long id) {
-										// TODO Auto-generated
-										// method stub
-										Intent intent = new Intent(
-												ThreeClassifyActivity.this,
-												GoodListActivity.class);
-										intent.putExtra("ClassifyThreeId",
-												threelist.get(position)
-														.getClassifyThreeId());
+										
+										// 向GoodListActivity传递数据
+										Intent intent = new Intent(ThreeClassifyActivity.this,GoodListActivity.class);
+										intent.putExtra("ClassifyThreeId",threelist.get(position).getClassifyThreeId());
 										startActivity(intent);
-
 									}
 								});
 					}
 				});
 	}
 
-
 	private void initView() {
 		// TODO Auto-generated method stub
-
 		mListView = (ListView) findViewById(R.id.lv_classify_three);
 		topbar = findViewById(R.id.topbar);
 		tv_title = (TextView) topbar.findViewById(R.id.tv_title);
-		topbar.findViewById(R.id.tv_name_function)
-				.setVisibility(View.INVISIBLE);
+		topbar.findViewById(R.id.tv_name_function).setVisibility(View.INVISIBLE);
 		ll_returnbtn = (LinearLayout) topbar.findViewById(R.id.ll_returnbtn);
 		tv_title.setText("分类");
 		ll_returnbtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				// 返回上一个界面
 				finish();
 			}
 		});

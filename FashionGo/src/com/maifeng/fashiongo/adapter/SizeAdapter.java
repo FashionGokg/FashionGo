@@ -5,7 +5,7 @@ import java.util.List;
 import org.w3c.dom.Text;
 
 import com.maifeng.fashiongo.R;
-import com.maifeng.fashiongo.base.GoodSizeData;
+import com.maifeng.fashiongo.base.GoodsSpecificationsSize;
 import com.maifeng.fashiongo.base.GoodsSpecificationsData;
 
 import android.content.Context;
@@ -18,18 +18,22 @@ import android.widget.TextView;
 public class SizeAdapter extends BaseAdapter {
 
 	private Context context;
-	private List<GoodSizeData> list;
+	private List<GoodsSpecificationsSize> list;
 
-	public SizeAdapter(Context context, List<GoodSizeData> list) {
+	public SizeAdapter(Context context) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
-		this.list = list;
+	}
+	public void setData(List<GoodsSpecificationsSize> list){
+		this.list=list;
+		notifyDataSetChanged();
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return list.size();
+//		return list.size();
+		return list == null?0:list.size();
 	}
 
 	@Override
@@ -58,6 +62,7 @@ public class SizeAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+		holder.tv_size.setText(list.get(position).getSize());
 		return convertView;
 	}
 

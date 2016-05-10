@@ -3,14 +3,6 @@ package com.maifeng.fashiongo;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-import com.maifeng.fashiongo.base.LoginData;
-import com.maifeng.fashiongo.base.LoginType;
-import com.maifeng.fashiongo.constant.UrlAddress;
-import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
-import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.maifeng.fashiongo.base.LoginData;
+import com.maifeng.fashiongo.base.LoginType;
+import com.maifeng.fashiongo.constant.UrlAddress;
+import com.maifeng.fashiongo.constant.Urls;
+import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
+import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 
 public class LoginActivity extends Activity implements OnClickListener{
 
@@ -39,13 +40,8 @@ public class LoginActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.login_layout);
 
 		initView();
-		
-
-
 
 	}
-
-
 
 	private void initView() {
 		button = (Button) findViewById(R.id.btn_login);

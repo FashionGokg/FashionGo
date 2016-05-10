@@ -9,17 +9,17 @@ public class UrlAddress {
 	/**
 	 * 个人注册
 	 */
-	public static String REGISTER="http://172.16.40.80/shop/index.php/home/index/register";
+	public static String REGISTER="http://172.16.40.47/shop/index.php/home/index/register";
 	
 	/**
 	 * 获取验证码
 	 * */
-	public static String GetVerify="http://172.16.40.80/shop/index.php/home/PhoneCaptcha/getPhoneCaptcha";
+	public static String GetVerify="http://172.16.40.47/shop/index.php/home/PhoneCaptcha/getPhoneCaptcha";
 	
 	/**
 	 * 登录
 	 */
-	public static String LOGIN="http://172.16.40.80/shop/index.php/home/index/login";
+	public static String LOGIN="http://172.16.40.47/shop/index.php/home/index/login";
 	
 	/**
 	 * 首页.获取banner

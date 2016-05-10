@@ -6,11 +6,12 @@ package com.maifeng.fashiongo.base;
  * @author liekkas
  * 
  */
-public class GoodSizeData {
+public class GoodsSpecificationsSize {
 
 	private String specificationsId; // ²ÎÊýid
 	private String size; // ³ßÂë
-	private String num; // ¿â´æ
+//	private String num; // ¿â´æ
+	private int num;
 
 	public String getSpecificationsId() {
 		return specificationsId;
@@ -28,12 +29,20 @@ public class GoodSizeData {
 		this.size = size;
 	}
 
-	public String getNum() {
+	public int getNum() {
 		return num;
 	}
 
-	public void setNum(String num) {
+	public void setNum(int num) {
 		this.num = num;
 	}
+
+//	public String getNum() {
+//		return num;
+//	}
+//
+//	public void setNum(String num) {
+//		this.num = num;
+//	}
 
 }

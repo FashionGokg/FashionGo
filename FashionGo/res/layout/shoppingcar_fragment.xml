@@ -29,15 +29,17 @@
         android:orientation="horizontal">
     	
     	<CheckBox
+    	    android:id="@+id/selectAll"
         	android:layout_width="16dp"
         	android:layout_height="16dp"
-        	android:layout_margin="10dp"
+        	android:layout_marginLeft="25dp"
         	android:button="@null"
         	android:background="@drawable/selector_checkbox"
         	android:layout_gravity="center_vertical"
         	/>
     	
     	<TextView 
+    	    android:id="@+id/tv_commodity_quantity"
     	    android:layout_width="0dp"
     	    android:layout_height="wrap_content"
     	    android:layout_weight="2"
@@ -57,6 +59,7 @@
     	    android:layout_gravity="center_vertical"/>
         
         <TextView 
+            android:id="@+id/tv_total"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"

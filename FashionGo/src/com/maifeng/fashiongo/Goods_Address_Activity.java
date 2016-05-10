@@ -1,17 +1,27 @@
 package com.maifeng.fashiongo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import com.maifeng.fashiongo.adapter.GoodsAddress_Adapter;
+import java.util.Map;
+import com.android.volley.VolleyError;
+import com.maifeng.fashiongo.adapter.Goods_GetAddress_Adapter;
+import com.maifeng.fashiongo.base.Goods_GetAddressData;
+import com.maifeng.fashiongo.base.Goods_GetAddressType;
+import com.maifeng.fashiongo.constant.UrlAddress;
+import com.maifeng.fashiongo.constant.Urls;
+import com.maifeng.fashiongo.util.JsonUtil;
+import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
+import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,9 +36,7 @@ public class Goods_Address_Activity extends Activity {
 	private TextView tv_name_function;
 	
 	private ListView lv_goodsaddress;
-	private GoodsAddress_Adapter adapter;
-	private List<HashMap<String,Object>> list;
-	
+	private List<Goods_GetAddressData> listaddress;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -44,22 +52,14 @@ public class Goods_Address_Activity extends Activity {
 		//顶部导航栏控件相关设置
 		tv_title.setText("收货地址");
 		tv_name_function.setText("新增");
-		list = new ArrayList<HashMap<String,Object>>();
-		for (int i = 0; i < 5; i++) {
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("tv_name","张三");
-			map.put("tv_phone","1372621419"+i);
-			map.put("tv_address","广科院顶峰互动科技有限公司");
-			list.add(map);
-		}
 		
 		lv_goodsaddress = (ListView)findViewById(R.id.lv_goodsaddress);
-		adapter = new GoodsAddress_Adapter(Goods_Address_Activity.this,list);
-		lv_goodsaddress.setAdapter(adapter);
-		basiClick();
-	}
 
-	private void basiClick(){
+		//点击事件
+		Clicks();
+		
+	}
+	private void Clicks(){
 		ll_returnbtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -73,6 +73,62 @@ public class Goods_Address_Activity extends Activity {
 				startActivity(intent);
 			}
 		});
-		
+	}
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		//组装请求数据
+		Map<String,String> map = new HashMap<String, String>();
+		//登录标识
+		SharedPreferences pref = getSharedPreferences("myPref", MODE_PRIVATE);
+		String accessToken = pref.getString("accessToken", "");
+		map.put("accessToken", accessToken);
+		VolleyRequest.RequestPost(this,Urls.GET_RECEIVE_ADDRESS,"GET_RECEIVE_ADDRESS", map,
+				new VolleyAbstract(this,VolleyAbstract.listener,VolleyAbstract.errorListener) {
+					@Override
+					public void onMySuccess(String result) {
+						// TODO Auto-generated method stub
+						listaddress = JsonUtil.parseJsonToBean(result, Goods_GetAddressType.class).getData();
+						Goods_GetAddress_Adapter adapter1 = new Goods_GetAddress_Adapter(getApplicationContext(), listaddress);
+						lv_goodsaddress.setAdapter(adapter1);
+						adapter1.notifyDataSetChanged();
+						lv_goodsaddress.setOnItemClickListener(new OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> parent, View view, int position,
+									long id) {
+								// TODO Auto-generated method stub
+								Intent intent = new Intent(getApplicationContext(),Edit_GoodsAddress_Activity.class);
+
+									SharedPreferences pref = getSharedPreferences("myPref", MODE_PRIVATE);
+									String accessToken = pref.getString("accessToken", "");
+									String idString = listaddress.get(position).getId();
+									String names = listaddress.get(position).getName();
+									String phones = listaddress.get(position).getPhone();
+									String provinces = listaddress.get(position).getProvince();
+									String citys = listaddress.get(position).getCity();
+									String areas = listaddress.get(position).getArea();
+									String addresss = listaddress.get(position).getAddress();
+									intent.putExtra("accessToken",accessToken);
+									intent.putExtra("id", idString);
+									intent.putExtra("name",names);
+									intent.putExtra("phone", phones);
+									intent.putExtra("province",provinces);
+									intent.putExtra("city", citys);
+									intent.putExtra("area",areas);
+									intent.putExtra("address", addresss);
+								
+								startActivity(intent);
+							}
+						});
+					}
+					
+					@Override
+					public void onMyError(VolleyError error) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 	}
 }

@@ -1,10 +1,5 @@
 package com.maifeng.fashiongo.fragment;
 
-import com.maifeng.fashiongo.Basic_Info_Activity;
-import com.maifeng.fashiongo.Goods_Address_Activity;
-import com.maifeng.fashiongo.LoginActivity;
-import com.maifeng.fashiongo.R;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +12,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.maifeng.fashiongo.Basic_Info_Activity;
+import com.maifeng.fashiongo.GetMyCollectionActivity;
+import com.maifeng.fashiongo.GetMyShareActivity;
+import com.maifeng.fashiongo.Goods_Address_Activity;
+import com.maifeng.fashiongo.LoginActivity;
+import com.maifeng.fashiongo.MyOrder;
+import com.maifeng.fashiongo.R;
 
 public class MineFragment extends Fragment {
 	String Tag = "MineFragment";
@@ -37,14 +40,7 @@ public class MineFragment extends Fragment {
 		
 
 		View view = inflater.inflate(R.layout.mine_fragment, container,false);
-		
-//		SharedPreferences pref = getSharedPreferences("myPref",getActivity().MODE_PRIVATE); 
-//		if (pref.getString("accessToken", null).equals(null)) {
-//		
-//			Intent intent = Intent(getActivity(),LoginActivity.class);
-//			startActivity(intent);
-//			
-//		}
+
 		topbar = view.findViewById(R.id.topbar);
 		// ¶¥²¿µ¼º½À¸¿Ø¼þid
 		ll_returnbtn = (LinearLayout)topbar.findViewById(R.id.ll_returnbtn);
@@ -98,8 +94,8 @@ public class MineFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-//				Intent intent = new Intent(getActivity(),GoodsAddress_Activity.class);
-//				startActivity(intent);
+				Intent intent = new Intent(getActivity(),MyOrder.class);
+				startActivity(intent);
 			}
 		});
 		relayout_collect.setOnClickListener(new OnClickListener() {
@@ -107,8 +103,8 @@ public class MineFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-//				Intent intent = new Intent(getActivity(),GoodsAddress_Activity.class);
-//				startActivity(intent);
+				Intent intent = new Intent(getActivity(),GetMyCollectionActivity.class);
+				startActivity(intent);
 			}
 		});
 		relayout_share.setOnClickListener(new OnClickListener() {
@@ -116,8 +112,8 @@ public class MineFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-//				Intent intent = new Intent(getActivity(),GoodsAddress_Activity.class);
-//				startActivity(intent);
+				Intent intent = new Intent(getActivity(),GetMyShareActivity.class);
+				startActivity(intent);
 			}
 		});
 	}

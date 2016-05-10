@@ -1,6 +1,8 @@
 package com.maifeng.fashiongo.base;
 
-import org.json.JSONArray;
+import android.R.integer;
+
+
 
 /**
  * 商品详情实体类
@@ -16,9 +18,10 @@ public class GoodDetailData {
 	private String originalPrice; // 市场价
 	private String price; // 优惠价
 	private int isCollect; // 是否已收藏
-	private int totalNum; // 总库存
+//	private String totalNum; // 总库存
+	private int totalNum;
 	private int isPackage; // 是否包邮
-	private JSONArray goodsImageList = new JSONArray(); // 产品图片(可能9张)
+	private GoodDetailGoodsImageList goodsImageList; // 产品图片(可能9张)
 
 	public String getGoodsName() {
 		return goodsName;
@@ -68,6 +71,22 @@ public class GoodDetailData {
 		this.isCollect = isCollect;
 	}
 
+
+
+//	public String getTotalNum() {
+//		return totalNum;
+//	}
+//
+//	public void setTotalNum(String totalNum) {
+//		this.totalNum = totalNum;
+//	}
+	
+	
+
+	public int getIsPackage() {
+		return isPackage;
+	}
+
 	public int getTotalNum() {
 		return totalNum;
 	}
@@ -76,20 +95,19 @@ public class GoodDetailData {
 		this.totalNum = totalNum;
 	}
 
-	public int getIsPackage() {
-		return isPackage;
-	}
-
 	public void setIsPackage(int isPackage) {
 		this.isPackage = isPackage;
 	}
 
-	public JSONArray getGoodsImageList() {
+	public GoodDetailGoodsImageList getGoodsImageList() {
 		return goodsImageList;
 	}
 
-	public void setGoodsImageList(JSONArray goodsImageList) {
+	public void setGoodsImageList(GoodDetailGoodsImageList goodsImageList) {
 		this.goodsImageList = goodsImageList;
 	}
+
+
+
 
 }

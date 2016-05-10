@@ -15,6 +15,7 @@ import com.maifeng.fashiongo.base.ClassifyTwoData;
 import com.maifeng.fashiongo.base.ClassifyTwoType;
 import com.maifeng.fashiongo.base.ClassifyOneData;
 import com.maifeng.fashiongo.base.ClassifyOneType;
+import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
@@ -39,8 +40,8 @@ public class FirstClassifyAcitvity extends Activity {
 	private ListView mListView;
 	private GridView mGridView;
 	private LinearLayout layout_left;
-	private String urlOne = "http://172.16.40.80/shop/index.php/home/Classify/getClassifyOne";
-	private String urlTwo = "http://172.16.40.80/shop/index.php/home/Classify/getClassifyTwo";
+//	private String urlOne = "http://172.16.40.47/shop/index.php/home/Classify/getClassifyOne";
+//	private String urlTwo = "http://172.16.40.47/shop/index.php/home/Classify/getClassifyTwo";
 	private RequestQueue queue = Volleyhandle
 			.getInstance(this.getApplication()).getRequestQueue();
 
@@ -117,7 +118,7 @@ public class FirstClassifyAcitvity extends Activity {
 	 */
 	private void volleyGet() {
 		// 发起Get请求
-		VolleyRequest.RequestGet(this, urlOne, "GET_CLASSIFY_ONE",
+		VolleyRequest.RequestGet(this, Urls.GET_CLASSIFY_ONE, "GET_CLASSIFY_ONE",
 				new VolleyAbstract(this, VolleyAbstract.listener,
 						VolleyAbstract.errorListener) {
 
@@ -136,9 +137,9 @@ public class FirstClassifyAcitvity extends Activity {
 
 					@Override
 					public void onMyError(VolleyError error) {
-						if (queue.getCache().get(urlOne) != null) {
+						if (queue.getCache().get(Urls.GET_CLASSIFY_ONE) != null) {
 							String json = new String(queue.getCache().get(
-									urlOne).data);
+									Urls.GET_CLASSIFY_ONE).data);
 							onelist = JsonUtil.parseJsonToBean(json,
 									ClassifyOneType.class).getData();
 						}
@@ -167,7 +168,7 @@ public class FirstClassifyAcitvity extends Activity {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("classifyId", classifyId);
 		// 发起Post请求
-		VolleyRequest.RequestPost(this, urlTwo, "GET_CLASSIFY_TWO", map,
+		VolleyRequest.RequestPost(this, Urls.GET_CLASSIFY_TWO, "GET_CLASSIFY_TWO", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,
 						VolleyAbstract.errorListener) {
 
@@ -186,9 +187,9 @@ public class FirstClassifyAcitvity extends Activity {
 
 					@Override
 					public void onMyError(VolleyError error) {
-						if (queue.getCache().get(urlTwo) != null) {
+						if (queue.getCache().get(Urls.GET_CLASSIFY_TWO) != null) {
 							String json = new String(queue.getCache().get(
-									urlTwo).data);
+									Urls.GET_CLASSIFY_TWO).data);
 							twolist = JsonUtil.parseJsonToBean(json,
 									ClassifyTwoType.class).getData();
 						}
