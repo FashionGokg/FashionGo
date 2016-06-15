@@ -2,11 +2,9 @@ package com.maifeng.fashiongo.adapter;
 
 import java.util.List;
 
-import org.w3c.dom.Text;
 
 import com.maifeng.fashiongo.R;
 import com.maifeng.fashiongo.base.GoodsSpecificationsSize;
-import com.maifeng.fashiongo.base.GoodsSpecificationsData;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -32,7 +30,6 @@ public class SizeAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-//		return list.size();
 		return list == null?0:list.size();
 	}
 

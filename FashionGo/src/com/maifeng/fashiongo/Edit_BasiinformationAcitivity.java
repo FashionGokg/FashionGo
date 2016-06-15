@@ -1,39 +1,39 @@
 package com.maifeng.fashiongo;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.w3c.dom.Text;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.maifeng.fashiongo.banner.ActionSheetDialog;
+import com.maifeng.fashiongo.banner.CiecleImageView;
+import com.maifeng.fashiongo.base.GetPersonalDetailsData;
+import com.maifeng.fashiongo.base.GetPersonalDetailsType;
 import com.maifeng.fashiongo.base.Goods_AddNew_AddressType;
-import com.maifeng.fashiongo.base.Goods_AreaData;
-import com.maifeng.fashiongo.base.Goods_CityData;
-import com.maifeng.fashiongo.base.Goods_ProvinceData;
-import com.maifeng.fashiongo.constant.UrlAddress;
 import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
-import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,7 +54,7 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 	private RelativeLayout city_relayout;
 	private RelativeLayout area_relayout;
 	
-	private ImageView image_head;
+//	private ImageView image_head;
 	private EditText editname=null;
 	private EditText editage=null;
 	private TextView textsex=null;
@@ -68,16 +68,46 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 	private String pCodeString;//存放省份id
 	private String cCodeString;//存放城市id
 	private String aCodeString;//存放地区id
-	
+	public GetPersonalDetailsData data;
 	private Intent intent;
+	
+	/**
+     * 圆形图片的Imageview
+     */
+    private CiecleImageView image_head;
+    /**
+     * 指定拍摄图片文件位置避免获取到缩略图
+     */
+    private File outFile;
+    /**
+     * 标记是拍照还是相册 0 是拍照 1 是相册
+     */
+    private int cameraorpic;
+    /**
+     * 选择头像相册选取
+     */
+    private static final int REQUESTCODE_PICK = 4;
+    /**
+     * 裁剪好头像-设置头像
+     */
+    private static final int REQUESTCODE_CUTTING = 5;
+    /**
+     * 选择头像拍照选取
+     */
+    private static final int PHOTO_REQUEST_TAKEPHOTO = 6;
+    /**
+     * 裁剪好的头像的Bitmap
+     */
+    private Bitmap currentBitmap;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_basiinformation);
 		intent = this.getIntent();
 		idGet();
+		getvollePost();
 	}
 	private void idGet(){
 		topbar =findViewById(R.id.topbar);
@@ -104,7 +134,7 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 		city_relayout.setOnClickListener(this);
 		area_relayout.setOnClickListener(this);
 		
-		image_head=(ImageView)findViewById(R.id.image_head);
+		image_head=(CiecleImageView)findViewById(R.id.image_head);
 		editname=(EditText)findViewById(R.id.editname);
 		editage=(EditText)findViewById(R.id.editage);
 		textsex=(TextView)findViewById(R.id.textsex);
@@ -114,121 +144,173 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 		textcity=(TextView)findViewById(R.id.textcity);
 		textarea=(TextView)findViewById(R.id.textarea);
 		editaddress=(EditText)findViewById(R.id.editaddress);
-		//接收显示传递的信息
-		//image_head.setImageResource(intent.getStringExtra(""));
-//		editname.setText(intent.getStringExtra("nameString"));
-//		editage.setText(intent.getStringExtra("ageString"));
-//		if (intent.getStringExtra("sexString").equals(0)) {
-//			textsex.setText("男");
-//		}else {
-//			textsex.setText("女");
-//		}
-//		//textsex.setText(intent.getStringExtra("sexString"));
-//		editqq.setText(intent.getStringExtra("qqString"));
-//		editemaill.setText(intent.getStringExtra("emailString"));
-//		textprovince.setText(intent.getStringExtra("pnameString"));
-//		textcity.setText(intent.getStringExtra("cnameString"));
-//		textarea.setText(intent.getStringExtra("areaString"));
-//		editaddress.setText(intent.getStringExtra("addressString"));
 
-	}
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
 	}
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		//实例化请求队列
-		RequestQueue queue = Volleyhandle.getInstance(getApplicationContext()).getRequestQueue();
-		//活动销毁时取消请求，减少内存消耗
-		queue.cancelAll("CHANGE_PEMAL_INFO");
+		Volleyhandle.getInstance(getApplicationContext()).getRequestQueue().cancelAll("CHANGE_PEMAL_INFO");
 	}
-	private void vollePost(){
-		//登录标识
+	public void getvollePost() {
+		// 登录标识
 		SharedPreferences pref = getSharedPreferences("myPref", MODE_PRIVATE);
-		
-		String accessToken = pref.getString("accessToken","");
-		//String image =image_head.getImageMatrix().toString();
-		String name = editname.getText().toString().trim();//trim()是将转化后的字符串类型去掉前后空格。
-		String age = editage.getText().toString().trim();
-		String sex ;
-		if (textsex.getText().toString().equals("男")) {
-			 sex = "0";
-		}else {
-			 sex = "1";
-		}
-		String qq = editqq.getText().toString().trim();
-		String email = editemaill.getText().toString().trim();
-		
-		String pCode =textprovince.getText().toString().trim();
-		String cCode = textcity.getText().toString().trim();
-		String aCode = textarea.getText().toString().trim();
-		String address = editaddress.getText().toString().trim();
-		//头像赞不设置
-		if (TextUtils.isEmpty(name)) {
-			Toast.makeText(getApplicationContext(), "姓名不能为空",Toast.LENGTH_SHORT).show();
-			return;
-		}if (TextUtils.isEmpty(age)) {
-			Toast.makeText(getApplicationContext(), "年龄不能为空",Toast.LENGTH_SHORT).show();
-			return;
-		}if (Integer.valueOf(age)<0||Integer.valueOf(age)>200) {
-			Toast.makeText(getApplicationContext(), "年龄不正确",Toast.LENGTH_SHORT).show();
-			return;
-		}if (sex.equals("")) {
-			Toast.makeText(getApplicationContext(), "性别不能为空",Toast.LENGTH_SHORT).show();
-			return;
-		}if (TextUtils.isEmpty(qq)) {
-			Toast.makeText(getApplicationContext(), "QQ不能为空",Toast.LENGTH_SHORT).show();
-			return;
-		}if (TextUtils.isEmpty(email)) {
-			Toast.makeText(getApplicationContext(), "邮箱不能为空",Toast.LENGTH_SHORT).show();
-			return;
-		}if (pCode.equals("请选择省份")) {
-			Toast.makeText(getApplicationContext(), "省份不能为空",Toast.LENGTH_SHORT).show();
-			return;
-		}if (cCode.equals("请选择城市")) {
-			Toast.makeText(getApplicationContext(), "城市不能为空",Toast.LENGTH_SHORT).show();
-			return;
-		}if (aCode.equals("请选择地区")) {
-			Toast.makeText(getApplicationContext(), "地区不能为空",Toast.LENGTH_SHORT).show();
-			return;
-		}else if (TextUtils.isEmpty(address)) {
-			Toast.makeText(getApplicationContext(), "详细地址不能为空",Toast.LENGTH_SHORT).show();
-			return;
-		}else {
-	
-			//组装请求数据
-			Map<String,String> map = new HashMap<String, String>();
-			map.put("accessToken", accessToken);
-			map.put("image","");//空图片
-			map.put("name",name);
-			map.put("age",age);
-			map.put("sex",sex);
-			map.put("qq",qq);
-			map.put("email",email);
-			map.put("pCode", pCodeString);
-			map.put("cCode", cCodeString);
-			map.put("aCode", aCodeString);
-			map.put("address",address);
-			VolleyRequest.RequestPost(this,Urls.CHANGE_PEMAL_INFO,"CHANGE_PEMAL_INFO", map,
-					new VolleyAbstract(this,VolleyAbstract.listener,VolleyAbstract.errorListener) {
-						
-						@Override
-						public void onMySuccess(String result) {
-							JsonUtil.parseJsonToBean(result, Goods_AddNew_AddressType.class);
-						
+		String accessToken = pref.getString("accessToken", "");
+		// 组装请求数据
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("accessToken", accessToken);
+		VolleyRequest.RequestPost(this, Urls.PERSONAL_DETAILS,
+				"PERSONAL_DETAILS", map, new VolleyAbstract(this,
+						VolleyAbstract.listener, VolleyAbstract.errorListener) {
+					@Override
+					public void onMySuccess(String result) {
+						data = JsonUtil.parseJsonToBean(result,
+								GetPersonalDetailsType.class).getData();
+
+						editname.setText(data.getName());
+						editname.setSelection(editname.getText().length());// 将光标追踪到内容的最后
+						editage.setText(data.getAge());
+						editage.setSelection(editage.getText().length());
+						if (data.getSex().equals("0")) {
+							textsex.setText("男");
+						} else {
+							textsex.setText("女");
 						}
-						@Override
-						public void onMyError(VolleyError error) {
-							// TODO Auto-generated method stub
-							
-						}
-					});
-			finish();
+						editqq.setText(data.getQq());
+						editemaill.setText(data.getEmail());
+						textprovince.setText(data.getpName());
+						textcity.setText(data.getcName());
+						textarea.setText(data.getArea());
+						editaddress.setText(data.getAddress());
+						editaddress.setSelection(editaddress.getText().length());
+						pCodeString= data.getpCode();
+						cCodeString=data.getaCode();
+						aCodeString=data.getaCode();
+					}
+
+					@Override
+					public void onMyError(VolleyError error) {
+					}
+				});
+	}
+
+	private void vollePost() {
+
+		try {
+			// 登录标识
+			SharedPreferences pref = getSharedPreferences("myPref",
+					MODE_PRIVATE);
+			String accessToken = pref.getString("accessToken", "");
+			String name = editname.getText().toString().trim();// trim()是将转化后的字符串类型去掉前后空格。
+
+			String age = editage.getText().toString().trim();
+			String sex;
+			if (textsex.getText().toString().equals("男")) {
+				sex = "0";
+			} else {
+				sex = "1";
+			}
+			String qq = editqq.getText().toString().trim();
+			String email = editemaill.getText().toString().trim();
+			String pCode = textprovince.getText().toString().trim();
+			String cCode = textcity.getText().toString().trim();
+			String aCode = textarea.getText().toString().trim();
+			String address = editaddress.getText().toString().trim();
+			
+			if (TextUtils.isEmpty(name)) {
+				Toast.makeText(getApplicationContext(), "姓名不能为空",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (TextUtils.isEmpty(age)) {
+				Toast.makeText(getApplicationContext(), "年龄不能为空",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (Integer.valueOf(age) < 0 || Integer.valueOf(age) > 200) {
+				Toast.makeText(getApplicationContext(), "不是正确的年龄或年龄格式不对",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (textsex.getText().toString().equals("")) {
+				Toast.makeText(getApplicationContext(), "性别不能为空",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (TextUtils.isEmpty(qq)) {
+				Toast.makeText(getApplicationContext(), "QQ不能为空",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			String stremail = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+			Pattern p = Pattern.compile(stremail);
+			Matcher m = p.matcher(email);
+			if (TextUtils.isEmpty(email)) {
+				Toast.makeText(getApplicationContext(), "邮箱不能为空",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (!m.matches()) {
+				Toast.makeText(getApplicationContext(), "邮箱格式不对",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (pCode.equals("请选择省份")) {
+				Toast.makeText(getApplicationContext(), "省份不能为空",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (cCode.equals("请选择城市")) {
+				Toast.makeText(getApplicationContext(), "城市不能为空",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (aCode.equals("请选择地区")) {
+				Toast.makeText(getApplicationContext(), "地区不能为空",
+						Toast.LENGTH_SHORT).show();
+				return;
+			} else if (TextUtils.isEmpty(address)) {
+				Toast.makeText(getApplicationContext(), "详细地址不能为空",
+						Toast.LENGTH_SHORT).show();
+				return;
+			} else {
+
+				// 组装请求数据
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("accessToken", accessToken);
+				// map.put("image",img);//空图片
+				map.put("name", name);
+				map.put("age", age);
+				map.put("sex", sex);
+				map.put("qq", qq);
+				map.put("email", email);
+				map.put("pCode", pCodeString);
+				map.put("cCode", cCodeString);
+				map.put("aCode", aCodeString);
+				map.put("address", address);
+				VolleyRequest.RequestPost(this, Urls.CHANGE_PEMAL_INFO,
+						"CHANGE_PEMAL_INFO", map, new VolleyAbstract(this,
+								VolleyAbstract.listener,
+								VolleyAbstract.errorListener) {
+
+							@Override
+							public void onMySuccess(String result) {
+								Goods_AddNew_AddressType gAddNew_AddressType=JsonUtil.parseJsonToBean(result,
+										Goods_AddNew_AddressType.class);
+								Toast.makeText(getApplicationContext(), gAddNew_AddressType.getMessage(), Toast.LENGTH_SHORT).show();
+							}
+
+							@Override
+							public void onMyError(VolleyError error) {
+								// TODO Auto-generated method stub
+							}
+						});
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
+
 	}
 	@Override
 	public void onClick(View v) {
@@ -240,12 +322,24 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 		//保存
 		case R.id.ll_functionbtn:
 			vollePost();
-			Intent intent=new Intent(getApplicationContext(),Basic_Info_Activity.class);
-			startActivity(intent);
-			finish();
 			break;
 		case R.id.relative_imageview:
-			Toast.makeText(getApplicationContext(),"暂无头像图片资源", Toast.LENGTH_SHORT).show();
+
+			image_head.setBorderWidth(5);
+            new ActionSheetDialog(Edit_BasiinformationAcitivity.this).Builder().addSheetItem("拍照", ActionSheetDialog.SheetItemColor.BULE, new ActionSheetDialog.OnSheetItemClickListener() {
+                @Override
+                public void onClick(int witch) {
+                    cameraorpic=1;
+                    openCamera();
+                }
+            }).addSheetItem("打开相册", ActionSheetDialog.SheetItemColor.BULE, new ActionSheetDialog.OnSheetItemClickListener() {
+                @Override
+                public void onClick(int witch) {
+                    cameraorpic=0;
+                    openPic();
+                }
+            }).show();
+        
 			break;
 		case R.id.replacesex_relayout:
 			sex();
@@ -283,15 +377,20 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
-		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode==1) {
 			String pNameString = data.getStringExtra("pName");
 			textprovince.setText(pNameString);//显示省份
+			textcity.setText("请选择城市");
+			textarea.setText("请选择地区");
+			cCodeString=null;
+			aCodeString=null;
 			pCodeString=data.getStringExtra("pCode");//得到省份id
 		}
 		if (resultCode==2) {
 			String cNameString = data.getStringExtra("cName");
 			textcity.setText(cNameString);//显示城市
+			textarea.setText("请选择地区");
+			aCodeString=null;
 			cCodeString=data.getStringExtra("cCode");//得到城市id
 		}
 		if (resultCode==3) {
@@ -299,6 +398,28 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 			textarea.setText(cNameString);//显示地区
 			aCodeString = data.getStringExtra("aCode");
 		}
+		
+        switch (requestCode) {
+            //相册
+            case REQUESTCODE_PICK:
+                if (data == null || data.getData() == null) {
+                    return;
+                }
+                startPhotoZoom(data.getData());
+                break;
+            //裁减
+            case REQUESTCODE_CUTTING:
+                if (data != null) {
+                    setPicToView(data);
+                }
+                break;
+            //拍照
+            case PHOTO_REQUEST_TAKEPHOTO:
+                startPhotoZoom(Uri.fromFile(outFile));
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    
 	}
 	//设置选择性别
 	private void sex(){
@@ -330,4 +451,69 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
         });
         builder.show();
 	}
+	
+	
+	/**
+     * 打开相册
+     */
+    private void openPic() {
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, null);
+        pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(pickIntent, REQUESTCODE_PICK);
+    }
+
+    /**
+     * 打开相机
+     */
+    private void openCamera() {
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File outDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            if (!outDir.exists()) {
+                outDir.mkdir();
+            }
+            outFile = new File(outDir, System.currentTimeMillis() + ".jpg");
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(outFile));
+            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+            startActivityForResult(intent, PHOTO_REQUEST_TAKEPHOTO);
+        } else {
+            Log.e("CAMERA", "请确认已经插入SD卡");
+        }
+    }
+
+    /**
+     * 把裁减好的图片设置到View上或者上传到网络
+     *
+     * @param data
+     */
+    private void setPicToView(Intent data) {
+        Bundle extras = data.getExtras();
+        if (extras != null) {
+            /** 可用于图片上传 */
+            currentBitmap = extras.getParcelable("data");
+
+            image_head.setImageBitmap(currentBitmap);
+        }
+    }
+
+    /**
+     * 调用系统的图片裁减
+     *
+     * @param data
+     */
+    private void startPhotoZoom(Uri data) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(data, "image/*");
+        intent.putExtra("crop", true);
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 300);
+        intent.putExtra("scale", true); //黑边
+        intent.putExtra("scaleUpIfNeeded", true); //黑边
+        intent.putExtra("return-data", true);
+        intent.putExtra("noFaceDEtection", true);
+        startActivityForResult(intent, REQUESTCODE_CUTTING);
+    }
+
 }

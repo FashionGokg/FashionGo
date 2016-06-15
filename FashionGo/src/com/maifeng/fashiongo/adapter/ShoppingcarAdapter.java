@@ -12,6 +12,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.maifeng.fashiongo.R;
 import com.maifeng.fashiongo.base.DeleteGoodsForCartType;
 import com.maifeng.fashiongo.base.ShoppingcarData;
+import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.fragment.ShoppingcarFragment;
 import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.util.LogUtil;
@@ -55,7 +56,7 @@ public class ShoppingcarAdapter extends BaseAdapter{
 
 	@Override
 	public int getCount() {
-		return listdate.size();
+		return listdate == null?0:listdate.size();
 	}
 
 	@Override
@@ -169,25 +170,28 @@ public class ShoppingcarAdapter extends BaseAdapter{
 
 			case R.id.btn_delete:
 				LogUtil.i("CC", "点击了普通按钮"+position);
-				volleyPost(listdate.get(position).getId());
+				for (int i = 0; i < isCheckedMap.size(); i++) {
+					isCheckedMap.put(i, false);
+				}
+				
+				volleyPost(listdate.get(position).getId(),listdate.get(position).getNumber(),listdate.get(position).getPrice());
 				
 				
 				break;
 			}
 		}
-		private void volleyPost(String id) {
+		private void volleyPost(String id,final String num, final String money) {
 			SharedPreferences pref = context.getSharedPreferences("myPref", context.MODE_PRIVATE);
 			String accessToken = pref.getString("accessToken", "");
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("accessToken", accessToken);
 			map.put("id", id);
-			VolleyRequest.RequestPost(context, 
-					"http://172.16.40.47/shop/index.php/home/GoodsToCar/deleteGoodsForCart",
-					"deleteGoodsForCart", map,
+			VolleyRequest.RequestPost(context, Urls.DELETE_GOODS_FOR_CART,"DELETE_GOODS_FOR_CART", map,
 					new VolleyAbstract(context,VolleyAbstract.listener,VolleyAbstract.errorListener) {
 						
 						@Override
 						public void onMySuccess(String result) {
+							System.out.println("aaaaaaaaaaa"+result);
 							DeleteGoodsForCartType data=JsonUtil.parseJsonToBean(result, DeleteGoodsForCartType.class);
 							switch (data.getErrorcode()) {
 							case 0:
@@ -195,6 +199,11 @@ public class ShoppingcarAdapter extends BaseAdapter{
 								Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
 								listdate.remove(position);
 								notifyDataSetChanged();
+								number=0;
+								Total =0.00f;
+								
+								ShoppingcarFragment.tv_commodityQuantity.setText("共0件商品");
+								ShoppingcarFragment.tv_Total.setText("￥0.00元");
 								
 								break;
 

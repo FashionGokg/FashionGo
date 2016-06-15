@@ -1,65 +1,121 @@
 package com.maifeng.fashiongo;
 
+import com.maifeng.fashiongo.constant.Urls;
+
 import android.app.Activity;
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.KeyEvent;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-public class FeedBackAcitvtty extends Activity implements OnClickListener{
-	private View topbar;
-	private TextView tv_title;
-	private LinearLayout ll_returnbtn;
+public class FeedBackAcitvtty extends Activity{
+	 private ProgressDialog dialog;
+	 private WebView webView;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+	// TODO Auto-generated method stub
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.webview);
+	init();
 	
-	private EditText ed_title,ed_context;
-	private Button btn_push;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.feedback_layout);
+}
+private void init() {
+	// TODO Auto-generated method stub
+	webView = (WebView) findViewById(R.id.user_access_protocol);
+	// WebView加载本地资源
+	// webView.loadUrl("file:///android_asset/example.html");
+	// WebView加载web资源
+	webView.loadUrl(Urls.TIPS);
+	// 覆盖WebView默认通过第三方或者是系统浏览器打开网页的行为，使得网页可以在WebVIew中打开
+	webView.setWebViewClient(new WebViewClient(){
 		
-		initView();
+		@Override
+		public boolean shouldOverrideUrlLoading(WebView view, String url) {
+			// TODO Auto-generated method stub
+			//返回值是true的时候控制网页在WebView中去打开，如果为false调用系统浏览器或第三方浏览器去打开
+			view.loadUrl(url);
+			return true;
+		}
+		//WebViewClient帮助WebView去处理一些页面控制和请求通知
 		
-	}
-
-	private void initView() {
-		topbar = findViewById(R.id.topbar);
-		ll_returnbtn=(LinearLayout) findViewById(R.id.ll_returnbtn);
-		tv_title = (TextView) topbar.findViewById(R.id.tv_title);
-		ed_title = (EditText) findViewById(R.id.ed_title);
-		ed_context = (EditText) findViewById(R.id.ed_context);
-		btn_push = (Button) findViewById(R.id.btn_push);
+	});
+	//启用支持JavaScript
+	WebSettings settings = webView.getSettings();
+	settings.setJavaScriptEnabled(true);
+	//WebView加载页面优先使用缓存加载
+	settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+	webView.setWebChromeClient(new WebChromeClient(){
 		
-		tv_title.setText("意见反馈");
-		topbar.findViewById(R.id.ll_functionbtn).setVisibility(View.INVISIBLE);
-		ll_returnbtn.setOnClickListener(this);
-		btn_push.setOnClickListener(this);
-	}
+		@Override
+		public void onProgressChanged(WebView view, int newProgress) {
+			// TODO Auto-generated method stub
+            //newProgress 1-100之间的整数
+			if(newProgress==100)
+			{
+				//网页加载完毕，关闭ProgressDialog
+				closeDialog();
+			}
+			else
+			{
+				//网页正在加载,打开ProgressDialog
+				openDialog(newProgress);
+			}
+		}
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.ll_returnbtn:
-			Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-			startActivity(intent);
-			finish();
-			break;
-		case R.id.btn_push:
-			String title = ed_title.getText().toString().trim();
-			String context = ed_context.getText().toString().trim();
-			//提交操作  开线程 耗时网络操作
-			Toast.makeText(getApplicationContext(), "正在提交", Toast.LENGTH_SHORT).show();
-			break;
+		private void closeDialog() {
+			// TODO Auto-generated method stub
+              if(dialog!=null&&dialog.isShowing())
+              {
+            	     dialog.dismiss();
+            	     dialog=null;
+              }
+		}
 
-		default:
-			break;
+		private void openDialog(int newProgress) {
+			// TODO Auto-generated method stub
+			if(dialog==null)
+			{
+				dialog=new ProgressDialog(FeedBackAcitvtty.this);
+				dialog.setTitle("正在加载");
+				dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+				dialog.setProgress(newProgress);
+				dialog.show();
+				
+			}
+			else
+			{
+				dialog.setProgress(newProgress);
+			}
+		
+			
+		}
+	});
+	
+	
+	
+}
+
+//改写物理按键——返回的逻辑
+@Override
+public boolean onKeyDown(int keyCode, KeyEvent event) {
+	// TODO Auto-generated method stub
+	if(keyCode==KeyEvent.KEYCODE_BACK)
+	{
+		//Toast.makeText(this, webView.getUrl(), Toast.LENGTH_SHORT).show();
+		if(webView.canGoBack())
+		{
+			webView.goBack();//返回上一页面
+			return true;
+		}
+		else
+		{
+			System.exit(0);//退出程序
 		}
 	}
+	return super.onKeyDown(keyCode, event);
+}
+
 }

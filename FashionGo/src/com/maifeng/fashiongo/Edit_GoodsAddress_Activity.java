@@ -3,15 +3,12 @@ package com.maifeng.fashiongo;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-import com.maifeng.fashiongo.base.Delete_GetAddressType;
+import com.maifeng.fashiongo.base.Detail_AddressData;
+import com.maifeng.fashiongo.base.Detail_AddressType;
 import com.maifeng.fashiongo.base.Edit_GetAddressType;
-import com.maifeng.fashiongo.constant.UrlAddress;
 import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
-import com.maifeng.fashiongo.util.LogUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
@@ -22,12 +19,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Edit_GoodsAddress_Activity extends Activity {
 
@@ -35,30 +32,67 @@ public class Edit_GoodsAddress_Activity extends Activity {
 	private LinearLayout ll_returnbtn;
 	private TextView tv_title;
 	private LinearLayout ll_functionbtn;
+	private RelativeLayout relative_pca;
 	private TextView tv_name_function;
-	
-
 	private EditText dl_name;
 	private EditText dl_phone;
-	private TextView dl_province;
-	private TextView dl_city;
-	private TextView dl_area;
+	public static TextView dl_province;
+	public static TextView dl_city;
+	public static TextView dl_area;
 	private EditText dl_detailaddress;
-	
+	private Detail_AddressData detail_AddressData;
 	private Intent intent;
 	private Button edit_save;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_goodsaddress);
 		intent=this.getIntent();
-
 		initView();
+		getDetailAddress();
 		idGet();
 	}
-	
+	private void getDetailAddress() {
+		// 组装请求数据
+		Map<String, String> map = new HashMap<String, String>();
+		// 登录标识
+		SharedPreferences pref = getSharedPreferences("myPref", MODE_PRIVATE);
+		String accessToken = pref.getString("accessToken", "");
+		String idString = intent.getStringExtra("id");
+		map.put("accessToken", accessToken);
+		map.put("id", idString);
+		VolleyRequest.RequestPost(this, Urls.GET_ADDRESS_DETAIL,
+				"GET_ADDRESS_DETAIL", map, new VolleyAbstract(this,
+						VolleyAbstract.listener, VolleyAbstract.errorListener) {
+					@Override
+					public void onMySuccess(String result) {
+						// TODO Auto-generated method stub
+						Detail_AddressType dType = JsonUtil.parseJsonToBean(
+								result, Detail_AddressType.class);
+						detail_AddressData = dType.getData();
+						dl_province.setText(detail_AddressData.getProvince());
+						dl_city.setText(detail_AddressData.getCity());
+						dl_area.setText(detail_AddressData.getArea());
+						dl_detailaddress.setText(detail_AddressData
+								.getAddress());
+						dl_name.setText(detail_AddressData.getName());
+						dl_phone.setText(detail_AddressData.getPhone());
+						// 设置将光标追踪至内容的后面
+						dl_detailaddress.setSelection(dl_detailaddress
+								.getText().length());
+						dl_name.setSelection(dl_name.getText().length());
+						dl_phone.setSelection(dl_phone.getText().length());
+					}
+
+					@Override
+					public void onMyError(VolleyError error) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+
+	}
 	private void initView() {
 		// TODO Auto-generated method stub
 		//头部相关设置
@@ -75,19 +109,11 @@ public class Edit_GoodsAddress_Activity extends Activity {
 		edit_save=(Button)findViewById(R.id.edit_save);
 		dl_name=(EditText)findViewById(R.id.dl_name);
 		dl_phone=(EditText)findViewById(R.id.dl_phone);
+		relative_pca=(RelativeLayout)findViewById(R.id.relative_pca);
 		dl_province=(TextView)findViewById(R.id.dl_province);
 		dl_city=(TextView)findViewById(R.id.dl_city);
 		dl_area=(TextView)findViewById(R.id.dl_area);
 		dl_detailaddress=(EditText)findViewById(R.id.dl_detailaddress);
-		
-		//从intent中取出数据
-//		String name1 = intent.getStringExtra("name");
-//		String phone1= intent.getStringExtra("phone");
-//		String province1 = intent.getStringExtra("province");
-//		String city1 = intent.getStringExtra("city");
-//		String area1= intent.getStringExtra("area");
-//		String address1 = intent.getStringExtra("address");
-		//设置显示数据
 		dl_province.setText(intent.getStringExtra("province"));
 		dl_city.setText(intent.getStringExtra("city"));
 		dl_area.setText(intent.getStringExtra("area"));
@@ -111,7 +137,7 @@ public class Edit_GoodsAddress_Activity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				deltetPost();
-				finish();
+			
 			}
 		});
 		//保存
@@ -123,22 +149,26 @@ public class Edit_GoodsAddress_Activity extends Activity {
 				editPost();
 			}
 		});
+		// 选择省市县
+		relative_pca.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent pcaIntent = new Intent(Edit_GoodsAddress_Activity.this,
+						Provice_Activity.class);
+				pcaIntent.putExtra("typeString", 1);
+				startActivity(pcaIntent);
+			}
+		});
 		
-	}
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
 	}
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		//实例化请求队列
-		RequestQueue queue = Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue();
-		//活动销毁时取消请求减少内存消耗
-		queue.cancelAll("DELETE_ADDRESS");
-		queue.cancelAll("EDIT_ADDRESS");
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("DELETE_ADDRESS");
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("EDIT_ADDRESS");
 	}
 	//删除
 	private void deltetPost(){
@@ -157,12 +187,11 @@ public class Edit_GoodsAddress_Activity extends Activity {
 					public void onMySuccess(String result) {
 						// TODO Auto-generated method stub
 						Edit_GetAddressType eType = JsonUtil.parseJsonToBean(result,Edit_GetAddressType.class);
-						System.out.println("----->"+eType.getMessage());
+						Toast.makeText(getApplicationContext(), eType.getMessage(), Toast.LENGTH_SHORT).show();
 					}
 					
 					@Override
 					public void onMyError(VolleyError error) {
-						System.out.println("解析失败");
 					}
 				});
 	}
@@ -195,12 +224,11 @@ public class Edit_GoodsAddress_Activity extends Activity {
 					public void onMySuccess(String result) {
 						// TODO Auto-generated method stub
 						Edit_GetAddressType eType = JsonUtil.parseJsonToBean(result,Edit_GetAddressType.class);
-						System.out.println("----->"+eType.getMessage());
+						Toast.makeText(getApplicationContext(), eType.getMessage(), Toast.LENGTH_SHORT).show();
 					}
 					
 					@Override
 					public void onMyError(VolleyError error) {
-						System.out.println("解析失败");
 					}
 				});
 	}

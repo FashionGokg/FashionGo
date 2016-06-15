@@ -21,6 +21,7 @@ import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
+import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 public class MyOrder extends Activity implements OnClickListener{
 	//初始化顶部导航栏控件
@@ -33,8 +34,6 @@ public class MyOrder extends Activity implements OnClickListener{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myorder_layout);
 		topbar =findViewById(R.id.topbar);
@@ -155,6 +154,13 @@ public class MyOrder extends Activity implements OnClickListener{
 						System.out.println("请求失败了");
 					}
 				});
+	}
+	
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("GET_MY_ORDER");
 	}
 	
 }

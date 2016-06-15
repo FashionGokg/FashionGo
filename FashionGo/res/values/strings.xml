@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">FashionGo</string>
+    <string name="app_name">时尚Go</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     
@@ -26,5 +26,12 @@
     <string name="goods_text_city">珠海市</string>
     <string name="goods_text_area">金湾区</string>
     <string name="goods_text_address">省科干</string>
+    
+    <string name="header_hint_refresh_normal">下拉刷新数据 </string>
+    <string name="header_hint_refresh_ready">松开刷新数据</string>
+    <string name="header_hint_refresh_loading">数据刷新中&#8230;</string>
+    <string name="header_hint_refresh_time">最近更新时间：</string>
+    <string name="footer_hint_load_normal">加载更多 </string>
+    <string name="footer_hint_load_ready">松开加载更多</string>
 
 </resources>

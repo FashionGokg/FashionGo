@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
-import com.google.gson.JsonSyntaxException;
 import com.maifeng.fashiongo.adapter.ClassifyThreeAdapter;
 import com.maifeng.fashiongo.base.ClassifyThreeData;
 import com.maifeng.fashiongo.base.ClassifyThreeType;
@@ -36,13 +34,13 @@ import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
  * 
  */
 public class ThreeClassifyActivity extends Activity {
+	public static ThreeClassifyActivity threeClassifyActivity;
 	private List<ClassifyThreeData> threelist;
 	private List<ClassifyTwoData> twolist;
 	private ListView mListView;
 	private View topbar;
 	private LinearLayout ll_returnbtn;
 	private TextView tv_title;
-//	private String urlThree = "http://172.16.40.47/shop/index.php/home/Classify/getClassifyThree";
 	private RequestQueue queue = Volleyhandle
 			.getInstance(this.getApplication()).getRequestQueue();
 
@@ -50,9 +48,8 @@ public class ThreeClassifyActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		// 隐藏标题栏
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_classify_three);
+		threeClassifyActivity=this;
 		initView();
 
 	}
@@ -74,7 +71,8 @@ public class ThreeClassifyActivity extends Activity {
 				// 向GoodListActivity传递数据
 				Intent intent = new Intent(ThreeClassifyActivity.this,GoodListActivity.class);
 				intent.putExtra("ClassifyThreeId",threelist.get(position).getClassifyThreeId());
-				System.out.println("--------------******"+threelist.get(position).getClassifyThreeId());
+				
+				intent.putExtra("Code","classify");
 				startActivity(intent);
 
 			}
@@ -86,12 +84,11 @@ public class ThreeClassifyActivity extends Activity {
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("GET_CLASSIFY_THREE");
 	}
 
 	/**
-	 * 获取三级分类数据 http://172.16.40.80/shop/index.php/home/getClassifyThree
-	 * http://172.16.40.80/shop/index.php/home/Classify/getClassifyThree
-	 * UrlAddress.GET_CLASSIFY_THREE
+	 * 获取三级分类数据
 	 */
 	private void ThreeData(String ClassifyTwoId) {
 		// 组装请求数据ClassifyTwoId

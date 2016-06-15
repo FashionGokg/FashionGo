@@ -8,20 +8,19 @@ import com.google.gson.Gson;
 import com.maifeng.fashiongo.R;
 import com.maifeng.fashiongo.base.RegisterType;
 import com.maifeng.fashiongo.base.RegisterVerifyType;
-import com.maifeng.fashiongo.constant.UrlAddress;
+import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
+import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -54,7 +53,6 @@ public class RegisterActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.register_layout);
 		initView();
 
@@ -105,7 +103,13 @@ public class RegisterActivity extends Activity implements OnClickListener{
 		
 		
 	}
-
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("GetVerify");
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("REGISTER");
+	}
 
 
 	/**
@@ -117,7 +121,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("userPhone", phone);
 				map.put("type", "0");
-				VolleyRequest.RequestPost(this, UrlAddress.GetVerify, "GetVerify",map, new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				VolleyRequest.RequestPost(this, Urls.GetVerify, "GetVerify",map, new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
 					
 					@Override
 					public void onMySuccess(String result) {
@@ -127,6 +131,8 @@ public class RegisterActivity extends Activity implements OnClickListener{
 						System.out.println(result);
 						if(RType.getErrorcode().equals("1001")){
 							Toast.makeText(RegisterActivity.this, RType.getMessage(), Toast.LENGTH_SHORT).show();
+						}else if (RType.getErrorcode().equals("0")) {
+							Toast.makeText(RegisterActivity.this, "验证码："+RType.getData(), Toast.LENGTH_LONG).show();
 						}
 					}
 					
@@ -156,7 +162,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
 		map.put("SIM","123456");
 		map.put("IMEI", "123456");
 		//发起Post请求
-		VolleyRequest.RequestPost(this, UrlAddress.REGISTER, "REGISTER", map,
+		VolleyRequest.RequestPost(this, Urls.REGISTER, "REGISTER", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
 
 			@Override

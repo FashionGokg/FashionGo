@@ -17,6 +17,7 @@ import com.maifeng.fashiongo.base.ClassifyOneData;
 import com.maifeng.fashiongo.base.ClassifyOneType;
 import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
+import com.maifeng.fashiongo.util.KeyboradUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
@@ -24,24 +25,31 @@ import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 public class FirstClassifyAcitvity extends Activity {
 
+	public static FirstClassifyAcitvity firstClassifyAcitvity;
 	private List<ClassifyOneData> onelist;
 	private List<ClassifyTwoData> twolist;
 	private ListView mListView;
 	private GridView mGridView;
+	private EditText et_search;
+	private ClassifyOneAdapter oneAdapter;
 	private LinearLayout layout_left;
-//	private String urlOne = "http://172.16.40.47/shop/index.php/home/Classify/getClassifyOne";
-//	private String urlTwo = "http://172.16.40.47/shop/index.php/home/Classify/getClassifyTwo";
 	private RequestQueue queue = Volleyhandle
 			.getInstance(this.getApplication()).getRequestQueue();
 
@@ -49,10 +57,18 @@ public class FirstClassifyAcitvity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		// 隐藏标题栏
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.first_classify);
+		firstClassifyAcitvity=this;
+		initView();
 
+
+	}
+	
+	
+
+	private void initView() {
+		// TODO Auto-generated method stub
+		et_search = (EditText) findViewById(R.id.et_search);
 		mGridView = (GridView) findViewById(R.id.gv_seconed_choice);
 		mListView = (ListView) findViewById(R.id.lv_first_choice);
 		layout_left = (LinearLayout) findViewById(R.id.layot_left);
@@ -63,8 +79,33 @@ public class FirstClassifyAcitvity extends Activity {
 				finish();
 			}
 		});
+		//搜索
+				et_search.setOnEditorActionListener(new OnEditorActionListener() {
+					
+					@Override
+					public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+						if (actionId==EditorInfo.IME_ACTION_SEARCH) {
+							//关闭软件盘
+							KeyboradUtil.closeKeyborad(FirstClassifyAcitvity.this);
+							if (TextUtils.isEmpty(et_search.getText())||et_search.getText().toString().trim().length()==0) {
+								Toast.makeText(getApplicationContext(), "搜索内容不能为空", Toast.LENGTH_SHORT).show();
+							}else {
 
+								Intent intent = new Intent(FirstClassifyAcitvity.this, GoodListActivity.class);
+								
+								String keyword=et_search.getText().toString().trim();
+								intent.putExtra("first_keyword", keyword);
+								intent.putExtra("Code", "FirstA");
+								startActivity(intent);
+							}
+							
+						}
+						return false;
+					}
+				});
 	}
+
+
 
 	@Override
 	protected void onResume() {
@@ -79,7 +120,11 @@ public class FirstClassifyAcitvity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				volleyPost(onelist.get(position).getClassifyId());
+				if (ClassifyOneAdapter.selected != position) {
+					ClassifyOneAdapter.selected = position;
+					oneAdapter.notifyDataSetChanged();
+					volleyPost(onelist.get(position).getClassifyId());
+				}
 			}
 		});
 
@@ -92,8 +137,6 @@ public class FirstClassifyAcitvity extends Activity {
 				Intent intent = new Intent(FirstClassifyAcitvity.this,
 						ThreeClassifyActivity.class);
 				intent.putExtra("ClassifyTwoId", twolist.get(position)
-						.getClassifyTwoId());
-				System.out.println("二级ID+++++++++++"+twolist.get(position)
 						.getClassifyTwoId());
 				startActivity(intent);
 			}
@@ -127,7 +170,7 @@ public class FirstClassifyAcitvity extends Activity {
 						onelist = JsonUtil.parseJsonToBean(result,
 								ClassifyOneType.class).getData();
 						// 绑定适配器
-						ClassifyOneAdapter oneAdapter = new ClassifyOneAdapter(
+						oneAdapter = new ClassifyOneAdapter(
 								getApplicationContext(), onelist);
 						mListView.setAdapter(oneAdapter);
 						// 设置默认

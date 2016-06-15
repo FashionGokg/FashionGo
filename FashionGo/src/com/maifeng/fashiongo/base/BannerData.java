@@ -2,18 +2,19 @@ package com.maifeng.fashiongo.base;
 
 public class BannerData {
 	public String bannerImage;
-	public String goodsCode;
+	public String goodscode;
 	public String getBannerImage() {
 		return bannerImage;
 	}
 	public void setBannerImage(String bannerImage) {
 		this.bannerImage = bannerImage;
 	}
-	public String getGoodsCode() {
-		return goodsCode;
+	public String getGoodscode() {
+		return goodscode;
 	}
-	public void setGoodsCode(String goodsCode) {
-		this.goodsCode = goodsCode;
+	public void setGoodscode(String goodscode) {
+		this.goodscode = goodscode;
 	}
+
 
 }

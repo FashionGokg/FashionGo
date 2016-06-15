@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +20,6 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.maifeng.fashiongo.base.LoginData;
 import com.maifeng.fashiongo.base.LoginType;
-import com.maifeng.fashiongo.constant.UrlAddress;
 import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
@@ -29,7 +29,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 	private Button button;
 	private TextView tv_register,tv_forgetpwd;
 	private TextView tv_name_function,tv_title;
-
+	private LinearLayout ll_returnbtn;
 	private EditText et_phonenumber,et_password;
 	private LoginData data;
 	@Override
@@ -38,9 +38,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_layout);
-
 		initView();
-
 	}
 
 	private void initView() {
@@ -49,12 +47,14 @@ public class LoginActivity extends Activity implements OnClickListener{
 		tv_forgetpwd = (TextView) findViewById(R.id.tv_forgetpwd);
 		et_phonenumber =(EditText) findViewById(R.id.et_phonenumber);
 		et_password = (EditText) findViewById(R.id.et_password);
+		ll_returnbtn = (LinearLayout) findViewById(R.id.ll_returnbtn);
 		tv_name_function = (TextView) findViewById(R.id.tv_name_function);
 		tv_name_function.setVisibility(View.GONE);
+		
 
 		tv_title =(TextView) findViewById(R.id.tv_title);
 		tv_title.setText("µÇÂ¼");
-
+		ll_returnbtn.setOnClickListener(this);
 		button.setOnClickListener(this);
 		tv_register.setOnClickListener(this);
 		tv_forgetpwd.setOnClickListener(this);
@@ -62,15 +62,13 @@ public class LoginActivity extends Activity implements OnClickListener{
 
 
 
-	private void volleyPost(String userName,String password){
+	private void volleyPost(final String userName,String password){
 
 		Map<String, String> map = new HashMap<String, String>();
-//		map.put("userName", userName);
-//		map.put("password", password);
-		map.put("userName", "13626214191");
-		map.put("password", "1234");		
+		map.put("userName", userName);
+		map.put("password", password);
 		map.put("system", "android");
-		VolleyRequest.RequestPost(this, UrlAddress.LOGIN, "GetVerify",map,
+		VolleyRequest.RequestPost(this, Urls.LOGIN, "GetVerify",map,
 				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
 
 			@Override
@@ -85,6 +83,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 						SharedPreferences pref = getSharedPreferences("myPref", MODE_PRIVATE);
 						Editor editor = pref.edit();
 						editor.clear();
+						editor.putString("account_number", userName);
 						editor.putString("accessToken", data.getAccessToken());
 						editor.commit();
 
@@ -112,28 +111,39 @@ public class LoginActivity extends Activity implements OnClickListener{
 			}
 			@Override
 			public void onMyError(VolleyError error) {
-
+				Toast.makeText(LoginActivity.this, "µÇÂ¼Ê§°ÜÇë¼ì²éÍøÂç", Toast.LENGTH_SHORT).show();
 			}
 		});
 
 	}	
 	@Override
 	public void onClick(View v) {
+		Intent intent = new Intent();
 		switch (v.getId()) {
 		case R.id.btn_login:
 			String userName = et_phonenumber.getText().toString().trim();
 			String password = et_password.getText().toString().trim();
+			/**
+			 * Ä¬ÈÏÕË»§ÃÜÂë
+			 */
+//			userName = "13750092359";
+//			password = "123456";
+			
 			volleyPost(userName, password);		
 			break;
 		case R.id.tv_register:
-			Intent intent1 = new Intent(getApplicationContext(),RegisterActivity.class);
-			startActivity(intent1);
+			intent.setClass(getApplicationContext(),RegisterActivity.class);
+			startActivity(intent);
 			break;
 			
 		case R.id.tv_forgetpwd:
-			Intent intent2 = new Intent(getApplicationContext(),FindPasswordActivity.class);
-			startActivity(intent2);
-		default:
+			intent.setClass(getApplicationContext(),FindPasswordActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.ll_returnbtn:
+			intent.setClass(getApplicationContext(),MainActivity.class);
+			startActivity(intent);
+			finish();
 			break;
 		}
 

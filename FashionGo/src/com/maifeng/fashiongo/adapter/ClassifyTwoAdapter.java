@@ -35,7 +35,7 @@ public class ClassifyTwoAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return list.size();
+		return list == null?0:list.size();
 	}
 
 	@Override

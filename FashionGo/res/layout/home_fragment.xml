@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
- <ScrollView 
+
+<LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+  <include layout="@layout/include_hometitle" />
+ <ScrollView 
+    
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,13 +18,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
+    
+    <include layout="@layout/header_layout"
+        android:id="@+id/header_layout"/>
 
-    <include layout="@layout/include_hometitle" />
+
     
   	<com.maifeng.fashiongo.banner.ImageCycleView 
   	    android:id="@+id/ad_view"
         android:layout_width="match_parent"
-        android:layout_height="150dp" >
+        android:layout_height="150dp" 
+        android:background="@color/white">
   	    
   	</com.maifeng.fashiongo.banner.ImageCycleView>
   	
@@ -82,7 +93,9 @@
   	    android:paddingLeft="5dp"
     	android:paddingRight="5dp"
   	    ></ListView>
-    	
+    <include layout="@layout/footer_layout"
+        android:id="@+id/footer_layout"/>
 </LinearLayout>
 
 </ScrollView> 
+</LinearLayout>

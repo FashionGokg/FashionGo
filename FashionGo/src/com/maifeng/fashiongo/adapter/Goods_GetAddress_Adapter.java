@@ -16,6 +16,7 @@ public class Goods_GetAddress_Adapter extends BaseAdapter {
 	
 	private Context context;
 	private List<Goods_GetAddressData> data;
+	private String isDeflut = "1";
 	public Goods_GetAddress_Adapter(Context context,List<Goods_GetAddressData> data){
 		this.context=context;
 		this.data=data;
@@ -23,7 +24,7 @@ public class Goods_GetAddress_Adapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return data.size();
+		return data == null?0:data.size();
 		
 	}
 
@@ -43,28 +44,48 @@ public class Goods_GetAddress_Adapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup arg2) {
 		// TODO Auto-generated method stub
 		ViewHolder viewHolder = null;
-		if (convertView==null) {
-			convertView=LayoutInflater.from(context).inflate(R.layout.personal_cneter_goodsaddress_style,null);
+		if (convertView == null) {
+			convertView = LayoutInflater.from(context).inflate(
+					R.layout.personal_cneter_goodsaddress_style, null);
 			viewHolder = new ViewHolder();
-			viewHolder.gtv_name=(TextView)convertView.findViewById(R.id.gtv_name);
-			viewHolder.gtv_phone=(TextView)convertView.findViewById(R.id.gtv_phone);
-			viewHolder.gtv_province=(TextView)convertView.findViewById(R.id.gtv_province);
-			viewHolder.gtv_city=(TextView)convertView.findViewById(R.id.gtv_city);
-			viewHolder.gtv_area=(TextView)convertView.findViewById(R.id.gtv_area);
-			viewHolder.gtv_address=(TextView)convertView.findViewById(R.id.gtv_address);
+			viewHolder.gtv_name = (TextView) convertView
+					.findViewById(R.id.gtv_name);
+			viewHolder.gtv_phone = (TextView) convertView
+					.findViewById(R.id.gtv_phone);
+			viewHolder.gtv_province = (TextView) convertView
+					.findViewById(R.id.gtv_province);
+			viewHolder.gtv_city = (TextView) convertView
+					.findViewById(R.id.gtv_city);
+			viewHolder.gtv_area = (TextView) convertView
+					.findViewById(R.id.gtv_area);
+			viewHolder.gtv_address = (TextView) convertView
+					.findViewById(R.id.gtv_address);
 			convertView.setTag(viewHolder);
-		}else {
-			viewHolder=(ViewHolder)convertView.getTag();
+		} else {
+			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		viewHolder.gtv_name.setText(data.get(position).getName());
-		viewHolder.gtv_phone.setText(data.get(position).getPhone());
-		viewHolder.gtv_province.setText(data.get(position).getProvince());
-		viewHolder.gtv_city.setText(data.get(position).getCity());
-		viewHolder.gtv_area.setText(data.get(position).getArea());
-		viewHolder.gtv_address.setText(data.get(position).getAddress());
-		
+		if (isDeflut.equals(data.get(position).getIsDefault())) {
+			viewHolder.gtv_name.setText(data.get(position).getName());
+			viewHolder.gtv_phone.setText(data.get(position).getPhone());
+			viewHolder.gtv_province.setText("[д╛хо]"
+					+ data.get(position).getProvince());
+			viewHolder.gtv_city.setText(data.get(position).getCity());
+			viewHolder.gtv_area.setText(data.get(position).getArea());
+			viewHolder.gtv_address.setText(data.get(position).getAddress());
+			notifyDataSetChanged();
+		} else {
+			viewHolder.gtv_name.setText(data.get(position).getName());
+			viewHolder.gtv_phone.setText(data.get(position).getPhone());
+			viewHolder.gtv_province.setText(data.get(position).getProvince());
+			viewHolder.gtv_city.setText(data.get(position).getCity());
+			viewHolder.gtv_area.setText(data.get(position).getArea());
+			viewHolder.gtv_address.setText(data.get(position).getAddress());
+			notifyDataSetChanged();
+		}
+
 		return convertView;
 	}
+
 	private class ViewHolder{
 		TextView gtv_name;
 		TextView gtv_phone;

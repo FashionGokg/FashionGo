@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:liekkas="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/readd_bg"
     android:orientation="vertical" >
-    <include 
-        layout="@layout/topbar"
-        android:id="@+id/topbar"/>
-       <RelativeLayout
+
+    <include
+        android:id="@+id/topbar"
+        layout="@layout/topbar" />
+
+    <RelativeLayout
         android:id="@+id/relative_imageview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:background="#FFFFFF"
-        android:padding="10dp"
-        >
+        android:padding="10dp" >
 
         <ImageView
             android:id="@+id/imageView2"
@@ -24,25 +27,25 @@
             android:padding="8dp"
             android:src="@drawable/ico_go" />
 
-        <ImageView
+        <com.maifeng.fashiongo.banner.CiecleImageView
             android:id="@+id/image_head"
             android:layout_width="60dp"
-	        android:layout_height="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/img_png6" />
-        
+            android:src="@drawable/img_png6"
+            liekkas:outCiecleColor="#ffffff"
+            liekkas:outCiecleWith="1dp" />
     </RelativeLayout>
     
-    <RelativeLayout
+   <RelativeLayout
         android:id="@+id/username_relayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:background="#FFFFFF"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:padding="8dp"
-        >
+        android:background="#FFFFFF"
+        android:padding="8dp" >
 
         <TextView
             android:id="@+id/person_user_name"
@@ -50,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:textSize="14sp"
             android:text="姓名" />
 
         <EditText
@@ -58,24 +62,22 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/person_user_name"
-            android:singleLine="true"
             android:background="@null"
-            android:textSize="14sp"
+            android:ems="10"
             android:hint="请输入姓名"
-            android:ellipsize="end"
-            android:gravity="right"
-            android:ems="10" >
+            android:paddingLeft="30dp"
+            android:singleLine="true"
+            android:textSize="14sp" >
         </EditText>
-
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/replaceage_relayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:background="#FFFFFF"
+        android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:padding="8dp"
-        >
+        android:background="#FFFFFF"
+        android:padding="8dp" >
 
         <TextView
             android:id="@+id/textView2"
@@ -83,6 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:textSize="14sp"
             android:text="年龄" />
 
         <EditText
@@ -91,17 +94,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView2"
-            android:singleLine="true"
             android:background="@null"
-            android:textSize="14sp"
-            android:hint="0"
             android:ellipsize="end"
-            android:gravity="right"
-            android:ems="10" >
-
+            android:ems="10"
+            android:hint="0"
+            android:numeric="integer"
+            android:paddingLeft="30dp"
+            android:singleLine="true"
+            android:textSize="14sp" >
         </EditText>
-
-     </RelativeLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/replacesex_relayout"
@@ -117,6 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:textSize="14sp"
             android:text="性别" />
 
         <ImageView
@@ -131,22 +134,20 @@
             android:id="@+id/textsex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView2"
-            android:layout_alignBottom="@+id/textView2"
-            android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@+id/imageView3"
-            />
+            android:layout_alignTop="@+id/imageView3"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/textView2"
+            android:text="请选择性别" />
 
     </RelativeLayout>
 
-      <RelativeLayout
+    <RelativeLayout
         android:id="@+id/replaceqq_relayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:background="#FFFFFF"
+        android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:padding="8dp"
-        >
+        android:background="#FFFFFF"
+        android:padding="8dp" >
 
         <TextView
             android:id="@+id/textView2"
@@ -154,31 +155,32 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="QQ" />
+            android:textSize="14sp"
+            android:text="Q Q" />
 
         <EditText
             android:id="@+id/editqq"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView2"
-            android:singleLine="true"
             android:background="@null"
-            android:textSize="14sp"
-            android:hint="请输入QQ"
             android:ellipsize="end"
-            android:gravity="right"
-            android:ems="10" >
-            </EditText>
-     </RelativeLayout>
-      <RelativeLayout
+            android:ems="10"
+           	android:paddingLeft="34dp"
+            android:hint="请输入QQ"
+            android:singleLine="true"
+            android:textSize="14sp" >
+        </EditText>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/replaceemail_relayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:background="#FFFFFF"
+        android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:padding="8dp"
-        >
+        android:background="#FFFFFF"
+        android:padding="8dp" >
 
         <TextView
             android:id="@+id/textView2"
@@ -186,6 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:textSize="14sp"
             android:text="邮箱" />
 
         <EditText
@@ -194,17 +197,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView2"
-            android:singleLine="true"
             android:background="@null"
-            android:textSize="14sp"
-            android:hint="请输入邮箱"
             android:ellipsize="end"
-            android:gravity="right"
-            android:ems="10" >
-            </EditText>
-     </RelativeLayout>
-      
-     <RelativeLayout
+            android:ems="10"
+            android:paddingLeft="30dp"
+            android:hint="请输入邮箱"
+            android:singleLine="true"
+            android:textSize="14sp" >
+        </EditText>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/province_relayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -218,6 +221,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:textSize="14sp"
             android:text="省份" />
 
         <ImageView
@@ -234,12 +238,14 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textView2"
             android:layout_alignBottom="@+id/textView2"
-            android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@+id/imageView3"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/textView2"
+            android:textColor="#000000"
             android:text="请选择省份" />
 
     </RelativeLayout>
-     <RelativeLayout
+
+    <RelativeLayout
         android:id="@+id/city_relayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -253,6 +259,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:textSize="14sp"
             android:text="城市" />
 
         <ImageView
@@ -267,13 +274,14 @@
             android:id="@+id/textcity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView2"
-            android:layout_alignBottom="@+id/textView2"
-            android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@+id/imageView3"
+            android:layout_alignTop="@+id/imageView3"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/textView2"
+            android:textColor="#000000"
             android:text="请选择城市" />
 
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/area_relayout"
         android:layout_width="match_parent"
@@ -288,6 +296,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:textSize="14sp"
             android:text="地区" />
 
         <ImageView
@@ -302,22 +311,21 @@
             android:id="@+id/textarea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView2"
-            android:layout_alignBottom="@+id/textView2"
-            android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@+id/imageView3"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/textView2"
+            android:textColor="#000000"
             android:text="请选择地区" />
 
     </RelativeLayout>
-   
-      <RelativeLayout
+
+    <RelativeLayout
         android:id="@+id/replaceaddress_relayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:background="#FFFFFF"
+        android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:padding="8dp"
-        >
+        android:background="#FFFFFF"
+        android:padding="8dp" >
 
         <TextView
             android:id="@+id/textView2"
@@ -325,6 +333,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:textSize="14sp"
             android:text="地址" />
 
         <EditText
@@ -333,14 +342,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView2"
-            android:singleLine="true"
             android:background="@null"
-            android:textSize="14sp"
-            android:hint="请填写地址"
             android:ellipsize="end"
-            android:gravity="right"
-            android:ems="10" >
-            </EditText>
-     </RelativeLayout>
+            android:ems="10"
+            android:paddingLeft="30dp"
+            android:hint="请填写地址"
+            android:singleLine="true"
+            android:textSize="14sp" >
+        </EditText>
+    </RelativeLayout>
 
 </LinearLayout>

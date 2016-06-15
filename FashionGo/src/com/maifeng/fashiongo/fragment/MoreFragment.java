@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maifeng.fashiongo.AboutUsActivity;
-import com.maifeng.fashiongo.FeedBackAcitvtty1;
+import com.maifeng.fashiongo.FeedBackAcitvtty;
 import com.maifeng.fashiongo.R;
 
 
@@ -60,7 +60,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			Toast.makeText(getActivity(), "Çå³ý»º´æ", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.tab_opinion:
-			Intent intent1 = new Intent(getActivity(),FeedBackAcitvtty1.class);
+			Intent intent1 = new Intent(getActivity(),FeedBackAcitvtty.class);
 			startActivity(intent1);
 			break;
 		case R.id.tab_update:

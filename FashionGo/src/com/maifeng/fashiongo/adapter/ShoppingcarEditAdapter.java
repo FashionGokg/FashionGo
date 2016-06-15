@@ -1,15 +1,12 @@
 package com.maifeng.fashiongo.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.maifeng.fashiongo.R;
-import com.maifeng.fashiongo.base.EditGoodsForCartType;
 import com.maifeng.fashiongo.base.ShoppingcarData;
-import com.maifeng.fashiongo.util.LogUtil;
 import com.maifeng.fashiongo.volleyhandle.MyImageCache;
 import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
@@ -38,7 +35,7 @@ public class ShoppingcarEditAdapter extends BaseAdapter{
 
 	@Override
 	public int getCount() {
-		return listdate.size();
+		return listdate == null?0:listdate.size();
 	}
 
 	@Override
@@ -103,7 +100,6 @@ public class ShoppingcarEditAdapter extends BaseAdapter{
 					Toast.makeText(context, "²»ÄÜÎª¿Õ", Toast.LENGTH_SHORT).show();
 				}else {
 					listdate.get(position).setNumber(String.valueOf(arg0));
-					LogUtil.e("PPPPPPPPPP", String.valueOf(arg0));
 				}
 				editlist =listdate;
 				

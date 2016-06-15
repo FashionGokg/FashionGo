@@ -6,15 +6,10 @@ import java.util.Map;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.ImageLoader.ImageCache;
 import com.android.volley.toolbox.NetworkImageView;
 import com.maifeng.fashiongo.R;
 import com.maifeng.fashiongo.base.Delete_MyShareType;
-import com.maifeng.fashiongo.base.GetMyCollectionData;
-import com.maifeng.fashiongo.base.GetMyOrderDaya;
 import com.maifeng.fashiongo.base.GetMyShareData;
-import com.maifeng.fashiongo.base.GetMyShareType;
-import com.maifeng.fashiongo.constant.UrlAddress;
 import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.volleyhandle.MyImageCache;
@@ -23,9 +18,6 @@ import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -81,6 +73,10 @@ public class GetMyShareAdapter extends BaseAdapter {
 		}else {
 			holder=(ViewHolder)convertvView.getTag();
 		}
+		//加载中显示的图片
+		holder.imageView.setDefaultImageResId(R.drawable.bg_loading_image);
+		//加载失败时显示的图片
+		holder.imageView.setErrorImageResId(R.drawable.bg_error_image);
 		holder.imageView.setImageUrl(list.get(position).getGoodsImage(), mImageLoader);
 		holder.text_goodstwo.setText(list.get(position).getGoodsName());
 		holder.text_serialnumber.setText(list.get(position).getGoodsCode());

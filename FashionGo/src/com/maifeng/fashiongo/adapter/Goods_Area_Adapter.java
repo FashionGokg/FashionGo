@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.maifeng.fashiongo.R;
 import com.maifeng.fashiongo.base.Goods_AreaData;
-import com.maifeng.fashiongo.base.Goods_CityData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,7 @@ public class Goods_Area_Adapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return data.size();
+		return data == null?0:data.size();
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
@@ -25,6 +24,7 @@ import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
+import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 public class GetMyCollectionActivity extends Activity {
 	//初始化顶部导航栏控件
@@ -40,26 +40,11 @@ public class GetMyCollectionActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.getmycollection);
-		list_mycollection = (ListView)findViewById(R.id.list_mycollection);
+
 		topbar();
 		collectionPost();
-		
-//		list_mycollection.setOnItemClickListener(new OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> arg0,View arg1, int arg2, long arg3) {
-//				// TODO Auto-generated method stub
-//				System.out.println("跳转到详情页"+data.get(arg2).goodsCode);
-//				Intent intent = new Intent(getApplicationContext(),GoodDetailActivity.class);
-//				intent.putExtra("goodsCode", data.get(arg2).goodsCode);
-//				startActivity(intent);
-//				finish();
-//				
-//			}
-//		});
 		
 	}
 	private void topbar(){
@@ -79,12 +64,20 @@ public class GetMyCollectionActivity extends Activity {
 				finish();
 			}
 		});
+		
+		list_mycollection = (ListView)findViewById(R.id.list_mycollection);
 	}
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 		
+	}
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("GET_MY_COLLECTION");
 	}
 	private void collectionPost(){
 		//组装请求数据
@@ -99,13 +92,28 @@ public class GetMyCollectionActivity extends Activity {
 					
 					@Override
 					public void onMySuccess(String result) {
-						System.out.println("返回的数据太阳"+result);
 						data = JsonUtil.parseJsonToBean(result, GetMyCollectionType.class).getData();
 						
 						adapter = new GetMyCollectionAdapter(getApplicationContext(), data, accessToken);
 						list_mycollection.setAdapter(adapter);
 						
-						System.out.println("跳转到详情页"+data.get(0).goodsCode);
+						list_mycollection.setOnItemClickListener(new OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> arg0,View arg1, int arg2, long arg3) {
+								// TODO Auto-generated method stub
+								Intent intent = new Intent(getApplicationContext(),GoodDetailActivity.class);
+								intent.putExtra("Code","mycollection");
+								intent.putExtra("goodsCode", data.get(arg2).goodsCode);
+								startActivity(intent);
+				
+								
+								finish();
+								
+							}
+						});
+
+						
 					}
 					@Override
 					public void onMyError(VolleyError error) {

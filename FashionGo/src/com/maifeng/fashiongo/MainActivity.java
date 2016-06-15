@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.maifeng.fashiongo.fragment.HomeFragment;
+import com.maifeng.fashiongo.fragment.HomeFragment2;
 import com.maifeng.fashiongo.fragment.MineFragment;
 import com.maifeng.fashiongo.fragment.MoreFragment;
 import com.maifeng.fashiongo.fragment.ShoppingcarFragment;
+import com.maifeng.fashiongo.fragment.ShoppingcarFragment;
 
 import android.os.Bundle;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,18 +19,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends FragmentActivity implements OnClickListener {
+public  class MainActivity extends FragmentActivity implements OnClickListener {
 
+	public static MainActivity mainActivity;
+	
 	private ImageView iv_home;
 	private ImageView iv_shoppingcar;
 	private ImageView iv_mine;
 	private ImageView iv_more;
-
+	
 
 	private TextView tv_home;
 	private TextView tv_shoppingcar;
@@ -49,9 +51,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// 无标题栏
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
+		mainActivity=this;
 
 		initView();
 
@@ -71,7 +72,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 				return fragmentList.get(arg0);
 			}
 		};
-
+		//缓存页面
+		viewpager.setOffscreenPageLimit(1);
 		viewpager.setAdapter(adapter);
 
 		// 监听ViewPager动作
@@ -119,7 +121,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		tv_more = (TextView) findViewById(R.id.tv_more);
 
 		fragmentList = new ArrayList<Fragment>();
-		Fragment mTab1 = new HomeFragment();
+//		Fragment mTab1 = new HomeFragment();
+		Fragment mTab1 = new HomeFragment2();
+//		Fragment mTab2 = new ShoppingcarFragment();
 		Fragment mTab2 = new ShoppingcarFragment();
 		Fragment mTab3 = new MineFragment();
 		Fragment mTab4 = new MoreFragment();

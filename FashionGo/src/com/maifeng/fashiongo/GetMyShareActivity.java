@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
+import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 public class GetMyShareActivity extends Activity {
 	//初始化顶部导航栏控件
@@ -62,6 +66,13 @@ public class GetMyShareActivity extends Activity {
 			}
 		});
 	}
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("GET_MY_SHARE");
+	}
+	
 	private void sharePost(){
 		//组装请求数据
 		Map<String,String> map = new HashMap<String, String>();
@@ -78,6 +89,20 @@ public class GetMyShareActivity extends Activity {
 						list = JsonUtil.parseJsonToBean(result, GetMyShareType.class).getData();
 						adapter = new GetMyShareAdapter(getApplicationContext(), list,accessToken);
 						list_myshare.setAdapter(adapter);
+						list_myshare.setOnItemClickListener(new OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> arg0,View arg1, int arg2, long arg3) {
+								// TODO Auto-generated method stub
+								Intent intent = new Intent(getApplicationContext(),GoodDetailActivity.class);
+								intent.putExtra("Code","myshare");
+								intent.putExtra("goodsCode", list.get(arg2).goodsCode);
+								startActivity(intent);
+								finish();
+								
+							}
+						});
+
 					}
 					@Override
 					public void onMyError(VolleyError error) {

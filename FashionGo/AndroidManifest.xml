@@ -23,9 +23,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.Light.NoTitleBar"  >
+        <!-- android:theme="@style/AppTheme" --> 
         <activity
-            android:name="com.maifeng.fashiongo.LoginActivity"
+            android:name="com.maifeng.fashiongo.SplashActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,6 +37,14 @@
         <activity android:name=".MainActivity" >
         </activity>
         <activity android:name=".FeedBackAcitvtty" />
+        <!-- 登陸界面 -->
+         <activity android:name="com.maifeng.fashiongo.LoginActivity"
+            android:label="@string/app_name">
+        </activity>
+        <!-- 引导界面 -->
+        <activity android:name="com.maifeng.fashiongo.UserGuideActivity"
+            android:label="@string/app_name">
+        </activity>
         <!-- 基本信息 -->
         <activity
             android:name="com.maifeng.fashiongo.Basic_Info_Activity"
@@ -95,14 +104,14 @@
             android:name="com.maifeng.fashiongo.GetMyShareActivity"
             android:label="@string/app_name" >
         </activity>
-        <activity android:name=".FeedBackAcitvtty1" >
-        </activity>
         <activity android:name=".protocolActivity" >
         </activity>
         <activity android:name=".FindPasswordActivity" >
         </activity>
         <activity android:name=".AboutUsActivity" >
         </activity>
+        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".Confirm_Order_Activity"></activity>
         <!-- 三级分类 -->
         <activity
             android:name="com.maifeng.fashiongo.ThreeClassifyActivity"

@@ -1,6 +1,5 @@
 package com.maifeng.fashiongo.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -34,7 +33,7 @@ public class MyPagerAdapter extends PagerAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return urllist.size();
+		return urllist == null?0:urllist.size();
 	}
 
 	@Override

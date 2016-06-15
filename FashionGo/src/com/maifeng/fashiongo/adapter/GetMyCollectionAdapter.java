@@ -6,7 +6,6 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.maifeng.fashiongo.GoodDetailActivity;
 import com.maifeng.fashiongo.R;
 import com.maifeng.fashiongo.base.Delete_MyCollectionType;
 import com.maifeng.fashiongo.base.GetMyCollectionData;
@@ -46,7 +44,7 @@ public class GetMyCollectionAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return data.size();
+		return data == null?0:data.size();
 	}
 
 	@Override
@@ -77,6 +75,10 @@ public class GetMyCollectionAdapter extends BaseAdapter {
 		}else {
 			holder=(ViewHolder)convertvView.getTag();
 		}
+		//加载中显示的图片
+		holder.imageView.setDefaultImageResId(R.drawable.bg_loading_image);
+		//加载失败时显示的图片
+		holder.imageView.setErrorImageResId(R.drawable.bg_error_image);
 		holder.imageView.setImageUrl(data.get(position).getGoodsImage(), mImageLoader);
 		holder.text_goodstwo.setText(data.get(position).getGoodsName());
 		holder.text_serialnumber.setText(data.get(position).getGoodsCode());

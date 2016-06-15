@@ -10,7 +10,7 @@
         android:id="@+id/topbar"
         />
     
-    <ListView
+    <com.maifeng.fashiongo.banner.ReFlashListView
         android:id="@+id/list_shoppingcar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -71,6 +71,7 @@
             android:textColor="#FF8040"/>
         
         <Button 
+            android:id="@+id/btn_ok"
             android:layout_width="55dp"	
             android:layout_height="25dp"
             android:layout_marginRight="10dp"

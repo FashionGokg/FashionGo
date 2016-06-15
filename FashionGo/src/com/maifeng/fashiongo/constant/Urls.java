@@ -5,21 +5,22 @@ public class Urls {
 	 * Root
 	 */
 	private static String Root = "http://172.16.40.47/shop/index.php/home/";
+//	private static String Root = "http://wemall.minephone.com/develop/ssgshop/";
 
 	/**
 	 * 个人注册
 	 */
-	public static String REGISTER = "index/register";
+	public static String REGISTER = Root + "index/register";
 
 	/**
 	 * 获取验证码
 	 * */
-	public static String GetVerify = "PhoneCaptcha/getPhoneCaptcha";
+	public static String GetVerify = Root + "PhoneCaptcha/getPhoneCaptcha";
 
 	/**
 	 * 登录
 	 */
-	public static String LOGIN = "index/login";
+	public static String LOGIN = Root +  "index/login";
 
 	/**
 	 * 首页.获取banner

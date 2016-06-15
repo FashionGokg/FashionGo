@@ -88,6 +88,7 @@
 	    android:layout_alignBottom="@+id/text_price"
 	    android:layout_alignRight="@+id/imageView1"
 	    android:background="@drawable/collection_button_skin"
+	    android:focusable="false"
 	    android:textSize="12sp"
 	    android:text="删除" />
 </RelativeLayout>

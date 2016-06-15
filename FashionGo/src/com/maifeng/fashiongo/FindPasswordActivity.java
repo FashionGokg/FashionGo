@@ -9,13 +9,12 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.maifeng.fashiongo.base.FindPasswordType;
 import com.maifeng.fashiongo.base.RegisterType;
-import com.maifeng.fashiongo.base.RegisterVerifyType;
-import com.maifeng.fashiongo.constant.UrlAddress;
+import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
+import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -42,7 +41,6 @@ public class FindPasswordActivity extends Activity implements OnClickListener{
 	 private String phone,pwd,Verify;
 	 
 	
-	 
 	 final TimeCount time = new TimeCount(10000, 1000);
 	
 	@Override
@@ -50,29 +48,9 @@ public class FindPasswordActivity extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.findpassword);
-		
-		et_findpassword_inputpwd = (EditText) findViewById(R.id.et_findpassword_inputpwd);
-		et_findpassword_inputVerify = (EditText) findViewById(R.id.et_findpassword_inputVerify);
-		et_findpassword_phone = (EditText) findViewById(R.id.et_findpassword_phone);
-		
-		
-		btn_findpassword_verify = (Button) findViewById(R.id.btn_findpassword_verify);
-		btn_findpassword_confirm = (Button) findViewById(R.id.btn_findpassword_confirm);
-		
-		tv_name_function = (TextView) findViewById(R.id.tv_name_function);
-		tv_name_function.setVisibility(View.GONE);
-		tv_title =(TextView) findViewById(R.id.tv_title);
-		tv_title.setText("找回密码");
-		
-		GradientDrawable drawable=(GradientDrawable) btn_findpassword_confirm.getBackground();
-		drawable.setColor(Color.parseColor("#FF2D2D"));
-	
-		returnbtn = (LinearLayout) findViewById(R.id.ll_returnbtn);
-		
-		
-		
+		initView();
+
 		returnbtn.setOnClickListener(this);
-		
 		btn_findpassword_verify.setOnClickListener(this);
 		btn_findpassword_confirm.setOnClickListener(this);
 		
@@ -82,12 +60,36 @@ public class FindPasswordActivity extends Activity implements OnClickListener{
 
 	
 	
+	private void initView() {
+		// TODO Auto-generated method stub
+		et_findpassword_inputpwd = (EditText) findViewById(R.id.et_findpassword_inputpwd);
+		et_findpassword_inputVerify = (EditText) findViewById(R.id.et_findpassword_inputVerify);
+		et_findpassword_phone = (EditText) findViewById(R.id.et_findpassword_phone);
+		btn_findpassword_verify = (Button) findViewById(R.id.btn_findpassword_verify);
+		btn_findpassword_confirm = (Button) findViewById(R.id.btn_findpassword_confirm);
+		tv_name_function = (TextView) findViewById(R.id.tv_name_function);
+		tv_name_function.setVisibility(View.GONE);
+		tv_title =(TextView) findViewById(R.id.tv_title);
+		tv_title.setText("找回密码");
+		returnbtn = (LinearLayout) findViewById(R.id.ll_returnbtn);
+	}
+
+
+@Override
+protected void onStop() {
+	// TODO Auto-generated method stub
+	super.onStop();
+	Volleyhandle.getInstance(getApplicationContext()).getRequestQueue().cancelAll("GetVerify");
+	Volleyhandle.getInstance(getApplicationContext()).getRequestQueue().cancelAll("FINDPASSWORD");
+}
+
+
 	private void volleyPost(String phone){
 		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userPhone", phone);
 		map.put("type", "1");
-		VolleyRequest.RequestPost(this, UrlAddress.GetVerify, "GetVerify",map, new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+		VolleyRequest.RequestPost(this, Urls.GetVerify, "GetVerify",map, new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
 			
 			@Override
 			public void onMySuccess(String result) {
@@ -118,7 +120,7 @@ public class FindPasswordActivity extends Activity implements OnClickListener{
 		
 		
 		//发起Post请求
-		VolleyRequest.RequestPost(this, "http://172.16.40.80/shop/index.php/home/System/findPassword", "REGISTER", map,
+		VolleyRequest.RequestPost(this, Urls.FINDPASSWORD, "FINDPASSWORD", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
 
 			@Override
@@ -139,16 +141,11 @@ public class FindPasswordActivity extends Activity implements OnClickListener{
 					 if(RType.getErrorcode().equals("0")){
 						Toast.makeText(FindPasswordActivity.this, RType.getMessage(), Toast.LENGTH_SHORT).show();
 					}
-					
-					
-					
 				} catch (Exception e) { 
 					e.printStackTrace();
 					
 				}
-
 			}
-
 			@Override
 			public void onMyError(VolleyError error) {
 				Toast.makeText(FindPasswordActivity.this, "找回密码失败", Toast.LENGTH_SHORT).show();
@@ -178,9 +175,7 @@ public class FindPasswordActivity extends Activity implements OnClickListener{
 			}else{
 				time.start();// 开始计时
 				volleyPost(et_findpassword_phone.getText().toString().trim());					
-				}
-			
-			
+			}
 			break;
 		case R.id.btn_findpassword_confirm:
 			phone=et_findpassword_phone.getText().toString().trim();

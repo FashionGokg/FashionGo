@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.android.volley.VolleyError;
+import com.maifeng.fashiongo.banner.CiecleImageView;
 import com.maifeng.fashiongo.base.GetPersonalDetailsData;
 import com.maifeng.fashiongo.base.GetPersonalDetailsType;
-import com.maifeng.fashiongo.constant.UrlAddress;
 import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
@@ -15,9 +15,9 @@ import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,10 +35,11 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 		private TextView tv_view_account;
 		private TextView tv_view_username;
 		private GetPersonalDetailsData data;
+		
+		private CiecleImageView head_img_go;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.personal_center_basic_info);
 		
@@ -55,6 +56,7 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 		
 		tv_view_account=(TextView)findViewById(R.id.tv_view_account);
 		tv_view_username =(TextView)findViewById(R.id.tv_view_username);
+		head_img_go=(CiecleImageView) findViewById(R.id.head_img_go);
 		
 		relativemessage=(RelativeLayout)findViewById(R.id.relativemessage);
 		replace_accuont=(RelativeLayout)findViewById(R.id.replace_accuont);
@@ -63,8 +65,8 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 		relativemessage.setOnClickListener(this);
 		replace_accuont.setOnClickListener(this);
 		//取出用户账号
-		SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
-		String userName = pref.getString("username", "");
+		SharedPreferences pref = getSharedPreferences("myPref", MODE_PRIVATE);
+		String userName = pref.getString("account_number", "");
 		tv_view_account.setText(userName);
 	}
 	@Override
@@ -76,34 +78,18 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 			break;
 		case R.id.relativemessage:
 			Intent intent = new Intent(getApplicationContext(),Edit_BasiinformationAcitivity.class);
-//			String imageString = data.getImage();
-//			String nameString = data.getpName();
-//			String ageString = data.getAge();
-//			String sexString = data.getSex();
-//			String qqString = data.getQq();
-//			String emailString = data.getEmail();
-//			String pnameString = data.getpName();
-//			String cnameString = data.getcName();
-//			String areaString = data.getArea();
-//			String addressString = data.getAddress();
-//			intent.putExtra("imageString", data.getImage());
-//			intent.putExtra("nameString", data.getName());
-//			
-//			intent.putExtra("sexString", data.getSex());
-//			intent.putExtra("ageString", data.getAge());
-//			
-//			intent.putExtra("qqString", data.getQq());
-//			intent.putExtra("emailString", data.getEmail());
-//			intent.putExtra("pnameString", data.getpName());
-//			intent.putExtra("cnameString", data.getcName());
-//			intent.putExtra("areaString", data.getArea());
-//			intent.putExtra("addressString", data.getAddress());
 			startActivity(intent);
-			finish();
 			break;
 		case R.id.replace_accuont:
 			Intent intent1 = new Intent(getApplicationContext(),LoginActivity.class);
+			SharedPreferences pref = getSharedPreferences("myPref", MODE_PRIVATE);
+			Editor editor = pref.edit();
+			editor.clear();
+			editor.putString("account_number", "");
+			editor.putString("accessToken", "");
+			editor.commit();
 			startActivity(intent1);
+			MainActivity.mainActivity.finish();
 			finish();
 			break;
 		default:

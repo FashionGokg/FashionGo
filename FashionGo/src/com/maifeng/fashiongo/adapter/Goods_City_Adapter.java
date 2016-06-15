@@ -22,7 +22,7 @@ public class Goods_City_Adapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return data.size();
+		return data == null?0:data.size();
 	}
 
 	@Override

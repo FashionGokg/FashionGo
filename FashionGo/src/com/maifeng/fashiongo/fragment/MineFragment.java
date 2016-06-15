@@ -3,7 +3,6 @@ package com.maifeng.fashiongo.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +19,9 @@ import com.maifeng.fashiongo.Goods_Address_Activity;
 import com.maifeng.fashiongo.LoginActivity;
 import com.maifeng.fashiongo.MyOrder;
 import com.maifeng.fashiongo.R;
+import com.maifeng.fashiongo.constant.LazyFragment;
 
-public class MineFragment extends Fragment {
+public class MineFragment extends LazyFragment {
 	String Tag = "MineFragment";
 	//初始化顶部导航栏控件
 	private View topbar;
@@ -34,13 +34,39 @@ public class MineFragment extends Fragment {
 	private RelativeLayout relayout_myorder;
 	private RelativeLayout relayout_collect;
 	private RelativeLayout relayout_share;
+	
+	private String accessToken;
+    // 标志位，标志已经初始化完成。
+    private boolean isPrepared;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
-
 		View view = inflater.inflate(R.layout.mine_fragment, container,false);
+		initView(view);
+		isPrepared = true;
+		lazyLoad();
+		basiClick();
+		return view;
+	}
 
+	@Override
+	protected void lazyLoad() {
+		// TODO Auto-generated method stub
+		if (!isPrepared||!isVisible) {
+			return;
+		}
+		SharedPreferences pref = getActivity().getSharedPreferences("myPref", getActivity().MODE_PRIVATE);
+		accessToken = pref.getString("accessToken", "");
+		if (accessToken.equals("")) {
+			Intent intent = new Intent(getActivity(),LoginActivity.class);
+			startActivity(intent);
+			getActivity().finish();
+		}
+		
+		
+	}
+	private void initView(View view) {
+		// TODO Auto-generated method stub
 		topbar = view.findViewById(R.id.topbar);
 		// 顶部导航栏控件id
 		ll_returnbtn = (LinearLayout)topbar.findViewById(R.id.ll_returnbtn);
@@ -56,19 +82,6 @@ public class MineFragment extends Fragment {
 		relayout_myorder = (RelativeLayout)view.findViewById(R.id.relayout_myorder);
 		relayout_collect = (RelativeLayout)view.findViewById(R.id.relayout_collect);
 		relayout_share = (RelativeLayout)view.findViewById(R.id.relayout_share);
-		
-		basiClick();
-		
-		return view;
-	}
-	private Intent Intent(FragmentActivity activity, Class<LoginActivity> class1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	private SharedPreferences getSharedPreferences(String string,
-			int mode_PRIVATE) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	private void basiClick(){
 		relayout_message.setOnClickListener(new OnClickListener() {
@@ -86,6 +99,7 @@ public class MineFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(),Goods_Address_Activity.class);
+				intent.putExtra("Code_address", "Mine");
 				startActivity(intent);
 			}
 		});
@@ -117,4 +131,6 @@ public class MineFragment extends Fragment {
 			}
 		});
 	}
+
+
 }

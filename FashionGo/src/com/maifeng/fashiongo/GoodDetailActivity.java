@@ -1,5 +1,6 @@
 package com.maifeng.fashiongo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,13 +13,9 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -44,12 +41,14 @@ import com.maifeng.fashiongo.base.GoodDetailType;
 import com.maifeng.fashiongo.base.GoodsSpecificationsData;
 import com.maifeng.fashiongo.base.GoodsSpecificationsSize;
 import com.maifeng.fashiongo.base.GoodsSpecificationsType;
+import com.maifeng.fashiongo.base.OrderData;
 import com.maifeng.fashiongo.base.ShareGoods;
 import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.util.LogUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
+import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 /**
  * 产品详情页界面
@@ -80,29 +79,69 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 	private String accessToken;
 
 	private String text = "";
-	private String imageurl = "http://172.16.40.80/shop/public/img/ad/2.jpg";
-	private String imageurl2 = "http://pic40.nipic.com/20140411/7041340_205340194000_2.jpg";
+	private String imageurl = "http://172.16.40.47/shop/public/img/ad/2.jpg";
 	private String title = "FashionGo";
 	private String url = "";
 
 	private Intent intent;
+	private String Code;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		// 隐藏标题栏
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_good_detail);
 
-		intent = this.getIntent();
-		goodsCode = intent.getStringExtra("goodsCode");
 		// 登录标识
 		SharedPreferences pref = getSharedPreferences("myPref", MODE_PRIVATE);
 		accessToken = pref.getString("accessToken", "");
+		
+		intent = this.getIntent();
+		Code = intent.getStringExtra("Code");
+		if (accessToken.equals("")) {
+			Intent intent2 = new Intent(GoodDetailActivity.this,LoginActivity.class);
+			startActivity(intent2);
+			if (Code.equals("GoodList")) {
+				FirstClassifyAcitvity.firstClassifyAcitvity.finish();
+				ThreeClassifyActivity.threeClassifyActivity.finish();
+				GoodListActivity.goodListActivity.finish();
+			}
+			MainActivity.mainActivity.finish();
+			finish();
+		}else {
+			initView();
+			if (Code.equals("GoodList")) {
+				goodsCode = intent.getStringExtra("goodsCode");
+				detaildata(accessToken, goodsCode);
+			}else if (Code.equals("home")) {
+				goodsCode = intent.getStringExtra("goodsCode");
+				detaildata(accessToken, goodsCode);
+				
+			}else if (Code.equals("homelist")) {
+				goodsCode = intent.getStringExtra("goodsCode");
+				detaildata(accessToken, goodsCode);
+				
+			}else if(Code.equals("mycollection")){
+				goodsCode = intent.getStringExtra("goodsCode");
+				detaildata(accessToken, goodsCode);
+			}else if(Code.equals("myshare")){
+				goodsCode = intent.getStringExtra("goodsCode");
+				detaildata(accessToken, goodsCode);
+			}
+		}
+		
 
-		initView();
-		detaildata(accessToken, goodsCode);
+	}
+	
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("GET_GOODS_DETAILS");
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("GET_GOODS_SPECIFICATIONS");
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("SHARE_GOODS");
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("ADD_COLLECTION");
+		Volleyhandle.getInstance(this.getApplicationContext()).getRequestQueue().cancelAll("ADD_GOODS_TO_CART");
 	}
 
 	private void detaildata(String accessToken, String goodsCode) {
@@ -110,8 +149,6 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("accessToken", accessToken);
 		map.put("goodsCode", goodsCode);
-		System.out.println("goodsCode: " + goodsCode);
-		System.out.println("accessToken: " + accessToken);
 		VolleyRequest.RequestPost(getApplicationContext(),
 				Urls.GET_GOODS_DETAILS, "GET_GOODS_DETAILS", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,
@@ -123,7 +160,6 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 						detail = JsonUtil.parseJsonToBean(result,
 								GoodDetailType.class).getData();
 						urllist = detail.getGoodsImageList().getGoodsImage();
-						System.out.println("------>" + result);
 						tv_goodname.setText(detail.getGoodsName());
 						tv_about.setText(detail.getGoodsInfo());
 						tv_goodcode.setText(detail.getGoodsCode());
@@ -175,7 +211,6 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 					public void onMyError(VolleyError error) {
 						// TODO Auto-generated method stub
 
-						System.out.println("解析失败了");
 					}
 				});
 	}
@@ -264,7 +299,6 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 			et_num.setSelection(et_num.getText().length());
 			break;
 		case R.id.btn_join_shoppingcar: // 加入购物车
-			System.out.println("点击了加入购物车");
 			if (accessToken.equals("")) {
 				Toast.makeText(this, "请登录后再操作！", Toast.LENGTH_LONG).show();
 				return;
@@ -283,7 +317,6 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 
 			break;
 		case R.id.btn_pay: // 立即支付
-			System.out.println("点击了立即支付");
 			if (accessToken.equals("")) {
 				Toast.makeText(this, "请登录后再操作！", Toast.LENGTH_LONG).show();
 				return;
@@ -297,9 +330,27 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 				Toast.makeText(this, "请选择商品类型后再操作！", Toast.LENGTH_LONG).show();
 				return;
 			}
+			String imageUrl = null;
+			String name = null;
+			String price = null;
+			String number = null;
+			List<OrderData> orderDatas = new ArrayList<OrderData>();
+			imageUrl=urllist.get(0).getGoodsImageList();
+			name=detail.getGoodsName();
+			price=detail.getPrice();
+			number=String.valueOf(et_num.getText());
+			OrderData orderData=new OrderData(imageUrl, name, price, number);
+			orderDatas.add(orderData);
+			
+			if (!orderDatas.isEmpty()) {
+				Intent intent = new Intent(GoodDetailActivity.this,Confirm_Order_Activity.class);
+				intent.putExtra("Code", "detail");
+				intent.putExtra("orderdata", (Serializable)orderDatas);
+				startActivity(intent);
+			}
+			
 			break;
 		case R.id.layout_right_collect: // 收藏
-			System.out.println("点击了收藏");
 			if (accessToken.equals("")) {
 				Toast.makeText(this, "请登录后再操作！", Toast.LENGTH_LONG).show();
 				return;
@@ -307,7 +358,6 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 			collect(goodsCode);
 			break;
 		case R.id.layout_right_share: // 分享
-			System.out.println("点击了分享");
 			if (accessToken.equals("")) {
 				Toast.makeText(this, "请登录后再操作！", Toast.LENGTH_LONG).show();
 				return;
@@ -354,7 +404,6 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 
 					@Override
 					public void onMySuccess(String result) {
-						LogUtil.e("分享信息", result);
 						ShareGoods shareGoods = JsonUtil.parseJsonToBean(
 								result, ShareGoods.class);
 						switch (shareGoods.getErrorcode()) {
@@ -385,15 +434,12 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("accessToken", accessToken);
 		map.put("goodsCode", goodsCode);
-		System.out.println("goodsCode_collect: " + goodsCode);
-		System.out.println("accessToken_collect: " + accessToken);
 		VolleyRequest.RequestPost(getApplicationContext(), Urls.ADD_COLLECTION,
 				"ADD_COLLECTION", map, new VolleyAbstract(this,
 						VolleyAbstract.listener, VolleyAbstract.errorListener) {
 
 					@Override
 					public void onMySuccess(String result) {
-						LogUtil.e("添加收藏信息", result);
 						Add_Collection add_Collection = JsonUtil
 								.parseJsonToBean(result, Add_Collection.class);
 						switch (add_Collection.getErrorcode()) {
@@ -425,8 +471,6 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 		map.put("goodsCode", goodsCode);
 		map.put("goodsNum", String.valueOf(et_num.getText()));
 		map.put("specificationsId", specificationsId);
-		System.out.println("goodsCode_carInfo: " + goodsCode);
-		System.out.println("accessToken_carInfo: " + accessToken);
 		VolleyRequest.RequestPost(getApplicationContext(),
 				Urls.ADD_GOODS_TO_CART, "ADD_GOODS_TO_CART", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,
@@ -434,7 +478,6 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 
 					@Override
 					public void onMySuccess(String result) {
-						LogUtil.e("加入购物车信息", result);
 						// TODO Auto-generated method stub
 						AddGoodsToCart addGoodsToCart = JsonUtil
 								.parseJsonToBean(result, AddGoodsToCart.class);

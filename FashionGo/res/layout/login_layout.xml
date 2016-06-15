@@ -23,13 +23,14 @@
         android:layout_marginBottom="20dp"
         />
     <EditText 
-         android:id="@+id/et_phonenumber"
+        android:id="@+id/et_phonenumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:hint="请输入手机号码"
         android:paddingLeft="10dp"
         android:layout_margin="10dp"
-       android:background="@drawable/bg_input9"
+      	android:background="@drawable/bg_input9"
         />
     <EditText 
         android:id="@+id/et_password"

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView.ScaleType;
 
 public class RecommendationAdapter extends BaseAdapter {
 	
@@ -34,7 +35,7 @@ public class RecommendationAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return list.size();
+		return list == null?0:list.size();
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class RecommendationAdapter extends BaseAdapter {
 					R.layout.item_recommendation_imagelist, null);
 			holder = new ViewHolder();
 			holder.image_recommendation=(NetworkImageView) convertView.findViewById(R.id.image_recommendation);
-
+			holder.image_recommendation.setScaleType(ScaleType.CENTER_INSIDE);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
