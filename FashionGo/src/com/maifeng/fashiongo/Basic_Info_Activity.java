@@ -2,8 +2,9 @@ package com.maifeng.fashiongo;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.maifeng.fashiongo.banner.CiecleImageView;
 import com.maifeng.fashiongo.base.GetPersonalDetailsData;
 import com.maifeng.fashiongo.base.GetPersonalDetailsType;
@@ -11,11 +12,14 @@ import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
+import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,6 +72,8 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 		SharedPreferences pref = getSharedPreferences("myPref", MODE_PRIVATE);
 		String userName = pref.getString("account_number", "");
 		tv_view_account.setText(userName);
+		
+
 	}
 	@Override
 	public void onClick(View v) {
@@ -88,6 +94,12 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 			editor.putString("account_number", "");
 			editor.putString("accessToken", "");
 			editor.commit();
+			pref = getSharedPreferences("headimgurl", MODE_PRIVATE);
+			Editor editor2 = pref.edit();
+			editor2.clear();
+			editor2.putString("headImageUrl", "");
+			editor.commit();
+			
 			startActivity(intent1);
 			MainActivity.mainActivity.finish();
 			finish();
@@ -101,6 +113,9 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onResume();
 		vollePost();
+		SharedPreferences pref = getSharedPreferences("headimgurl", MODE_PRIVATE);
+		String ImageUrl = pref.getString("headImageUrl", "");
+		volleygetImage(ImageUrl);
 	}
 	@Override
 	protected void onStop() {
@@ -120,6 +135,12 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 						public void onMySuccess(String result) {
 							data = JsonUtil.parseJsonToBean(result, GetPersonalDetailsType.class).getData();
 							//…Ë÷√œ‘ æµƒÍ«≥∆
+								SharedPreferences pref = getSharedPreferences("headimgurl", MODE_PRIVATE);
+								Editor editor = pref.edit();
+								editor.clear();
+								editor.putString("headImageUrl", data.getImage());
+								editor.commit();
+							
 							tv_view_username.setText(data.getName());
 							
 						}
@@ -128,4 +149,25 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 						}
 					});
 		}
+	private void volleygetImage(String imgUrl){
+		ImageRequest imageRequest = new ImageRequest(imgUrl, new Response.Listener<Bitmap>() {
+
+			@Override
+			public void onResponse(Bitmap response) {
+				// TODO Auto-generated method stub
+				head_img_go.setImageBitmap(response);
+				
+			}
+		}, 0, 0, Config.RGB_565,new Response.ErrorListener() {
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				// TODO Auto-generated method stub
+				head_img_go.setImageResource(R.drawable.img_png6);
+			}
+		});
+		
+		
+		Volleyhandle.getInstance(getApplicationContext()).getRequestQueue().add(imageRequest);
+	}
 }

@@ -18,7 +18,7 @@
         android:background="@drawable/img_png5">
 
         <com.maifeng.fashiongo.banner.CiecleImageView
-            android:id="@+id/img_png6"
+            android:id="@+id/img_headview"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"

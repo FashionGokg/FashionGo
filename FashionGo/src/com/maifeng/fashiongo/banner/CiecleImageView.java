@@ -8,18 +8,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Bitmap.Config;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.Volley;
 import com.maifeng.fashiongo.R;
-import com.maifeng.fashiongo.base.GetPersonalDetailsData;
 
 public class CiecleImageView extends ImageView{
 	//ÍâÔ²µÄ¿í¶È

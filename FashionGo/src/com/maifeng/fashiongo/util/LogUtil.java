@@ -3,7 +3,7 @@ package com.maifeng.fashiongo.util;
 import android.util.Log;
 
 public class LogUtil {  
-    private static boolean isDebug = false;//工具开关
+    private static boolean isDebug = true;//工具开关
     public static void i(String tag,String  msg){  
         if(isDebug){  
             Log.i(tag, msg);  

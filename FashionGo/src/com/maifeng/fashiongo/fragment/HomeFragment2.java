@@ -205,7 +205,7 @@ public class HomeFragment2 extends LazyFragment implements OnClickListener,XScro
 					ImageLoader imageLoader =new ImageLoader(Volleyhandle.getInstance(context).getRequestQueue(), MyImageCache.getImageCache(context));
 					
 					for (int i = 0; i < adInfolist.size(); i++) {
-						imageViews[i].setScaleType(ScaleType.FIT_XY);
+						imageViews[i].setScaleType(ScaleType.CENTER_CROP );
 						imageViews[i].setImageUrl(adInfolist.get(i).getADImage(), imageLoader);
 					}
 					

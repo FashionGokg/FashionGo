@@ -275,7 +275,7 @@ public class ImageCycleView extends LinearLayout {
 			if (mImageViewCacheList.isEmpty()) {
 				imageView = new NetworkImageView(mContext);
 				imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-				imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+				imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				
 				imageView.setDefaultImageResId(R.drawable.bg_loading_image);
 				imageView.setErrorImageResId(R.drawable.bg_error_image);

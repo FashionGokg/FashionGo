@@ -1,5 +1,6 @@
 package com.maifeng.fashiongo;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.maifeng.fashiongo.banner.ActionSheetDialog;
 import com.maifeng.fashiongo.banner.CiecleImageView;
 import com.maifeng.fashiongo.base.GetPersonalDetailsData;
@@ -25,11 +28,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -99,6 +104,11 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
      * 裁剪好的头像的Bitmap
      */
     private Bitmap currentBitmap;
+    
+    /**
+     * 头像的二进制字符串
+     */
+    private String ImgByte = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +118,9 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 		intent = this.getIntent();
 		idGet();
 		getvollePost();
+		SharedPreferences pref = getSharedPreferences("headimgurl", MODE_PRIVATE);
+		String ImageUrl = pref.getString("headImageUrl", "");
+		volleygetImage(ImageUrl);
 	}
 	private void idGet(){
 		topbar =findViewById(R.id.topbar);
@@ -202,7 +215,6 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 					MODE_PRIVATE);
 			String accessToken = pref.getString("accessToken", "");
 			String name = editname.getText().toString().trim();// trim()是将转化后的字符串类型去掉前后空格。
-
 			String age = editage.getText().toString().trim();
 			String sex;
 			if (textsex.getText().toString().equals("男")) {
@@ -278,7 +290,9 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 				// 组装请求数据
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("accessToken", accessToken);
-				// map.put("image",img);//空图片
+				if (ImgByte!=null) {
+					map.put("image",ImgByte);
+				}
 				map.put("name", name);
 				map.put("age", age);
 				map.put("sex", sex);
@@ -494,7 +508,18 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
             currentBitmap = extras.getParcelable("data");
 
             image_head.setImageBitmap(currentBitmap);
+            ImgByte=sendImage(currentBitmap);
+            
         }
+    }
+    
+    //把Bitmap转换成二进制String
+    private String sendImage(Bitmap bm){
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		bm.compress(Bitmap.CompressFormat.JPEG, 60, stream);
+		byte[] bytes = stream.toByteArray();
+		String img = new String(Base64.encodeToString(bytes, Base64.DEFAULT));
+		return img;
     }
 
     /**
@@ -516,4 +541,26 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
         startActivityForResult(intent, REQUESTCODE_CUTTING);
     }
 
+    
+	private void volleygetImage(String imgUrl){
+		ImageRequest imageRequest = new ImageRequest(imgUrl, new Response.Listener<Bitmap>() {
+
+			@Override
+			public void onResponse(Bitmap response) {
+				// TODO Auto-generated method stub
+				image_head.setImageBitmap(response);
+				
+			}
+		}, 0, 0, Config.RGB_565,new Response.ErrorListener() {
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				// TODO Auto-generated method stub
+				image_head.setImageResource(R.drawable.img_png6);
+			}
+		});
+		
+		
+		Volleyhandle.getInstance(getApplicationContext()).getRequestQueue().add(imageRequest);
+	}
 }

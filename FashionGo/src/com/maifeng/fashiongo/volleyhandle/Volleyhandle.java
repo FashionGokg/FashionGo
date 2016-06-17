@@ -10,7 +10,7 @@ public class Volleyhandle {
 	
 	private RequestQueue queues;//请求队列
 	
-	private static Context context;//上下文
+	private  Context context;//上下文
 	
 	
 	private Volleyhandle(Context context){

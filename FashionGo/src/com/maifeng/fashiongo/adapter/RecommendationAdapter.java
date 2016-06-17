@@ -59,7 +59,7 @@ public class RecommendationAdapter extends BaseAdapter {
 					R.layout.item_recommendation_imagelist, null);
 			holder = new ViewHolder();
 			holder.image_recommendation=(NetworkImageView) convertView.findViewById(R.id.image_recommendation);
-			holder.image_recommendation.setScaleType(ScaleType.CENTER_INSIDE);
+			holder.image_recommendation.setScaleType(ScaleType.CENTER_CROP );
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();

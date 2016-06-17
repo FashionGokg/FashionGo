@@ -126,9 +126,9 @@ public class RegisterActivity extends Activity implements OnClickListener{
 					@Override
 					public void onMySuccess(String result) {
 						// TODO Auto-generated method stub
+						System.out.println(result);
 						Gson gson=new Gson();
 						RegisterVerifyType RType = gson.fromJson(result, RegisterVerifyType.class);
-						System.out.println(result);
 						if(RType.getErrorcode().equals("1001")){
 							Toast.makeText(RegisterActivity.this, RType.getMessage(), Toast.LENGTH_SHORT).show();
 						}else if (RType.getErrorcode().equals("0")) {

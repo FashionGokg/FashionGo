@@ -2,8 +2,9 @@ package com.maifeng.fashiongo.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.maifeng.fashiongo.Basic_Info_Activity;
 import com.maifeng.fashiongo.GetMyCollectionActivity;
 import com.maifeng.fashiongo.GetMyShareActivity;
@@ -19,7 +23,9 @@ import com.maifeng.fashiongo.Goods_Address_Activity;
 import com.maifeng.fashiongo.LoginActivity;
 import com.maifeng.fashiongo.MyOrder;
 import com.maifeng.fashiongo.R;
+import com.maifeng.fashiongo.banner.CiecleImageView;
 import com.maifeng.fashiongo.constant.LazyFragment;
+import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 public class MineFragment extends LazyFragment {
 	String Tag = "MineFragment";
@@ -34,6 +40,8 @@ public class MineFragment extends LazyFragment {
 	private RelativeLayout relayout_myorder;
 	private RelativeLayout relayout_collect;
 	private RelativeLayout relayout_share;
+	
+	private CiecleImageView ciecleImageView;
 	
 	private String accessToken;
     // 标志位，标志已经初始化完成。
@@ -61,9 +69,18 @@ public class MineFragment extends LazyFragment {
 			Intent intent = new Intent(getActivity(),LoginActivity.class);
 			startActivity(intent);
 			getActivity().finish();
+			
 		}
 		
 		
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		SharedPreferences pref = getActivity().getSharedPreferences("headimgurl", getActivity().MODE_PRIVATE);
+		String ImageUrl = pref.getString("headImageUrl", "");
+		volleygetImage(ImageUrl);
 	}
 	private void initView(View view) {
 		// TODO Auto-generated method stub
@@ -82,6 +99,10 @@ public class MineFragment extends LazyFragment {
 		relayout_myorder = (RelativeLayout)view.findViewById(R.id.relayout_myorder);
 		relayout_collect = (RelativeLayout)view.findViewById(R.id.relayout_collect);
 		relayout_share = (RelativeLayout)view.findViewById(R.id.relayout_share);
+		//头像
+		ciecleImageView = (CiecleImageView) view.findViewById(R.id.img_headview);
+		
+		
 	}
 	private void basiClick(){
 		relayout_message.setOnClickListener(new OnClickListener() {
@@ -130,6 +151,28 @@ public class MineFragment extends LazyFragment {
 				startActivity(intent);
 			}
 		});
+	}
+	
+	private void volleygetImage(String imgUrl){
+		ImageRequest imageRequest = new ImageRequest(imgUrl, new Response.Listener<Bitmap>() {
+
+			@Override
+			public void onResponse(Bitmap response) {
+				// TODO Auto-generated method stub
+				ciecleImageView.setImageBitmap(response);
+				
+			}
+		}, 0, 0, Config.RGB_565,new Response.ErrorListener() {
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				// TODO Auto-generated method stub
+				ciecleImageView.setImageResource(R.drawable.img_png6);
+			}
+		});
+		
+		
+		Volleyhandle.getInstance(getActivity()).getRequestQueue().add(imageRequest);
 	}
 
 
