@@ -53,10 +53,10 @@ public class Goods_Address_Activity extends Activity {
 					long id) {
 				Intent intent = new Intent();
 				codeString=getIntent().getStringExtra("Code_address");
-				System.out.println(codeString);
 				if (codeString.equals("shopcar_address")) {
 					intent.putExtra("Code", "adress");
 					intent.putExtra("adress", listaddress.get(position).getProvince()+listaddress.get(position).getCity()+listaddress.get(position).getArea()+listaddress.get(position).getAddress());
+					intent.putExtra("id_adress", listaddress.get(position).getId());
 					setResult(101,intent);
 					finish();
 				}else if (codeString.equals("Mine")) {
@@ -79,6 +79,7 @@ public class Goods_Address_Activity extends Activity {
 					intent.putExtra("area",areas);
 					intent.putExtra("address", addresss);
 					startActivity(intent);
+					overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 				}
 				
 				
@@ -113,6 +114,7 @@ public class Goods_Address_Activity extends Activity {
 			public void onClick(View arg0) {
 				Intent intent = new Intent(Goods_Address_Activity.this,New_Goods_Address_Activity.class);
 				startActivity(intent);
+				overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 //				finish();
 			}
 		});
@@ -128,7 +130,7 @@ public class Goods_Address_Activity extends Activity {
 		String accessToken = pref.getString("accessToken", "");
 		map.put("accessToken", accessToken);
 		VolleyRequest.RequestPost(this,Urls.GET_RECEIVE_ADDRESS,"GET_RECEIVE_ADDRESS", map,
-				new VolleyAbstract(this,VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(this,VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 					@Override
 					public void onMySuccess(String result) {
 						// TODO Auto-generated method stub

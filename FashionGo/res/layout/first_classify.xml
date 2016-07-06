@@ -20,10 +20,10 @@
 
             <ImageView
                 android:id="@+id/img_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
                 android:layout_marginLeft="15dp"
-                android:src="@drawable/ico_return" />
+                android:src="@drawable/selector_title_back" />
         </LinearLayout>
 
         <LinearLayout

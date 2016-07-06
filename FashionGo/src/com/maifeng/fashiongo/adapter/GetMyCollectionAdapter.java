@@ -95,7 +95,7 @@ public class GetMyCollectionAdapter extends BaseAdapter {
 				map.put("accessToken", accessToken);
 				System.out.println(accessToken);
 				VolleyRequest.RequestPost(context,Urls.DELETE_COLLECTION,"DELETE_COLLECTION", map,
-						new VolleyAbstract(context,VolleyAbstract.listener,VolleyAbstract.errorListener) {
+						new VolleyAbstract(context,VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 							
 							@Override
 							public void onMySuccess(String result) {

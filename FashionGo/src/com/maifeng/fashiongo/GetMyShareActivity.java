@@ -82,7 +82,7 @@ public class GetMyShareActivity extends Activity {
 		map.put("accessToken", accessToken);
 		map.put("page","1");
 		VolleyRequest.RequestPost(this,Urls.GET_MY_SHARE,"GET_MY_SHARE", map,
-				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 					@Override
 					public void onMySuccess(String result) {
 						// TODO Auto-generated method stub
@@ -98,6 +98,7 @@ public class GetMyShareActivity extends Activity {
 								intent.putExtra("Code","myshare");
 								intent.putExtra("goodsCode", list.get(arg2).goodsCode);
 								startActivity(intent);
+								overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 								finish();
 								
 							}

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:background="#FF2D2D"
+    android:background="#F02A38"
     android:orientation="horizontal" >
     
     <LinearLayout 
@@ -11,9 +11,9 @@
         android:layout_height="match_parent"
         android:gravity="center">
         <ImageView 
-        	android:layout_width="16px"
-        	android:layout_height="28px"
-        	android:src="@drawable/ico_return"/>
+        	android:layout_width="30dp"
+        	android:layout_height="25dp"
+        	android:src="@drawable/selector_title_back"/>
     </LinearLayout>
     
     <TextView 

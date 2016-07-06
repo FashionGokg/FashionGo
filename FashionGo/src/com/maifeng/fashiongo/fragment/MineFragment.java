@@ -21,7 +21,7 @@ import com.maifeng.fashiongo.GetMyCollectionActivity;
 import com.maifeng.fashiongo.GetMyShareActivity;
 import com.maifeng.fashiongo.Goods_Address_Activity;
 import com.maifeng.fashiongo.LoginActivity;
-import com.maifeng.fashiongo.MyOrder;
+import com.maifeng.fashiongo.MyOrder1;
 import com.maifeng.fashiongo.R;
 import com.maifeng.fashiongo.banner.CiecleImageView;
 import com.maifeng.fashiongo.constant.LazyFragment;
@@ -129,7 +129,7 @@ public class MineFragment extends LazyFragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(),MyOrder.class);
+				Intent intent = new Intent(getActivity(),MyOrder1.class);
 				startActivity(intent);
 			}
 		});

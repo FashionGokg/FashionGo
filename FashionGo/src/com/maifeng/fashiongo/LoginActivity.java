@@ -69,7 +69,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 		map.put("password", password);
 		map.put("system", "android");
 		VolleyRequest.RequestPost(this, Urls.LOGIN, "GetVerify",map,
-				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 
 			@Override
 			public void onMySuccess(String result) {
@@ -134,15 +134,18 @@ public class LoginActivity extends Activity implements OnClickListener{
 		case R.id.tv_register:
 			intent.setClass(getApplicationContext(),RegisterActivity.class);
 			startActivity(intent);
+			overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
 			break;
 			
 		case R.id.tv_forgetpwd:
 			intent.setClass(getApplicationContext(),FindPasswordActivity.class);
 			startActivity(intent);
+			overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 			break;
 		case R.id.ll_returnbtn:
 			intent.setClass(getApplicationContext(),MainActivity.class);
 			startActivity(intent);
+			overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
 			finish();
 			break;
 		}

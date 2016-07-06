@@ -108,6 +108,7 @@ public class HomeFragment2 extends LazyFragment implements OnClickListener,XScro
 			Intent intent = new Intent(getActivity()
 					.getApplicationContext(), FirstClassifyAcitvity.class);
 			startActivity(intent);
+		
 		}
 	});
 		mScrollView = (XScrollView) view.findViewById(R.id.scroll_view);
@@ -126,6 +127,14 @@ public class HomeFragment2 extends LazyFragment implements OnClickListener,XScro
 		volleyGetRecommendation(page);
 		
 		return view;
+		
+	}
+	protected void overridePendingTransition(int pushLeftIn, int pushLeftOut) {
+		// TODO Auto-generated method stub
+		
+	}
+	protected void overridePendingTransition() {
+		// TODO Auto-generated method stub
 		
 	}
 	@Override
@@ -174,7 +183,7 @@ public class HomeFragment2 extends LazyFragment implements OnClickListener,XScro
 
 	private void volleyGetBanner() {
 		VolleyRequest.RequestGet(getActivity(), Urls.GET_BANNER_LIST, "GET_BANNER_LIST",
-				new VolleyAbstract(getActivity(),VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(getActivity(),VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 					
 					@Override
 					public void onMySuccess(String result) {
@@ -196,7 +205,7 @@ public class HomeFragment2 extends LazyFragment implements OnClickListener,XScro
 	}
 	private void volleyGetImage(final NetworkImageView[] imageViews) {
 		VolleyRequest.RequestGet(getActivity(), Urls.GET_THREE_GOODS_AD_INFO, "GET_THREE_GOODS_AD_INFO",
-				new VolleyAbstract(getActivity(),VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(getActivity(),VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 					
 					@Override
 					public void onMySuccess(String result) {
@@ -223,7 +232,7 @@ public class HomeFragment2 extends LazyFragment implements OnClickListener,XScro
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("page", String.valueOf(page));
 		VolleyRequest.RequestPost(getActivity(), Urls.GET_RECOMMENDATION, 
-				"GET_RECOMMENDATION", map, new VolleyAbstract(getActivity(),VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				"GET_RECOMMENDATION", map, new VolleyAbstract(getActivity(),VolleyAbstract.listener,VolleyAbstract.errorListener,false) {
 					
 					@Override
 					public void onMySuccess(String result) {

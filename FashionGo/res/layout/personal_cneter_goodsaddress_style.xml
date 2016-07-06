@@ -74,6 +74,12 @@
         android:textColor="#000000"
         android:text="@string/goods_text_address" />
     
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        android:layout_alignParentBottom="true"/>
+    
  
     
 </RelativeLayout>

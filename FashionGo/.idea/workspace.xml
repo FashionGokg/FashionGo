@@ -22,8 +22,8 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="PropertiesComponent">
-    <property name="android.sdk.path" value="G:/SDK" />
-    <property name="settings.editor.selected.configurable" value="com.genymobile.genymotion.ide.idea.GdmSettings" />
+    <property name="android.sdk.path" value="G:/ASSDK" />
+    <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RunManager">
@@ -117,10 +117,10 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <created>1465958040501</created>
+      <created>1467728740774</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1465958040501</updated>
+      <updated>1467728740774</updated>
     </task>
     <servers />
   </component>

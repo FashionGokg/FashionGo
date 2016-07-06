@@ -64,7 +64,7 @@ public class Edit_GoodsAddress_Activity extends Activity {
 		map.put("id", idString);
 		VolleyRequest.RequestPost(this, Urls.GET_ADDRESS_DETAIL,
 				"GET_ADDRESS_DETAIL", map, new VolleyAbstract(this,
-						VolleyAbstract.listener, VolleyAbstract.errorListener) {
+						VolleyAbstract.listener, VolleyAbstract.errorListener,true) {
 					@Override
 					public void onMySuccess(String result) {
 						// TODO Auto-generated method stub
@@ -159,6 +159,7 @@ public class Edit_GoodsAddress_Activity extends Activity {
 						Provice_Activity.class);
 				pcaIntent.putExtra("typeString", 1);
 				startActivity(pcaIntent);
+				overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 			}
 		});
 		
@@ -181,7 +182,7 @@ public class Edit_GoodsAddress_Activity extends Activity {
 		map.put("accessToken", accessToken);
 		map.put("id", id);
 		VolleyRequest.RequestPost(this,Urls.DELETE_ADDRESS, "DELETE_ADDRESS", map,
-				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 					
 					@Override
 					public void onMySuccess(String result) {
@@ -218,7 +219,7 @@ public class Edit_GoodsAddress_Activity extends Activity {
 		map.put("area",area);
 		map.put("address",address);
 		VolleyRequest.RequestPost(this,Urls.EDIT_ADDRESS, "EDIT_ADDRESS", map,
-				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 					
 					@Override
 					public void onMySuccess(String result) {

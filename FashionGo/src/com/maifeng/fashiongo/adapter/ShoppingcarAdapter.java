@@ -187,7 +187,7 @@ public class ShoppingcarAdapter extends BaseAdapter{
 			map.put("accessToken", accessToken);
 			map.put("id", id);
 			VolleyRequest.RequestPost(context, Urls.DELETE_GOODS_FOR_CART,"DELETE_GOODS_FOR_CART", map,
-					new VolleyAbstract(context,VolleyAbstract.listener,VolleyAbstract.errorListener) {
+					new VolleyAbstract(context,VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 						
 						@Override
 						public void onMySuccess(String result) {

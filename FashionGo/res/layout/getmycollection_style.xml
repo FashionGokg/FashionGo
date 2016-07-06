@@ -87,5 +87,11 @@
 	    android:focusable="false"
 	    android:textSize="12sp"
 	    android:text="删除" />
+	
+	<View 
+	    android:layout_width="match_parent"
+	    android:layout_height="1dp"
+	    android:background="#E0E0E0"
+	    android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

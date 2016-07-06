@@ -6,7 +6,16 @@ public class GetMyOrderDaya {
 	public String status;
 	public String goodsName;
 	public String goodsImage;
-	public String totalNumber;
+	public String orderCount;
+	public int addressId;
+	
+	
+	public int getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(int addressId) {
+		this.addressId = addressId;
+	}
 	public String getOrderNum() {
 		return orderNum;
 	}
@@ -37,11 +46,12 @@ public class GetMyOrderDaya {
 	public void setGoodsImage(String goodsImage) {
 		this.goodsImage = goodsImage;
 	}
-	public String getTotalNumber() {
-		return totalNumber;
+	public String getOrderCount() {
+		return orderCount;
 	}
-	public void setTotalNumber(String totalNumber) {
-		this.totalNumber = totalNumber;
+	public void setOrderCount(String orderCount) {
+		this.orderCount = orderCount;
 	}
+
 	
 }

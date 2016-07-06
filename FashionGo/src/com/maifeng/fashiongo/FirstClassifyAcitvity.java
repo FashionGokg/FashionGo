@@ -97,6 +97,7 @@ public class FirstClassifyAcitvity extends Activity {
 								intent.putExtra("first_keyword", keyword);
 								intent.putExtra("Code", "FirstA");
 								startActivity(intent);
+								overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
 							}
 							
 						}
@@ -139,6 +140,7 @@ public class FirstClassifyAcitvity extends Activity {
 				intent.putExtra("ClassifyTwoId", twolist.get(position)
 						.getClassifyTwoId());
 				startActivity(intent);
+				overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
 			}
 		});
 
@@ -163,7 +165,7 @@ public class FirstClassifyAcitvity extends Activity {
 		// 发起Get请求
 		VolleyRequest.RequestGet(this, Urls.GET_CLASSIFY_ONE, "GET_CLASSIFY_ONE",
 				new VolleyAbstract(this, VolleyAbstract.listener,
-						VolleyAbstract.errorListener) {
+						VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {
@@ -213,7 +215,7 @@ public class FirstClassifyAcitvity extends Activity {
 		// 发起Post请求
 		VolleyRequest.RequestPost(this, Urls.GET_CLASSIFY_TWO, "GET_CLASSIFY_TWO", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,
-						VolleyAbstract.errorListener) {
+						VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {

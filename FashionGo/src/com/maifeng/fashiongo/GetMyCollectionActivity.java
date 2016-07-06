@@ -88,7 +88,7 @@ public class GetMyCollectionActivity extends Activity {
 		map.put("accessToken", accessToken);
 		map.put("page","1");
 		VolleyRequest.RequestPost(this,Urls.GET_MY_COLLECTION,"GET_MY_COLLECTION", map,
-				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 					
 					@Override
 					public void onMySuccess(String result) {
@@ -106,7 +106,7 @@ public class GetMyCollectionActivity extends Activity {
 								intent.putExtra("Code","mycollection");
 								intent.putExtra("goodsCode", data.get(arg2).goodsCode);
 								startActivity(intent);
-				
+								overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 								
 								finish();
 								

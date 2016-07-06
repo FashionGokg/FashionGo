@@ -138,7 +138,7 @@ public class MyOrder extends Activity implements OnClickListener{
 		map.put("type", type);
 		map.put("page","1");
 		VolleyRequest.RequestPost(this,Urls.GET_MY_ORDER,"GET_MY_ORDER", map,
-				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 					
 					@Override
 					public void onMySuccess(String result) {

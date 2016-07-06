@@ -97,6 +97,7 @@ public class Provice_Activity extends Activity {
 					p_intent.putExtra("pCode", p_data.get(position).getpCode());
 					p_intent.putExtra("typeString", 1);
 					startActivity(p_intent);
+					overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 					finish();
 				}
 
@@ -118,7 +119,7 @@ public class Provice_Activity extends Activity {
 	private void volleyGet() {
 		VolleyRequest.RequestGet(this, Urls.GET_PROVINCE_LIST,
 				"GET_PROVINCE_LIST", new VolleyAbstract(this,
-						VolleyAbstract.listener, VolleyAbstract.errorListener) {
+						VolleyAbstract.listener, VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {

@@ -89,7 +89,7 @@ public class GetMyShareAdapter extends BaseAdapter {
 				map.put("id",list.get(position).getId());
 				map.put("accessToken", accessToken);
 				VolleyRequest.RequestPost(context,Urls.DELETE_MY_SHARE,"DELETE_MY_SHARE", map,
-						new VolleyAbstract(context,VolleyAbstract.listener,VolleyAbstract.errorListener) {
+						new VolleyAbstract(context,VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 							
 							@Override
 							public void onMySuccess(String result) {

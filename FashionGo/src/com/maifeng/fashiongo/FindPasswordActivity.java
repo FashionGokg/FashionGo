@@ -89,7 +89,7 @@ protected void onStop() {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userPhone", phone);
 		map.put("type", "1");
-		VolleyRequest.RequestPost(this, Urls.GetVerify, "GetVerify",map, new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+		VolleyRequest.RequestPost(this, Urls.GetVerify, "GetVerify",map, new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 			
 			@Override
 			public void onMySuccess(String result) {
@@ -121,7 +121,7 @@ protected void onStop() {
 		
 		//∑¢∆Post«Î«Û
 		VolleyRequest.RequestPost(this, Urls.FINDPASSWORD, "FINDPASSWORD", map,
-				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 
 			@Override
 			public void onMySuccess(String result) {

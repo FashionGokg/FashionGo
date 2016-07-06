@@ -102,6 +102,7 @@ public class City_Activity extends Activity {
 					c_intent.putExtra("cCode", c_data.get(position).getcCode());
 					c_intent.putExtra("typeString", 1);
 					startActivity(c_intent);
+					overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 					finish();
 				}
 
@@ -127,7 +128,7 @@ public class City_Activity extends Activity {
 		map.put("pCode", pCode);
 		VolleyRequest.RequestPost(this, Urls.GET_CITY_LIST, "GET_CITY_LIST",
 				map, new VolleyAbstract(this, VolleyAbstract.listener,
-						VolleyAbstract.errorListener) {
+						VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {

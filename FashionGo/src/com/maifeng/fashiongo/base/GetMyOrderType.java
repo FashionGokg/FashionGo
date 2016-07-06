@@ -6,7 +6,7 @@ import java.util.List;
 public class GetMyOrderType {
 	public String errorcode;
 	public String message;
-	public List<GetMyOrderDaya> list = new ArrayList<GetMyOrderDaya>();
+	public List<GetMyOrderDaya> data = new ArrayList<GetMyOrderDaya>();
 	public String getErrorcode() {
 		return errorcode;
 	}
@@ -19,11 +19,12 @@ public class GetMyOrderType {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public List<GetMyOrderDaya> getList() {
-		return list;
+	public List<GetMyOrderDaya> getData() {
+		return data;
 	}
-	public void setList(List<GetMyOrderDaya> list) {
-		this.list = list;
+	public void setData(List<GetMyOrderDaya> data) {
+		this.data = data;
 	}
+	
 	
 }

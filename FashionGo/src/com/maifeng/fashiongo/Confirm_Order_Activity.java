@@ -1,10 +1,17 @@
 package com.maifeng.fashiongo;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+import com.android.volley.VolleyError;
 import com.maifeng.fashiongo.adapter.ConfirmOrderAdapter;
 import com.maifeng.fashiongo.base.OrderData;
-
+import com.maifeng.fashiongo.base.TnType;
+import com.maifeng.fashiongo.constant.Urls;
+import com.maifeng.fashiongo.util.JsonUtil;
+import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
+import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
+import com.unionpay.UPPayAssistEx;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,10 +19,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Confirm_Order_Activity extends Activity implements OnClickListener{
 	private LinearLayout ll_returnbtn,ll_functionbtn;
@@ -26,6 +35,9 @@ public class Confirm_Order_Activity extends Activity implements OnClickListener{
 	private ImageView order_icon;
 	private ListView confirm_order_list;
 	private List<OrderData> list;
+	private Button confirm_order_result;
+	private String orderNum;
+	private String id_adress;
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +48,7 @@ public class Confirm_Order_Activity extends Activity implements OnClickListener{
 		String Code= getIntent().getStringExtra("Code");
 		if (Code.equals("shopcar")) {
 			//从购物车页面跳转
+			orderNum = getIntent().getStringExtra("orderNum");
 			list=(List<OrderData>) getIntent().getSerializableExtra("orderdata");
 			confirm_order_list.setAdapter(new ConfirmOrderAdapter(getApplicationContext(), list));
 			float total=0.00f;
@@ -46,12 +59,12 @@ public class Confirm_Order_Activity extends Activity implements OnClickListener{
 			}
 			confirm_order_total.setText("￥"+total);
 		}else if (Code.equals("detail")) {
+			orderNum = getIntent().getStringExtra("orderNum");
 			//从详情页面跳转
 			list=(List<OrderData>) getIntent().getSerializableExtra("orderdata");
 			confirm_order_list.setAdapter(new ConfirmOrderAdapter(getApplicationContext(), list));
 			confirm_order_total.setText("￥"+(float)(Integer.parseInt(list.get(0).getNumber())*Integer.parseInt(list.get(0).getPrice())));
 		}
-		
 		
 		
 		
@@ -74,7 +87,8 @@ public class Confirm_Order_Activity extends Activity implements OnClickListener{
 		order_icon = (ImageView) findViewById(R.id.confirm_order_icon);
 		order_icon.setVisibility(View.INVISIBLE);
 		confirm_order_list=(ListView) findViewById(R.id.confirm_order_list);
-		
+		confirm_order_result = (Button) findViewById(R.id.confirm_order_result);
+		confirm_order_result.setOnClickListener(this);
 	
 
 	}
@@ -94,9 +108,43 @@ public class Confirm_Order_Activity extends Activity implements OnClickListener{
 		case R.id.ll_returnbtn:
 			finish();
 			break;
+		case R.id.confirm_order_result:
+			if (choice_address.getText().toString().isEmpty()) {
+				Toast.makeText(getApplicationContext(), "请选择收货地址", Toast.LENGTH_SHORT).show();
+			}else {
+//				Volleypost(orderNum,id_adress);	
+			}
+
+		
+		break;
 		}
 	}
 	
+	private void Volleypost(String orderNum,String id_adress) {
+		// TODO Auto-generated method stub
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("orderNum", orderNum);
+		map.put("address", id_adress);
+		VolleyRequest.RequestPost(Confirm_Order_Activity.this, Urls.GET_TN, "GET_TN",
+				map, new VolleyAbstract(this,VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
+					
+					@Override
+					public void onMySuccess(String result) {
+						TnType tnType =JsonUtil.parseJsonToBean(result, TnType.class);
+						Toast.makeText(getApplicationContext(), tnType.getData(), Toast.LENGTH_SHORT).show();
+						UPPayAssistEx.startPay(Confirm_Order_Activity.this,
+								null, null, tnType.getData(), "01");
+					}
+					
+					@Override
+					public void onMyError(VolleyError error) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+		
+	}
+
 	private void showDialog(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("支付方式");
@@ -133,12 +181,9 @@ public class Confirm_Order_Activity extends Activity implements OnClickListener{
 			if(requestCode==1){
 				if (resultCode==101) {
 					choice_address.setText(data.getStringExtra("adress"));
+					id_adress = data.getStringExtra("id_adress");
 				}
-				
 			}
-			
-		
-		
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 }

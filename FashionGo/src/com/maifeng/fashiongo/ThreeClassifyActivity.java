@@ -71,9 +71,9 @@ public class ThreeClassifyActivity extends Activity {
 				// 向GoodListActivity传递数据
 				Intent intent = new Intent(ThreeClassifyActivity.this,GoodListActivity.class);
 				intent.putExtra("ClassifyThreeId",threelist.get(position).getClassifyThreeId());
-				
 				intent.putExtra("Code","classify");
 				startActivity(intent);
+				overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
 			}
 		});
@@ -97,7 +97,7 @@ public class ThreeClassifyActivity extends Activity {
 		
 		VolleyRequest.RequestPost(this, Urls.GET_CLASSIFY_THREE, "GET_CLASSIFY_THREE", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,
-						VolleyAbstract.errorListener) {
+						VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {
@@ -133,6 +133,7 @@ public class ThreeClassifyActivity extends Activity {
 										Intent intent = new Intent(ThreeClassifyActivity.this,GoodListActivity.class);
 										intent.putExtra("ClassifyThreeId",threelist.get(position).getClassifyThreeId());
 										startActivity(intent);
+										overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 									}
 								});
 					}

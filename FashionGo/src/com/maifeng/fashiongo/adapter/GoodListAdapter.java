@@ -10,6 +10,7 @@ import com.maifeng.fashiongo.volleyhandle.MyImageCache;
 import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +73,9 @@ public class GoodListAdapter extends BaseAdapter {
 		}
 
 		holder.tv_goodname.setText(list.get(position).getGoodsName());
-		holder.tv_price.setText(list.get(position).getPrice());
-		holder.tv_originalPrice.setText(list.get(position).getOriginalPrice());
+		holder.tv_price.setText("现价："+list.get(position).getPrice());
+		holder.tv_originalPrice.setText("原价："+list.get(position).getOriginalPrice());
+		holder.tv_originalPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG ); 
 		// 加载中显示的图片
 		holder.img_good.setDefaultImageResId(R.drawable.bg_loading_image);
 		// 加载失败时显示的图片

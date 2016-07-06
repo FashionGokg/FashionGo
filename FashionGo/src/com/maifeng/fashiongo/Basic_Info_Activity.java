@@ -85,6 +85,7 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 		case R.id.relativemessage:
 			Intent intent = new Intent(getApplicationContext(),Edit_BasiinformationAcitivity.class);
 			startActivity(intent);
+			overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 			break;
 		case R.id.replace_accuont:
 			Intent intent1 = new Intent(getApplicationContext(),LoginActivity.class);
@@ -101,6 +102,7 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 			editor.commit();
 			
 			startActivity(intent1);
+			overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
 			MainActivity.mainActivity.finish();
 			finish();
 			break;
@@ -130,7 +132,7 @@ public class Basic_Info_Activity extends Activity implements OnClickListener {
 			Map<String,String> map = new HashMap<String, String>();
 			map.put("accessToken", accessToken);
 			VolleyRequest.RequestPost(this,Urls.PERSONAL_DETAILS,"PERSONAL_DETAILS", map,
-					new VolleyAbstract(this,VolleyAbstract.listener,VolleyAbstract.errorListener) {
+					new VolleyAbstract(this,VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 						@Override
 						public void onMySuccess(String result) {
 							data = JsonUtil.parseJsonToBean(result, GetPersonalDetailsType.class).getData();

@@ -18,8 +18,10 @@ import com.maifeng.fashiongo.Confirm_Order_Activity;
 import com.maifeng.fashiongo.adapter.ShoppingcarAdapter;
 import com.maifeng.fashiongo.adapter.ShoppingcarEditAdapter;
 import com.maifeng.fashiongo.banner.XListView;
+import com.maifeng.fashiongo.base.CreateOrderType;
 import com.maifeng.fashiongo.base.EditGoodsForCartType;
 import com.maifeng.fashiongo.base.OrderData;
+import com.maifeng.fashiongo.base.OrderNumberType;
 import com.maifeng.fashiongo.base.ShoppingcarData;
 import com.maifeng.fashiongo.base.ShoppingcarType;
 import com.maifeng.fashiongo.constant.LazyFragment;
@@ -42,6 +44,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class ShoppingcarFragment extends LazyFragment implements OnClickListener,XListView.IXListViewListener{
@@ -57,6 +60,7 @@ public class ShoppingcarFragment extends LazyFragment implements OnClickListener
 	private ShoppingcarAdapter myAdapter;
 	private String accessToken;
 	private Handler mHandler;
+	private OrderNumberType orderNumberType;
 
     // 标志位，标志已经初始化完成。
     private boolean isPrepared;
@@ -72,7 +76,6 @@ public class ShoppingcarFragment extends LazyFragment implements OnClickListener
 		
 		initView(view);
 		isPrepared = true;
-		lazyLoad();
 		selectAll.setOnClickListener(this);
         ll_functionbtn.setOnClickListener(this);
         
@@ -93,6 +96,13 @@ public class ShoppingcarFragment extends LazyFragment implements OnClickListener
 		}else {
 			volleyPost();
 		}
+		
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		lazyLoad();
 		
 	}
 	
@@ -130,7 +140,7 @@ public class ShoppingcarFragment extends LazyFragment implements OnClickListener
 		map.put("accessToken", accessToken);
 		map.put("page", "1");
 		VolleyRequest.RequestPost(getActivity(), Urls.GET_MY_CARTINFO, "GET_MY_CARTINFO", map,
-				new VolleyAbstract(getActivity(),VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(getActivity(),VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 					
 					@Override
 					public void onMySuccess(String result) {
@@ -218,6 +228,7 @@ public class ShoppingcarFragment extends LazyFragment implements OnClickListener
 				String price = null;
 				String number = null;
 				List<OrderData> orderDatas = new ArrayList<OrderData>();
+				List<CreateOrderType> orderlist = new ArrayList<CreateOrderType>();
 				for (int i = 0; i < ShoppingcarAdapter.isCheckedMap.size(); i++) {
 					if (ShoppingcarAdapter.isCheckedMap.get(i)) {
 						imageUrl = listdate.get(i).getGoodsImage();
@@ -226,18 +237,59 @@ public class ShoppingcarFragment extends LazyFragment implements OnClickListener
 						number = listdate.get(i).getNumber();
 						OrderData orderData = new OrderData(imageUrl, name, price, number);
 						orderDatas.add(orderData);
+						CreateOrderType createOrderType = new CreateOrderType(
+								listdate.get(i).getGoodsCode(), listdate.get(i).getNumber());
+						orderlist.add(createOrderType);
 					}
 				}
-				if (!orderDatas.isEmpty()) {
+				
+				if (orderDatas!=null||orderDatas.isEmpty()) {
+//					addOrderPost(orderlist,orderDatas);
 					Intent intent = new Intent(getActivity(),Confirm_Order_Activity.class);
 					intent.putExtra("Code", "shopcar");
 					intent.putExtra("orderdata", (Serializable)orderDatas);
+					intent.putExtra("orderNum", 20160609);
 					startActivity(intent);
+
 				}
 
 				break;
 		}
 	}
+	
+	private void addOrderPost(List<CreateOrderType> orderlist,final List<OrderData> orderDatas){
+		Map<String, String> map = new HashMap<String, String>();
+		Gson gson = new Gson();
+		map.put("accessToken", accessToken);
+		map.put("ordertype", gson.toJson(orderlist));
+
+		VolleyRequest.RequestPost(getActivity(), Urls.GET_ADDORDER, "GET_ADDORDER", map, 
+				new VolleyAbstract(getActivity(),VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
+					
+					@Override
+					public void onMySuccess(String result) {
+						System.out.println("a"+result);
+						// TODO Auto-generated method stub
+						orderNumberType=JsonUtil.parseJsonToBean(result, OrderNumberType.class);
+						String orderNum =orderNumberType.getData();
+						if(orderNum!=null||orderNum.isEmpty()){
+//							Intent intent = new Intent(getActivity(),Confirm_Order_Activity.class);
+//							intent.putExtra("Code", "shopcar");
+//							intent.putExtra("orderdata", (Serializable)orderDatas);
+//							intent.putExtra("orderNum", orderNum);
+//							startActivity(intent);
+						}else {
+							Toast.makeText(getActivity(), orderNumberType.getMessage(), Toast.LENGTH_SHORT).show();
+						}
+
+					}
+					
+					@Override
+					public void onMyError(VolleyError error) {
+						// TODO Auto-generated method stub
+					}
+				});
+	} 
 
 	
 	private void editCartPost(List<ShoppingcarData> editlist) {
@@ -254,10 +306,9 @@ public class ShoppingcarFragment extends LazyFragment implements OnClickListener
 		Map<String, String> map = new HashMap<String, String>();
 		Gson gson = new Gson();
 		map.put("accessToken", accessToken);
-		
 		map.put("editParam", gson.toJson(list));
 		VolleyRequest.RequestPost(getActivity(), Urls.EDIT_GOODS_FOR_CART, "EDIT_GOODS_FOR_CART", map,
-				new VolleyAbstract(getActivity(),VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(getActivity(),VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 					
 					@Override
 					public void onMySuccess(String result) {
@@ -282,6 +333,7 @@ public class ShoppingcarFragment extends LazyFragment implements OnClickListener
 		Volleyhandle.getInstance(getActivity()).getRequestQueue().cancelAll("GET_MY_CARTINFO");
 		Volleyhandle.getInstance(getActivity()).getRequestQueue().cancelAll("EDIT_GOODS_FOR_CART");
 		Volleyhandle.getInstance(getActivity()).getRequestQueue().cancelAll("DELETE_GOODS_FOR_CART");
+		Volleyhandle.getInstance(getActivity()).getRequestQueue().cancelAll("GET_ADDORDER");
 	}
 	//下拉刷新
 	@Override

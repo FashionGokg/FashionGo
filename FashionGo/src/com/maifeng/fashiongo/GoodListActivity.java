@@ -129,7 +129,7 @@ public class GoodListActivity extends Activity implements OnClickListener {
 		map.put("page", "1");
 		VolleyRequest.RequestPost(getApplicationContext(), Urls.GET_GOODS_LIST,
 				"GET_GOODS_LIST", map, new VolleyAbstract(this,
-						VolleyAbstract.listener, VolleyAbstract.errorListener) {
+						VolleyAbstract.listener, VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {
@@ -156,6 +156,7 @@ public class GoodListActivity extends Activity implements OnClickListener {
 											intent.putExtra("goodsCode",goodList.get(position)
 															.getGoodsCode());
 											startActivity(intent);
+											overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
 										}
 									});
 						}else if (JsonUtil.parseJsonToBean(result, GoodListType.class)

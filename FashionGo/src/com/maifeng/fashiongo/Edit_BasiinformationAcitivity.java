@@ -174,7 +174,7 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 		map.put("accessToken", accessToken);
 		VolleyRequest.RequestPost(this, Urls.PERSONAL_DETAILS,
 				"PERSONAL_DETAILS", map, new VolleyAbstract(this,
-						VolleyAbstract.listener, VolleyAbstract.errorListener) {
+						VolleyAbstract.listener, VolleyAbstract.errorListener,true) {
 					@Override
 					public void onMySuccess(String result) {
 						data = JsonUtil.parseJsonToBean(result,
@@ -305,7 +305,7 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 				VolleyRequest.RequestPost(this, Urls.CHANGE_PEMAL_INFO,
 						"CHANGE_PEMAL_INFO", map, new VolleyAbstract(this,
 								VolleyAbstract.listener,
-								VolleyAbstract.errorListener) {
+								VolleyAbstract.errorListener,true) {
 
 							@Override
 							public void onMySuccess(String result) {
@@ -361,6 +361,7 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 		case R.id.province_relayout:
 			Intent intent1 = new Intent(getApplicationContext(),Provice_Activity.class);
 			startActivityForResult(intent1, 1);
+			overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 			break;
 		case R.id.city_relayout:
 			if (pCodeString==null) {
@@ -370,6 +371,7 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 				Intent intent2 = new Intent(getApplicationContext(),City_Activity.class);
 				intent2.putExtra("pCode", pCodeString);
 				startActivityForResult(intent2, 2);
+				overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 			}
 			
 			break;
@@ -381,6 +383,7 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
 				Intent intent3 = new Intent(getApplicationContext(),Area_Activity.class);
 				intent3.putExtra("cCode", cCodeString);
 				startActivityForResult(intent3, 3);
+				overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 			}
 			
 			break;
@@ -474,6 +477,7 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
         Intent pickIntent = new Intent(Intent.ACTION_PICK, null);
         pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(pickIntent, REQUESTCODE_PICK);
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     /**
@@ -491,6 +495,7 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(outFile));
             intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
             startActivityForResult(intent, PHOTO_REQUEST_TAKEPHOTO);
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
         } else {
             Log.e("CAMERA", "请确认已经插入SD卡");
         }
@@ -539,6 +544,7 @@ public class Edit_BasiinformationAcitivity extends Activity implements OnClickLi
         intent.putExtra("return-data", true);
         intent.putExtra("noFaceDEtection", true);
         startActivityForResult(intent, REQUESTCODE_CUTTING);
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     

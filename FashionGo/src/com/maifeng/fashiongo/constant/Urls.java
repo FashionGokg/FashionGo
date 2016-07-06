@@ -4,8 +4,10 @@ public class Urls {
 	/**
 	 * Root
 	 */
-	private static String Root = "http://172.16.40.47/shop/index.php/home/";
-//	private static String Root = "http://wemall.minephone.com/develop/ssgshop/";
+//	private static String Root = "http://172.16.40.47/shop/index.php/home/";
+
+	private static String Root = "http://119.29.241.166/shop/index.php/Home/";
+//	private static String Root = "http://119.29.241.166/shop/index.php/Home/";
 
 	/**
 	 * 个人注册
@@ -241,4 +243,14 @@ public class Urls {
 	 * 注册协议链接
 	 */
 	public static final String PROTOCOL = Root + "System/protocol";
+	
+	/**
+	 * 获取银联流水号TN
+	 */
+	public static final String GET_TN = "http://119.29.241.166/shop/provisional/sdk/gettn.php";
+	
+	/**
+	 * 创建订单
+	 */
+	public static final String GET_ADDORDER = "Order/addorder"; 
 }

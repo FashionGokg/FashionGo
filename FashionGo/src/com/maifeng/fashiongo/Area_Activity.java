@@ -126,7 +126,7 @@ public class Area_Activity extends Activity {
 		map.put("cCode", cCode);
 		VolleyRequest.RequestPost(this, Urls.GET_AREA_LIST, "GET_CITY_LIST",
 				map, new VolleyAbstract(this, VolleyAbstract.listener,
-						VolleyAbstract.errorListener) {
+						VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {

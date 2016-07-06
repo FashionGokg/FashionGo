@@ -3,11 +3,10 @@ package com.maifeng.fashiongo;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.maifeng.fashiongo.fragment.HomeFragment;
+import com.maifeng.fashiongo.anim.ZoomOutPageTransformer;
 import com.maifeng.fashiongo.fragment.HomeFragment2;
 import com.maifeng.fashiongo.fragment.MineFragment;
 import com.maifeng.fashiongo.fragment.MoreFragment;
-import com.maifeng.fashiongo.fragment.ShoppingcarFragment;
 import com.maifeng.fashiongo.fragment.ShoppingcarFragment;
 
 import android.os.Bundle;
@@ -73,7 +72,8 @@ public  class MainActivity extends FragmentActivity implements OnClickListener {
 			}
 		};
 		//»º´æÒ³Ãæ
-		viewpager.setOffscreenPageLimit(1);
+		viewpager.setOffscreenPageLimit(4);
+		viewpager.setPageTransformer(true, new ZoomOutPageTransformer()); 
 		viewpager.setAdapter(adapter);
 
 		// ¼àÌýViewPager¶¯×÷

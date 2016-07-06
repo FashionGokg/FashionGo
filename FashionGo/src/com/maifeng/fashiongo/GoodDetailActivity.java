@@ -10,6 +10,7 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -27,14 +28,17 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.framework.n;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.maifeng.fashiongo.adapter.ColorAdapter;
 import com.maifeng.fashiongo.adapter.MyPagerAdapter;
 import com.maifeng.fashiongo.adapter.SizeAdapter;
 import com.maifeng.fashiongo.base.AddGoodsToCart;
 import com.maifeng.fashiongo.base.Add_Collection;
+import com.maifeng.fashiongo.base.CreateOrderType;
 import com.maifeng.fashiongo.base.GoodDetailData;
 import com.maifeng.fashiongo.base.GoodDetailGoodsImage;
 import com.maifeng.fashiongo.base.GoodDetailType;
@@ -42,10 +46,10 @@ import com.maifeng.fashiongo.base.GoodsSpecificationsData;
 import com.maifeng.fashiongo.base.GoodsSpecificationsSize;
 import com.maifeng.fashiongo.base.GoodsSpecificationsType;
 import com.maifeng.fashiongo.base.OrderData;
+import com.maifeng.fashiongo.base.OrderNumberType;
 import com.maifeng.fashiongo.base.ShareGoods;
 import com.maifeng.fashiongo.constant.Urls;
 import com.maifeng.fashiongo.util.JsonUtil;
-import com.maifeng.fashiongo.util.LogUtil;
 import com.maifeng.fashiongo.volleyhandle.VolleyAbstract;
 import com.maifeng.fashiongo.volleyhandle.VolleyRequest;
 import com.maifeng.fashiongo.volleyhandle.Volleyhandle;
@@ -85,6 +89,7 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 
 	private Intent intent;
 	private String Code;
+	private OrderNumberType	orderNumberType;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -152,18 +157,19 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 		VolleyRequest.RequestPost(getApplicationContext(),
 				Urls.GET_GOODS_DETAILS, "GET_GOODS_DETAILS", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,
-						VolleyAbstract.errorListener) {
+						VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {
-
 						detail = JsonUtil.parseJsonToBean(result,
 								GoodDetailType.class).getData();
 						urllist = detail.getGoodsImageList().getGoodsImage();
 						tv_goodname.setText(detail.getGoodsName());
-						tv_about.setText(detail.getGoodsInfo());
+//						tv_about.setText(detail.getGoodsInfo());
+						tv_about.setText("●规格:测试数据\n●质地:测试数据\n●货号:测试数据\n●品牌:测试数据\n");
 						tv_goodcode.setText(detail.getGoodsCode());
 						tv_originalPrice.setText(detail.getOriginalPrice());
+						tv_originalPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG ); 
 						tv_price.setText(detail.getPrice());
 						if (detail.getIsPackage() == 0) {
 							tv_isPackage.setText("否");
@@ -222,7 +228,7 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 		VolleyRequest.RequestPost(getApplicationContext(),
 				Urls.GET_GOODS_SPECIFICATIONS, "GET_GOODS_SPECIFICATIONS", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,
-						VolleyAbstract.errorListener) {
+						VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {
@@ -335,18 +341,24 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 			String price = null;
 			String number = null;
 			List<OrderData> orderDatas = new ArrayList<OrderData>();
+			List<CreateOrderType> orderlist = new ArrayList<CreateOrderType>();
 			imageUrl=urllist.get(0).getGoodsImageList();
 			name=detail.getGoodsName();
 			price=detail.getPrice();
 			number=String.valueOf(et_num.getText());
 			OrderData orderData=new OrderData(imageUrl, name, price, number);
+			CreateOrderType createOrderType = new CreateOrderType(
+					detail.getGoodsCode(), detail.getGoodsName());
 			orderDatas.add(orderData);
+			orderlist.add(createOrderType);
 			
-			if (!orderDatas.isEmpty()) {
+			if (orderData!=null||orderDatas.isEmpty()) {
 				Intent intent = new Intent(GoodDetailActivity.this,Confirm_Order_Activity.class);
 				intent.putExtra("Code", "detail");
 				intent.putExtra("orderdata", (Serializable)orderDatas);
+				intent.putExtra("orderNum", "123456");
 				startActivity(intent);
+//				addOrderPost(orderlist,orderDatas);
 			}
 			
 			break;
@@ -370,6 +382,38 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 		}
 
 	}
+	private void addOrderPost(List<CreateOrderType> orderlist,final List<OrderData> orderDatas){
+		Map<String, String> map = new HashMap<String, String>();
+		Gson gson = new Gson();
+		map.put("accessToken", accessToken);
+		map.put("ordertype", gson.toJson(orderlist));
+		VolleyRequest.RequestPost(getApplicationContext(), Urls.GET_ADDORDER, "GET_ADDORDER", map, 
+				new VolleyAbstract(getApplicationContext(),VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
+					
+					@Override
+					public void onMySuccess(String result) {
+						// TODO Auto-generated method stub
+						orderNumberType=JsonUtil.parseJsonToBean(result, OrderNumberType.class);
+						String orderNum =orderNumberType.getData();
+						if(orderNum!=null||orderNum.isEmpty()){
+							Intent intent = new Intent(GoodDetailActivity.this,Confirm_Order_Activity.class);
+							intent.putExtra("Code", "detail");
+							intent.putExtra("orderdata", (Serializable)orderDatas);
+							intent.putExtra("orderNum", orderNum);
+							startActivity(intent);
+						}else {
+							Toast.makeText(GoodDetailActivity.this, orderNumberType.getMessage(), Toast.LENGTH_SHORT).show();
+						}
+
+					}
+					
+					@Override
+					public void onMyError(VolleyError error) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+	} 
 
 	private void showShare() {
 		ShareSDK.initSDK(this);
@@ -396,11 +440,9 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("accessToken", accessToken);
 		map.put("goodsCode", goodsCode);
-		System.out.println("goodsCode_collect: " + goodsCode);
-		System.out.println("accessToken_collect: " + accessToken);
 		VolleyRequest.RequestPost(getApplicationContext(), Urls.SHARE_GOODS,
 				"SHARE_GOODS", map, new VolleyAbstract(this,
-						VolleyAbstract.listener, VolleyAbstract.errorListener) {
+						VolleyAbstract.listener, VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {
@@ -408,15 +450,15 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 								result, ShareGoods.class);
 						switch (shareGoods.getErrorcode()) {
 						case 0:
-							Toast.makeText(getApplicationContext(),
-									shareGoods.getMessage(), Toast.LENGTH_SHORT)
-									.show();
+//							Toast.makeText(getApplicationContext(),
+//									shareGoods.getMessage(), Toast.LENGTH_SHORT)
+//									.show();
 							break;
 
 						default:
-							Toast.makeText(getApplicationContext(),
-									shareGoods.getMessage(), Toast.LENGTH_SHORT)
-									.show();
+//							Toast.makeText(getApplicationContext(),
+//									shareGoods.getMessage(), Toast.LENGTH_SHORT)
+//									.show();
 							break;
 						}
 					}
@@ -436,7 +478,7 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 		map.put("goodsCode", goodsCode);
 		VolleyRequest.RequestPost(getApplicationContext(), Urls.ADD_COLLECTION,
 				"ADD_COLLECTION", map, new VolleyAbstract(this,
-						VolleyAbstract.listener, VolleyAbstract.errorListener) {
+						VolleyAbstract.listener, VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {
@@ -474,7 +516,7 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 		VolleyRequest.RequestPost(getApplicationContext(),
 				Urls.ADD_GOODS_TO_CART, "ADD_GOODS_TO_CART", map,
 				new VolleyAbstract(this, VolleyAbstract.listener,
-						VolleyAbstract.errorListener) {
+						VolleyAbstract.errorListener,true) {
 
 					@Override
 					public void onMySuccess(String result) {
@@ -521,8 +563,6 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				sizes.clear();
-				System.out.println("specifications------------>"
-						+ specifications.get(position).getModel());
 				tv_color.setText(specifications.get(position).getModel());
 				sizes.add(specifications.get(position).getSizeList());
 			}
@@ -561,7 +601,6 @@ public class GoodDetailActivity extends Activity implements OnClickListener {
 				tv_size.setText(sizes.get(position).getSize());
 				tv_goodnum.setText(sizes.get(position).getNum() + "");
 				etnum = sizes.get(position).getNum();
-				System.out.println("getNum--->" + sizes.get(position).getNum());
 
 			}
 		});

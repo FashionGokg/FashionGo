@@ -121,7 +121,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("userPhone", phone);
 				map.put("type", "0");
-				VolleyRequest.RequestPost(this, Urls.GetVerify, "GetVerify",map, new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				VolleyRequest.RequestPost(this, Urls.GetVerify, "GetVerify",map, new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 					
 					@Override
 					public void onMySuccess(String result) {
@@ -163,7 +163,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
 		map.put("IMEI", "123456");
 		//∑¢∆Post«Î«Û
 		VolleyRequest.RequestPost(this, Urls.REGISTER, "REGISTER", map,
-				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener) {
+				new VolleyAbstract(this, VolleyAbstract.listener,VolleyAbstract.errorListener,true) {
 
 			@Override
 			public void onMySuccess(String result) {

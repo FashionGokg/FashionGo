@@ -247,7 +247,7 @@ public class New_Goods_Address_Activity extends Activity {
 				VolleyRequest.RequestPost(this, Urls.ADD_RECEIVE_ADDRESS,
 						"ADD_RECEIVE_ADDRESS", map, new VolleyAbstract(this,
 								VolleyAbstract.listener,
-								VolleyAbstract.errorListener) {
+								VolleyAbstract.errorListener,true) {
 							@Override
 							public void onMySuccess(String result) {
 								Goods_AddNew_AddressType gAddNew_AddressType = JsonUtil.parseJsonToBean(result,
